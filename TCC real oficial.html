@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>S.O.P.A. — Sistema Online de Pedidos e Atendimentos</title>
+    <meta
+      name="description"
+      content="S.O.P.A. é um sistema de cardápios online que organiza pedidos e atendimentos de estabelecimentos alimentícios, trazendo praticidade para clientes e comércios."
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&family=Cormorant+Garamond:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="CSS/style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a href="#topo" class="logo" aria-label="S.O.P.A. — voltar ao início">
+        <span class="logo-badge">S</span>
+        <span class="logo-word">S.O.P.A.</span>
+      </a>
+
+      <nav class="main-nav" id="main-nav">
+        <a href="#sobre">Quem somos</a>
+        <a href="#recursos">Recursos do Sistema</a>
+        <a href="#criar-cardapio" class="nav-cta">Criar cardápio</a>
+      </nav>
+
+      <button
+        class="nav-toggle"
+        id="nav-toggle"
+        aria-label="Abrir menu"
+        aria-expanded="false"
+        aria-controls="main-nav"
+      >
+        <span></span><span></span><span></span>
+      </button>
+    </header>
+
+    <main id="topo">
+      <!-- HERO -->
+      <section class="hero">
+        <div class="shape shape-dark shape-left" aria-hidden="true"></div>
+        <div
+          class="shape shape-light shape-left-small"
+          aria-hidden="true"
+        ></div>
+        <div class="shape shape-dark shape-right" aria-hidden="true"></div>
+        <div
+          class="shape shape-light shape-right-small"
+          aria-hidden="true"
+        ></div>
+
+        <svg
+          class="hero-lines"
+          viewBox="0 0 1200 700"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
+          <path
+            d="M120,0 L120,90 Q120,110 140,110 L260,110 Q280,110 280,130 L280,200"
+          />
+          <path
+            d="M620,0 L620,55 Q620,75 600,75 L460,75 Q440,75 440,95 L440,170"
+          />
+          <path
+            d="M1090,170 Q1090,150 1070,150 L900,150 Q880,150 880,170 L880,260"
+          />
+          <path
+            d="M170,330 Q150,330 150,350 L150,470 Q150,490 130,490 L20,490"
+          />
+          <path
+            d="M520,460 Q500,460 500,480 L500,540 Q500,560 520,560 L730,560 Q750,560 750,580 L750,640"
+          />
+          <path d="M1010,360 Q1030,360 1030,380 L1030,500" />
+        </svg>
+
+        <div class="hero-content">
+          <p class="hero-eyebrow">Sistema online de pedidos e atendimentos</p>
+          <h1 class="hero-logo">
+            <span class="letter letter-dark">S</span><span class="dot">.</span
+            ><span class="letter">O</span><span class="dot">.</span
+            ><span class="letter">P</span><span class="dot">.</span
+            ><span class="letter">A</span><span class="dot">.</span>
+          </h1>
+          <div class="hero-bowl" aria-hidden="true"></div>
+        </div>
+      </section>
+
+      <!-- SOBRE NÓS -->
+      <section class="section section-dark" id="sobre">
+        <div class="zigzag" aria-hidden="true"></div>
+        <div class="section-inner">
+          <h2 class="boxed-title">Sobre nós</h2>
+          <p class="lead bordered-text">
+            O S.O.P.A. é um sistema de cardápios online que auxilia na
+            eficiência relacionada à organização dentro de comércios
+            alimentícios, trazendo uma maior praticidade aos clientes e aos
+            estabelecimentos.
+          </p>
+        </div>
+      </section>
+
+      <!-- O QUE OFERECEMOS -->
+      <section class="section section-dark section-split" id="recursos">
+        <div class="zigzag" aria-hidden="true"></div>
+        <div class="section-inner split">
+          <div class="split-text">
+            <h2 class="boxed-title">O que oferecemos</h2>
+            <p class="lead">
+              Buscamos a praticidade e eficiência na escolha dos pedidos e
+              também na hora do pagamento, portanto estarão disponíveis recursos
+              como:
+            </p>
+            <ul class="feature-list">
+              <li>Cardápio digital customizável</li>
+              <li>Comandas digitais</li>
+              <li>Pagamento online</li>
+              <li>Plataformas de proximidade</li>
+            </ul>
+          </div>
+
+          <div class="split-art" aria-hidden="true">
+            <div class="phone-mock">
+              <div class="phone-notch"></div>
+              <div class="phone-bell">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                >
+                  <path
+                    d="M12 3a5 5 0 0 0-5 5v3.2c0 .7-.27 1.36-.76 1.86L5 14.3c-.86.86-.25 2.33.96 2.33h12.08c1.21 0 1.82-1.47.96-2.33l-1.24-1.24A2.63 2.63 0 0 1 17 11.2V8a5 5 0 0 0-5-5Z"
+                  />
+                  <path d="M9.5 19a2.5 2.5 0 0 0 5 0" />
+                </svg>
+              </div>
+              <div class="phone-note">
+                <span></span><span></span><span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MAIS RECURSOS -->
+      <section class="section section-dark">
+        <div class="zigzag" aria-hidden="true"></div>
+        <div class="section-inner">
+          <h2 class="title-plain">Mais Recursos</h2>
+          <div class="card-grid">
+            <article class="feature-card">
+              <h3>Renovação de<br />Cardápios</h3>
+              <svg
+                viewBox="0 0 64 64"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  d="M18 12h22l6 6v34a2 2 0 0 1-2 2H18a2 2 0 0 1-2-2V14a2 2 0 0 1 2-2Z"
+                />
+                <path d="M40 12v6h6" />
+                <path d="M22 26h20M22 33h20M22 40h12" />
+                <path d="M37 50a7 7 0 1 1 7-7" stroke-linecap="round" />
+                <path d="M44 39l3 4-4.5 1.5" />
+              </svg>
+            </article>
+
+            <article class="feature-card">
+              <h3>Notificações Push</h3>
+              <svg
+                viewBox="0 0 64 64"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <rect x="14" y="20" width="22" height="34" rx="3" />
+                <path d="M19 26h12M19 31h12" />
+                <path d="M19 47h12" stroke-linecap="round" />
+                <circle cx="42" cy="20" r="8" />
+                <path d="M42 16v4l3 2" stroke-linecap="round" />
+                <path
+                  d="M46 30c4 1 8 4 8 4M48 26c4-1 8 0 8 0"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </article>
+
+            <article class="feature-card">
+              <h3>Multiplataforma</h3>
+              <svg
+                viewBox="0 0 64 64"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <rect x="10" y="14" width="14" height="24" rx="2.5" />
+                <path
+                  d="M30 18h22M30 18a16 16 0 0 1 14 16"
+                  stroke-linecap="round"
+                />
+                <rect x="34" y="38" width="20" height="13" rx="1.5" />
+                <path d="M40 51h8" stroke-linecap="round" />
+                <path d="M14 46a16 16 0 0 0 14 8" stroke-linecap="round" />
+              </svg>
+            </article>
+
+            <article class="feature-card">
+              <h3>Relatório de Vendas</h3>
+              <svg
+                viewBox="0 0 64 64"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <rect x="14" y="12" width="30" height="40" rx="3" />
+                <circle cx="29" cy="18" r="3" />
+                <path d="M22 30v14M29 26v18M36 33v11" />
+                <circle cx="45" cy="44" r="9" fill="none" />
+                <path d="M45 40v8" stroke-linecap="round" />
+                <path d="M42.5 41.5h5M42.5 46.5h5" stroke-linecap="round" />
+              </svg>
+            </article>
+
+            <article class="feature-card">
+              <h3>Histórico de Pedidos</h3>
+              <svg
+                viewBox="0 0 64 64"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <rect x="13" y="10" width="26" height="34" rx="3" />
+                <path d="M19 18h14M19 24h14M19 30h8" />
+                <circle cx="42" cy="42" r="11" />
+                <path d="M42 36v6l5 3" stroke-linecap="round" />
+              </svg>
+            </article>
+
+            <article class="feature-card">
+              <h3>Privacidade</h3>
+              <svg
+                viewBox="0 0 64 64"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M32 9 14 16v14c0 13 8 21 18 25 10-4 18-12 18-25V16Z" />
+                <rect x="25" y="29" width="14" height="11" rx="2" />
+                <path d="M28 29v-4a4 4 0 0 1 8 0v4" />
+              </svg>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="section section-dark section-split" id="criar-cardapio">
+        <div class="zigzag" aria-hidden="true"></div>
+        <div class="section-inner split reverse">
+          <div class="split-art" aria-hidden="true">
+            <div class="device-stack">
+              <div class="device device-back">
+                <div class="device-bar device-bar-light"></div>
+                <p class="device-greet">Bem-vindo(a)!</p>
+                <p class="device-headline">Pronto para fazer seu pedido?</p>
+                <p class="device-copy">
+                  Faça pedidos de forma rápida, acompanhe o status e receba
+                  atendimento com praticidade.
+                </p>
+                <span class="device-btn">Fazer pedido</span>
+              </div>
+              <div class="device device-front">
+                <p class="device-greet">Olá, bom dia! 👋</p>
+                <p class="device-headline small">Seu pedido #1024</p>
+                <p class="device-copy">
+                  Estamos preparando tudo com carinho para você. Acompanhe o
+                  status em tempo real.
+                </p>
+                <div class="device-steps">
+                  <span class="step active"></span>
+                  <span class="step active"></span>
+                  <span class="step"></span>
+                  <span class="step"></span>
+                </div>
+                <div class="device-eta">
+                  <span>Previsão de entrega</span>
+                  <strong>25 min</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="split-text">
+            <h2 class="boxed-title">Crie o seu Cardápio agora</h2>
+            <p class="lead">
+              Experimente agora o nosso Cardápio Digital e leve mais
+              praticidade, organização e inovação para a experiência dos seus
+              clientes.
+            </p>
+            <a href="#" class="btn-pill">Teste já</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="logo">
+        <span class="logo-badge">S</span>
+        <span class="logo-word">S.O.P.A.</span>
+      </div>
+      <p>Sistema Online de Pedidos e Atendimentos</p>
+      <p class="footer-fine">
+        &copy; 2026 S.O.P.A. — Projeto de TCC, ETEC João Gomes de Araújo.
+      </p>
+    </footer>
+
+    <script>
+      const navToggle = document.getElementById("nav-toggle");
+      const mainNav = document.getElementById("main-nav");
+      navToggle.addEventListener("click", () => {
+        const isOpen = mainNav.classList.toggle("open");
+        navToggle.classList.toggle("open", isOpen);
+        navToggle.setAttribute("aria-expanded", isOpen);
+      });
+      mainNav.querySelectorAll("a").forEach((link) => {
+        link.addEventListener("click", () => {
+          mainNav.classList.remove("open");
+          navToggle.classList.remove("open");
+          navToggle.setAttribute("aria-expanded", "false");
+        });
+      });
+    </script>
+  </body>
+</html>
