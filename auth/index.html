@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>S.O.P.A. - Entrar ou Cadastrar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&family=Cormorant+Garamond:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../CSS/style.css" />
+    <style>
+      :root {
+        --auth-panel: #344e49;
+        --auth-panel-2: #3f5d57;
+        --auth-surface: #eef1ea;
+        --auth-border: rgba(255, 255, 255, 0.08);
+      }
+
+      body {
+        background: linear-gradient(
+          155deg,
+          #eef1ea 0%,
+          #dde3d5 45%,
+          #c9d1c4 100%
+        );
+      }
+
+      .auth-page {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 48px 18px;
+      }
+
+      .auth-card {
+        width: min(980px, 100%);
+        display: grid;
+        grid-template-columns: 0.95fr 1.05fr;
+        background: var(--auth-panel);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        border: 1px solid var(--auth-border);
+        box-shadow: 0 24px 60px -22px rgba(0, 0, 0, 0.55);
+      }
+
+      .auth-brand {
+        position: relative;
+        background:
+          linear-gradient(
+            180deg,
+            rgba(36, 57, 53, 0.96),
+            rgba(52, 78, 73, 0.95)
+          ),
+          radial-gradient(
+            circle at top,
+            rgba(207, 219, 212, 0.08),
+            transparent 36%
+          );
+        padding: 56px 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 18px;
+      }
+
+      .auth-brand h1 {
+        margin: 0;
+        font-family: var(--font-display);
+        font-size: 2rem;
+        letter-spacing: 0.04em;
+      }
+
+      .auth-brand p {
+        margin: 0;
+        max-width: 32ch;
+        color: var(--cream-2);
+        line-height: 1.6;
+      }
+
+      .auth-brand a {
+        display: inline-flex;
+        align-items: center;
+        width: fit-content;
+        color: var(--cream-1);
+        font-weight: 600;
+        text-decoration: underline;
+        text-underline-offset: 0.3em;
+      }
+
+      .auth-forms {
+        background: var(--auth-panel-2);
+        padding: 42px 36px;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+
+      .tabs {
+        display: flex;
+        gap: 10px;
+      }
+
+      .tab {
+        padding: 10px 16px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.06);
+        border-radius: 999px;
+        color: var(--cream-1);
+        cursor: pointer;
+        font-family: var(--font-display);
+        font-weight: 600;
+        transition: background 0.2s ease;
+      }
+
+      .tab.active {
+        background: var(--white);
+        color: var(--green-800);
+      }
+
+      .form-panel {
+        display: none;
+      }
+
+      .form-panel.active {
+        display: block;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      form label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 0.92rem;
+        font-weight: 600;
+        color: var(--cream-1);
+      }
+
+      form input {
+        width: 100%;
+        padding: 12px 14px;
+        background: var(--auth-surface);
+        color: var(--ink);
+        border: 1px solid rgba(22, 31, 29, 0.12);
+        border-radius: 10px;
+        font-size: 1rem;
+        outline: none;
+      }
+
+      form input:focus {
+        border-color: var(--sage-light);
+        box-shadow: 0 0 0 3px rgba(207, 219, 212, 0.18);
+      }
+
+      form button {
+        margin-top: 6px;
+        background: var(--white);
+        color: var(--green-800);
+        border: none;
+        border-radius: 10px;
+        padding: 13px 16px;
+        font-family: var(--font-display);
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+      }
+
+      form button:hover {
+        transform: translateY(-1px);
+      }
+
+      .message {
+        display: none;
+        padding: 10px 12px;
+        border-radius: 10px;
+        font-size: 0.92rem;
+        font-weight: 600;
+      }
+
+      .message.error {
+        background: #f8e5e5;
+        color: #9b1c1c;
+      }
+
+      .message.success {
+        background: #e7f6ee;
+        color: #1f6d45;
+      }
+
+      @media (max-width: 900px) {
+        .auth-card {
+          grid-template-columns: 1fr;
+        }
+        .auth-brand,
+        .auth-forms {
+          padding: 36px 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="auth-page">
+      <section class="auth-card">
+        <div class="auth-brand">
+          <h1>S.O.P.A.</h1>
+          <p>
+            Crie seu cardápio digital e organize pedidos com mais praticidade.
+          </p>
+          <a href="../index.html">← Voltar para a página inicial</a>
+        </div>
+
+        <div class="auth-forms">
+          <div class="tabs">
+            <button class="tab active" type="button" data-panel="login">
+              Login
+            </button>
+            <button class="tab" type="button" data-panel="cadastro">
+              Cadastro
+            </button>
+          </div>
+
+          <span id="msg-error" class="message error"
+            >E-mail ou senha inválidos.</span
+          >
+          <span id="msg-success" class="message success"
+            >Cadastro realizado com sucesso! Agora faça login.</span
+          >
+
+          <div class="form-panel active" id="panel-login">
+            <form action="login.php" method="post">
+              <div>
+                <label for="email">E-mail</label>
+                <input type="email" id="email" name="email" required />
+              </div>
+              <div>
+                <label for="senha">Senha</label>
+                <input type="password" id="senha" name="senha" required />
+              </div>
+              <button type="submit">Entrar</button>
+            </form>
+          </div>
+
+          <div class="form-panel" id="panel-cadastro">
+            <form action="cadastro.php" method="post">
+              <div>
+                <label for="nome">Nome Completo</label>
+                <input type="text" id="nome" name="nome" required />
+              </div>
+              <div>
+                <label for="emailCadastro">E-mail</label>
+                <input type="email" id="emailCadastro" name="email" required />
+              </div>
+              <div>
+                <label for="telefone">Telefone</label>
+                <input type="text" id="telefone" name="telefone" required />
+              </div>
+              <div>
+                <label for="estabelecimento">Nome do estabelecimento</label>
+                <input
+                  type="text"
+                  id="estabelecimento"
+                  name="estabelecimento"
+                  required
+                />
+              </div>
+              <div>
+                <label for="senhaCadastro">Senha</label>
+                <input
+                  type="password"
+                  id="senhaCadastro"
+                  name="senha"
+                  required
+                />
+              </div>
+              <button type="submit">Cadastrar</button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="../JS/auth-tabs.js"></script>
+  </body>
+</html>

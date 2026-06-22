@@ -28,7 +28,7 @@
       <nav class="main-nav" id="main-nav">
         <a href="#sobre">Quem somos</a>
         <a href="#recursos">Recursos do Sistema</a>
-        <a href="#criar-cardapio" class="nav-cta">Criar cardápio</a>
+        <a href="auth/index.html" class="nav-cta">Criar cardápio</a>
       </nav>
 
       <button
@@ -305,7 +305,7 @@
               praticidade, organização e inovação para a experiência dos seus
               clientes.
             </p>
-            <a href="#" class="btn-pill">Teste já</a>
+            <a href="auth/index.html" class="btn-pill">Teste já</a>
           </div>
         </div>
       </section>
@@ -322,21 +322,6 @@
       </p>
     </footer>
 
-    <script>
-      const navToggle = document.getElementById("nav-toggle");
-      const mainNav = document.getElementById("main-nav");
-      navToggle.addEventListener("click", () => {
-        const isOpen = mainNav.classList.toggle("open");
-        navToggle.classList.toggle("open", isOpen);
-        navToggle.setAttribute("aria-expanded", isOpen);
-      });
-      mainNav.querySelectorAll("a").forEach((link) => {
-        link.addEventListener("click", () => {
-          mainNav.classList.remove("open");
-          navToggle.classList.remove("open");
-          navToggle.setAttribute("aria-expanded", "false");
-        });
-      });
-    </script>
+    <script src="JS/main-nav.js"></script>
   </body>
 </html>
