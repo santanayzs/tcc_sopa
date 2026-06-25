@@ -27,7 +27,7 @@ DROP TABLE IF EXISTS `estabelecimentos`;
 CREATE TABLE `estabelecimentos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `usuario_id` int(11) DEFAULT NULL,
-  `nome_estabelcimento` varchar(120) DEFAULT NULL,
+  `nome_estabelecimento` varchar(120) DEFAULT NULL,
   `cep` varchar(9) DEFAULT NULL,
   `logradouro` varchar(120) DEFAULT NULL,
   `numero` varchar(10) DEFAULT NULL,
