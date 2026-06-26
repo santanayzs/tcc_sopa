@@ -810,3 +810,128 @@ a {
     text-align: center;
   }
 }
+
+/* FORMULÁRIO CARDÁPIO */
+.cardapio-form {
+  margin-top: 24px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: var(--green-900);
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(36, 57, 53, 0.2);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.form-group textarea {
+  resize: none;
+  min-height: 100px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: var(--green-800);
+}
+
+#cardapio {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 8px;
+    width: 150px;
+}
+
+.itens-box{
+    margin-top:25px;
+}
+
+.itens-box h3{
+    color:var(--green-900);
+    margin-bottom:15px;
+}
+
+.item-inputs{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+}
+
+.item-inputs input{
+    flex:1;
+    padding:12px;
+    border-radius:12px;
+    border:1px solid #d8d8d8;
+}
+
+.btn-add{
+    padding:12px 24px;
+    border:none;
+    border-radius:12px;
+
+    background:var(--green-800);
+    color:white;
+
+    font-weight:600;
+    cursor:pointer;
+
+    transition:0.2s;
+}
+
+.btn-add:hover{
+    background:var(--green-900);
+}
+
+
+.item-linha{
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:14px 18px;
+
+    margin-bottom:10px;
+
+    border-radius:14px;
+
+    background:white;
+
+    box-shadow:0 3px 10px rgba(0,0,0,.08);
+
+}
+
+
+.item-linha button{
+
+    background:#e74c3c;
+    color:white;
+
+    border:none;
+
+    width:30px;
+    height:30px;
+
+    border-radius:50%;
+
+    cursor:pointer;
+}

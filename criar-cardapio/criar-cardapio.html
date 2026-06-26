@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Criar Cardápio — S.O.P.A.</title>
+
+    <!-- FONTES -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&family=Cormorant+Garamond:wght@500;600&display=swap"
+        rel="stylesheet" />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../CSS/style.css" />
+</head>
+
+<body class="dashboard-page">
+    <!-- HEADER -->
+    <header class="site-header">
+        <a href="../index.html" class="logo">
+            <span class="logo-badge">S</span>
+            <span class="logo-word">S.O.P.A.</span>
+        </a>
+
+        <nav class="main-nav">
+            <a href="../index.html">Início</a>
+            <a href="#" class="nav-cta">Criar Cardápio</a>
+        </nav>
+    </header>
+
+    <!-- CONTEÚDO -->
+    <main class="dashboard-shell">
+        <div class="dashboard-card">
+            <p class="dashboard-eyebrow">Área do Restaurante</p>
+            <h1>Criar novo cardápio</h1>
+
+            <p class="dashboard-text">
+                Preencha as informações abaixo para montar o seu cardápio digital.
+                Você poderá adicionar itens, preços e descrições para seus clientes.
+            </p>
+
+            <!-- FORMULÁRIO -->
+            <form class="cardapio-form" action="salvarCardapio.php" method="POST" onsubmit="return prepararEnvio()">
+                <!-- Nome do restaurante -->
+                <div class="form-group">
+                    <label>Nome do Restaurante</label>
+                    <input type="text" name="nome_restaurante" placeholder="Ex: Restaurante do João" required>
+                </div>
+
+                <!-- Categoria -->
+                <div class="form-group">
+                    <label>Categoria</label>
+                    <input type="text" name="categoria" placeholder="Ex: Lanches, Bebidas...">
+                </div>
+
+                <div class="itens-box">
+
+                    <!-- Itens -->
+                    <h3>Adicionar Item</h3>
+
+                    <div class="item-inputs">
+                        <input type="text" id="nomeItem" placeholder="Nome do item">
+
+                        <input type="number" id="precoItem" placeholder="Preço" step="0.01">
+
+                        <button type="button" class="btn-add" onclick="adicionarItem()">
+                            Adicionar
+                        </button>
+                    </div>
+
+                    <div id="listaItens"></div>
+
+                </div>
+
+                <button type="submit">
+                    Salvar Cardápio
+                </button>
+
+                <input type="hidden" id="itensJson" name="itens">
+            </form>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="logo">
+            <span class="logo-badge">S</span>
+            <span class="logo-word">S.O.P.A.</span>
+        </div>
+        <p>Sistema Online de Pedidos e Atendimentos</p>
+    </footer>
+
+    <script>
+        let itens = [];
+
+        function adicionarItem() {
+
+            const nome = document.getElementById("nomeItem");
+            const preco = document.getElementById("precoItem");
+
+            if (!nome.value || !preco.value) return;
+
+            itens.push({
+                nome: nome.value,
+                preco: preco.value
+            });
+
+            atualizarLista();
+
+            nome.value = "";
+            preco.value = "";
+        }
+
+
+        function atualizarLista() {
+
+            const lista = document.getElementById("listaItens");
+
+            if (!lista) return;
+
+            lista.innerHTML = "";
+
+            itens.forEach((item, index) => {
+
+                lista.innerHTML += `
+            <div class="item-linha">
+
+                <span>${item.nome}</span>
+
+                <span>
+                    R$ ${parseFloat(item.preco).toFixed(2)}
+                </span>
+
+                <button type="button" onclick="remover(${index})">
+                    ✕
+                </button>
+
+            </div>
+        `;
+            });
+        }
+
+        function prepararEnvio() {
+
+            if (itens.length === 0) {
+                alert("Adicione pelo menos um item ao cardápio.");
+                return false;
+            }
+
+            document.getElementById("itensJson").value =
+                JSON.stringify(itens);
+
+            return true;
+        }
+
+        function remover(index) {
+
+            itens.splice(index, 1);
+
+            atualizarLista();
+
+        }
+    </script>
+
+</body>
+
+</html>
