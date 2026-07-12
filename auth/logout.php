@@ -1,9 +1,34 @@
 <?php
+/**
+ * logout.php — Encerra sessão de forma segura
+ */
 
-session_start();
+declare(strict_types=1);
+
+session_start([
+    'cookie_httponly' => true,
+    'cookie_secure'   => isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on',
+    'cookie_samesite' => 'Strict',
+]);
+
+// Limpa todos os dados da sessão
+$_SESSION = [];
+
+// Remove o cookie de sessão do navegador
+if (ini_get('session.use_cookies')) {
+    $params = session_get_cookie_params();
+    setcookie(
+        session_name(),
+        '',
+        time() - 42000,
+        $params['path'],
+        $params['domain'],
+        $params['secure'],
+        $params['httponly']
+    );
+}
 
 session_destroy();
 
-header("Location: index.html");
-
-?>
+header('Location: index.php?saiu=1');
+exit;

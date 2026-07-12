@@ -44,7 +44,7 @@ $nomeUsuario = isset($_SESSION['nome']) ? $_SESSION['nome'] : 'Usuário';
       </p>
       <div class="dashboard-actions">
         <a class="btn-pill" href="../index.html">Voltar para a home</a>
-        <a class="dashboard-btn secondary" href="../auth/logout.php">Sair</a>
+        <a class="btn-pill" href="../auth/logout.php">Sair</a>
       </div>
     </section>
   </main>
