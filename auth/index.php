@@ -141,12 +141,68 @@ function csrfField(string $token): string {
         box-shadow: 0 0 0 3px rgba(127,168,152,0.2);
       }
 
+      /* Wrapper precisa ser o único elemento de referência para o botão absoluto */
+      .password-field {
+        position: relative;
+        display: block;
+        width: 100%;
+      }
+      .password-field input {
+        width: 100%;
+        padding-right: 44px;
+        box-sizing: border-box;
+      }
+
+      /* Botão do olhinho: círculo fixo, ancorado dentro do campo,
+         sem depender da cascata de outras regras de botão */
+      .password-field .password-toggle {
+        all: unset;
+        position: absolute !important;
+        top: 50% !important;
+        right: 8px !important;
+        transform: translateY(-50%) !important;
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(22,31,29,0.06);
+        color: #344e49;
+        line-height: 1;
+        cursor: pointer;
+        box-sizing: border-box;
+        z-index: 2;
+      }
+      .password-field .password-toggle:hover {
+        background: rgba(22,31,29,0.12);
+      }
+      .password-field .password-toggle:focus-visible {
+        outline: 2px solid #344e49;
+        outline-offset: 2px;
+      }
+      .password-field .password-toggle svg {
+        width: 18px;
+        height: 18px;
+        display: block;
+        pointer-events: none;
+      }
+
       .senha-hint {
         font-size: 0.78rem;
         color: rgba(255,255,255,0.5);
         margin-top: 4px;
         line-height: 1.4;
       }
+
+      .senha-feedback {
+        min-height: 1.1rem;
+        margin: 4px 0 0;
+        font-size: 0.8rem;
+        line-height: 1.4;
+      }
+      .senha-feedback.erro { color: #ff9b9b; }
+      .senha-feedback.ok   { color: #8fd6ac; }
 
       form button[type="submit"] {
         margin-top: 6px;
@@ -300,6 +356,7 @@ function csrfField(string $token): string {
                 <label for="confirma">Confirmar senha</label>
                 <input type="password" id="confirma" name="confirma_senha"
                        autocomplete="new-password" required />
+                <p class="senha-feedback" id="feedbackCadastro" aria-live="polite"></p>
               </div>
 
               <button type="submit">Cadastrar</button>
@@ -363,6 +420,7 @@ function csrfField(string $token): string {
                 <label for="confirmaSenhaSms">Confirmar nova senha</label>
                 <input type="password" id="confirmaSenhaSms" name="confirma_senha"
                        autocomplete="new-password" required />
+                <p class="senha-feedback" id="feedbackSms" aria-live="polite"></p>
               </div>
 
               <button type="submit">Redefinir senha</button>
@@ -388,6 +446,7 @@ function csrfField(string $token): string {
                 <label for="confirmaSenhaEmail">Confirmar nova senha</label>
                 <input type="password" id="confirmaSenhaEmail" name="confirma_senha"
                        autocomplete="new-password" required />
+                <p class="senha-feedback" id="feedbackEmail" aria-live="polite"></p>
               </div>
 
               <button type="submit">Redefinir senha</button>
@@ -507,6 +566,64 @@ function csrfField(string $token): string {
       function validarSenha(v) {
         return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/.test(v);
       }
+
+      // ── Confirmação de senha em tempo real (sem precisar enviar o form) ─────────
+      function ligarConfirmacaoSenha(idSenha, idConfirma, idFeedback) {
+        const senha = document.getElementById(idSenha);
+        const confirma = document.getElementById(idConfirma);
+        const feedback = document.getElementById(idFeedback);
+        if (!senha || !confirma || !feedback) return;
+
+        function validar() {
+          if (confirma.value === '') {
+            feedback.textContent = '';
+            feedback.className = 'senha-feedback';
+            return true;
+          }
+          const ok = senha.value === confirma.value;
+          feedback.textContent = ok ? 'As senhas coincidem.' : 'As senhas não coincidem.';
+          feedback.className = 'senha-feedback ' + (ok ? 'ok' : 'erro');
+          return ok;
+        }
+
+        senha.addEventListener('input', validar);
+        confirma.addEventListener('input', validar);
+      }
+
+      ligarConfirmacaoSenha('senhaCadastro', 'confirma', 'feedbackCadastro');
+      ligarConfirmacaoSenha('novaSenhaSms', 'confirmaSenhaSms', 'feedbackSms');
+      ligarConfirmacaoSenha('novaSenhaEmail', 'confirmaSenhaEmail', 'feedbackEmail');
+
+      // ── Ícones SVG do olhinho (aberto / riscado) ────────────────────────────────
+      const iconeOlhoAberto = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
+      const iconeOlhoRiscado = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a20.4 20.4 0 0 1 4.22-5.19"></path><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 7 11 7a20.5 20.5 0 0 1-2.16 3.19"></path><path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>';
+
+      function aplicarToggleSenha() {
+        document.querySelectorAll('form input[type="password"]').forEach(input => {
+          if (input.parentElement?.classList.contains('password-field')) return;
+
+          const wrapper = document.createElement('div');
+          wrapper.className = 'password-field';
+          input.parentNode.insertBefore(wrapper, input);
+          wrapper.appendChild(input);
+
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'password-toggle';
+          btn.setAttribute('aria-label', 'Mostrar senha');
+          btn.innerHTML = iconeOlhoAberto;
+          btn.addEventListener('click', () => {
+            const mostrar = input.type === 'password';
+            input.type = mostrar ? 'text' : 'password';
+            btn.innerHTML = mostrar ? iconeOlhoRiscado : iconeOlhoAberto;
+            btn.setAttribute('aria-label', mostrar ? 'Ocultar senha' : 'Mostrar senha');
+          });
+
+          wrapper.appendChild(btn);
+        });
+      }
+
+      aplicarToggleSenha();
 
       document.querySelectorAll('form').forEach(form => {
         form.addEventListener('submit', e => {

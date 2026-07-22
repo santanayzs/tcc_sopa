@@ -74,8 +74,58 @@ if ($metodo === 'GET') {
     .reset-card{max-width:520px;margin:0 auto;background:#fff;padding:30px;border-radius:16px;box-shadow:0 28px 60px rgba(0,0,0,.12)}
     h1{margin-top:0;color:#344e49}
     label{display:block;margin:.85rem 0 .35rem;color:#344e49;font-weight:600}
-    input{width:100%;padding:12px 14px;border:1px solid #ccd7d1;border-radius:10px;font-size:1rem}
-    button{margin-top:22px;width:100%;padding:14px;background:#344e49;color:#fff;border:none;border-radius:10px;font-size:1rem;cursor:pointer}
+
+    /* Wrapper precisa ser o único elemento de referência para o botão absoluto */
+    .password-field{
+      position:relative;
+      display:block;
+      width:100%;
+    }
+    .password-field input{
+      width:100%;
+      padding:12px 44px 12px 14px; /* espaço à direita pro olhinho não ficar em cima do texto */
+      border:1px solid #ccd7d1;
+      border-radius:10px;
+      font-size:1rem;
+      box-sizing:border-box;
+    }
+
+    /* Botão do olhinho: círculo fixo, ancorado dentro do campo, sem depender da cascata externa */
+    .password-field .password-toggle{
+      all:unset;
+      position:absolute !important;
+      top:50% !important;
+      right:8px !important;
+      transform:translateY(-50%) !important;
+      width:28px;
+      height:28px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:50%;
+      background:#eef1ea;
+      color:#344e49;
+      line-height:1;
+      cursor:pointer;
+      box-sizing:border-box;
+      z-index:2;
+    }
+    .password-field .password-toggle svg{
+      width:18px;
+      height:18px;
+      display:block;
+      pointer-events:none;
+    }
+    .password-field .password-toggle:hover{
+      background:#dfe6df;
+    }
+    .password-field .password-toggle:focus-visible{
+      outline:2px solid #344e49;
+      outline-offset:2px;
+    }
+
+    .senha-feedback{min-height:1.1rem;margin:6px 0 0;color:#b42318;font-size:.9rem}
+    button[type="submit"]{margin-top:22px;width:100%;padding:14px;background:#344e49;color:#fff;border:none;border-radius:10px;font-size:1rem;cursor:pointer}
   </style>
 </head>
 <body>
@@ -86,12 +136,66 @@ if ($metodo === 'GET') {
       {$csrfField}
       <input type="hidden" name="token" value="{$tokenEsc}">
       <label for="novaSenha">Nova senha</label>
-      <input type="password" id="novaSenha" name="nova_senha" autocomplete="new-password" minlength="8" required>
+      <div class="password-field">
+        <input type="password" id="novaSenha" name="nova_senha" autocomplete="new-password" minlength="8" required>
+        <button class="password-toggle" type="button" data-target="novaSenha" aria-label="Mostrar senha">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+        </button>
+      </div>
       <label for="confirmaSenha">Confirmar nova senha</label>
-      <input type="password" id="confirmaSenha" name="confirma_senha" autocomplete="new-password" required>
+      <div class="password-field">
+        <input type="password" id="confirmaSenha" name="confirma_senha" autocomplete="new-password" required>
+        <button class="password-toggle" type="button" data-target="confirmaSenha" aria-label="Mostrar senha">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+        </button>
+      </div>
+      <p class="senha-feedback" id="senhaFeedback" aria-live="polite"></p>
       <button type="submit">Redefinir senha</button>
     </form>
   </div>
+  <script>
+    (() => {
+      const senha = document.getElementById('novaSenha');
+      const confirma = document.getElementById('confirmaSenha');
+      const feedback = document.getElementById('senhaFeedback');
+
+      function validarConfirmacaoSenha() {
+        if (!senha || !confirma || !feedback) return true;
+        const ok = senha.value === confirma.value;
+        feedback.textContent = ok ? '' : 'As senhas não coincidem.';
+        return ok;
+      }
+
+      const iconeOlhoAberto = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
+      const iconeOlhoRiscado = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a20.4 20.4 0 0 1 4.22-5.19"></path><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 7 11 7a20.5 20.5 0 0 1-2.16 3.19"></path><path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>';
+
+      document.querySelectorAll('.password-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const input = document.getElementById(btn.dataset.target);
+          if (!input) return;
+          const mostrar = input.type === 'password';
+          input.type = mostrar ? 'text' : 'password';
+          btn.innerHTML = mostrar ? iconeOlhoRiscado : iconeOlhoAberto;
+          btn.setAttribute('aria-label', mostrar ? 'Ocultar senha' : 'Mostrar senha');
+        });
+      });
+
+      [senha, confirma].forEach(input => input?.addEventListener('input', validarConfirmacaoSenha));
+
+      document.querySelector('form')?.addEventListener('submit', (event) => {
+        if (!validarConfirmacaoSenha()) {
+          event.preventDefault();
+          confirma?.focus();
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
 HTML;
