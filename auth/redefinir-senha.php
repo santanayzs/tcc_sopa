@@ -30,6 +30,13 @@ function falha(string $erro): never
     exit;
 }
 
+function falhaComToken(string $erro, string $token): never
+{
+    $tokenParam = urlencode($token);
+    header("Location: redefinir-senha.php?token={$tokenParam}&erro={$erro}");
+    exit;
+}
+
 if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
@@ -60,6 +67,16 @@ if ($metodo === 'GET') {
 
     $tokenEsc = htmlEscape($token);
     $csrfField = csrfField($_SESSION['csrf_token']);
+
+    $mensagensErro = [
+        'senha_fraca'   => 'A senha precisa ter ao menos 8 caracteres, maiúscula, minúscula, número e símbolo.',
+        'senha_diverge' => 'As senhas não coincidem.',
+    ];
+    $erroGet = $_GET['erro'] ?? '';
+    $erroMsg = $mensagensErro[$erroGet] ?? '';
+    $erroHtml = $erroMsg !== ''
+        ? '<p class="form-error" role="alert">' . htmlEscape($erroMsg) . '</p>'
+        : '';
 
     echo <<<HTML
 <!doctype html>
@@ -125,6 +142,9 @@ if ($metodo === 'GET') {
     }
 
     .senha-feedback{min-height:1.1rem;margin:6px 0 0;color:#b42318;font-size:.9rem}
+    .senha-feedback.ok{color:#1f6d45}
+    .senha-hint{font-size:.8rem;color:#6b7d78;margin:4px 0 0;line-height:1.4}
+    .form-error{background:#f8e5e5;color:#9b1c1c;padding:10px 14px;border-radius:10px;font-size:.9rem;font-weight:600;margin:0 0 16px}
     button[type="submit"]{margin-top:22px;width:100%;padding:14px;background:#344e49;color:#fff;border:none;border-radius:10px;font-size:1rem;cursor:pointer}
   </style>
 </head>
@@ -132,12 +152,14 @@ if ($metodo === 'GET') {
   <div class="reset-card">
     <h1>Redefinir senha</h1>
     <p>Digite uma nova senha para a conta vinculada a este link.</p>
+    {$erroHtml}
     <form action="redefinir-senha.php" method="post" novalidate>
       {$csrfField}
       <input type="hidden" name="token" value="{$tokenEsc}">
       <label for="novaSenha">Nova senha</label>
       <div class="password-field">
-        <input type="password" id="novaSenha" name="nova_senha" autocomplete="new-password" minlength="8" required>
+        <input type="password" id="novaSenha" name="nova_senha" autocomplete="new-password" minlength="8"
+               pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$" required>
         <button class="password-toggle" type="button" data-target="novaSenha" aria-label="Mostrar senha">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"></path>
@@ -145,6 +167,7 @@ if ($metodo === 'GET') {
           </svg>
         </button>
       </div>
+      <p class="senha-hint">Mínimo 8 caracteres · maiúscula · minúscula · número · símbolo</p>
       <label for="confirmaSenha">Confirmar nova senha</label>
       <div class="password-field">
         <input type="password" id="confirmaSenha" name="confirma_senha" autocomplete="new-password" required>
@@ -164,11 +187,35 @@ if ($metodo === 'GET') {
       const senha = document.getElementById('novaSenha');
       const confirma = document.getElementById('confirmaSenha');
       const feedback = document.getElementById('senhaFeedback');
+      const regraSenha = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+
+      function validarSenha() {
+        if (!senha || !feedback) return true;
+        if (senha.value === '') {
+          feedback.textContent = '';
+          feedback.className = 'senha-feedback';
+          return true;
+        }
+        const ok = regraSenha.test(senha.value);
+        if (!ok) {
+          feedback.textContent = 'A senha precisa ter maiúscula, minúscula, número e símbolo (mín. 8 caracteres).';
+          feedback.className = 'senha-feedback';
+          return false;
+        }
+        return true;
+      }
 
       function validarConfirmacaoSenha() {
         if (!senha || !confirma || !feedback) return true;
+        if (!validarSenha()) return false;
+        if (confirma.value === '') {
+          feedback.textContent = '';
+          feedback.className = 'senha-feedback';
+          return true;
+        }
         const ok = senha.value === confirma.value;
-        feedback.textContent = ok ? '' : 'As senhas não coincidem.';
+        feedback.textContent = ok ? 'As senhas coincidem.' : 'As senhas não coincidem.';
+        feedback.className = 'senha-feedback' + (ok ? ' ok' : '');
         return ok;
       }
 
@@ -189,6 +236,11 @@ if ($metodo === 'GET') {
       [senha, confirma].forEach(input => input?.addEventListener('input', validarConfirmacaoSenha));
 
       document.querySelector('form')?.addEventListener('submit', (event) => {
+        if (!validarSenha()) {
+          event.preventDefault();
+          senha?.focus();
+          return;
+        }
         if (!validarConfirmacaoSenha()) {
           event.preventDefault();
           confirma?.focus();
@@ -222,11 +274,11 @@ if ($token === '' || strlen($token) !== 64 || !ctype_xdigit($token)) {
 }
 
 if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/', $novaSenha)) {
-    falha('senha_fraca');
+    falhaComToken('senha_fraca', $token);
 }
 
 if ($novaSenha !== $confirmacao) {
-    falha('senha_diverge');
+    falhaComToken('senha_diverge', $token);
 }
 
 $tokenHash = hash('sha256', $token);
