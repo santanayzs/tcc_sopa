@@ -26,8 +26,8 @@ DROP TABLE IF EXISTS `estabelecimentos`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `estabelecimentos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `usuario_id` int(11) DEFAULT NULL,
-  `nome_estabelecimento` varchar(120) DEFAULT NULL,
+  `usuario_id` int(11) NOT NULL,
+  `nome_estabelecimento` varchar(255) NOT NULL,
   `cep` varchar(9) DEFAULT NULL,
   `logradouro` varchar(120) DEFAULT NULL,
   `numero` varchar(10) DEFAULT NULL,
@@ -37,9 +37,9 @@ CREATE TABLE `estabelecimentos` (
   `pix` varchar(150) DEFAULT NULL,
   `criado_em` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
-  KEY `usuario_id` (`usuario_id`),
-  CONSTRAINT `estabelecimentos_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  KEY `idx_usuario_id` (`usuario_id`),
+  CONSTRAINT `fk_estab_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -52,6 +52,67 @@ LOCK TABLES `estabelecimentos` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `tentativas_login`
+--
+
+DROP TABLE IF EXISTS `tentativas_login`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tentativas_login` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `ip` varchar(45) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `bem_sucedido` tinyint(1) NOT NULL DEFAULT 0,
+  `criado_em` datetime NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `idx_ip_email_data` (`ip`,`email`,`criado_em`)
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tentativas_login`
+--
+
+LOCK TABLES `tentativas_login` WRITE;
+/*!40000 ALTER TABLE `tentativas_login` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tentativas_login` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tokens_recuperacao`
+--
+
+DROP TABLE IF EXISTS `tokens_recuperacao`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tokens_recuperacao` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `usuario_id` int(11) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `token_hash` varchar(255) NOT NULL,
+  `metodo` enum('email','sms') NOT NULL DEFAULT 'email',
+  `usado` tinyint(1) NOT NULL DEFAULT 0,
+  `expira_em` datetime NOT NULL,
+  `criado_em` datetime NOT NULL DEFAULT current_timestamp(),
+  `ip_solicitante` varchar(45) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  KEY `idx_email_ativo` (`email`,`usado`,`expira_em`),
+  KEY `idx_token_hash` (`token_hash`(64)),
+  KEY `fk_tokens_usuario` (`usuario_id`),
+  CONSTRAINT `fk_tokens_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tokens_recuperacao`
+--
+
+LOCK TABLES `tokens_recuperacao` WRITE;
+/*!40000 ALTER TABLE `tokens_recuperacao` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tokens_recuperacao` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `usuarios`
 --
 
@@ -60,18 +121,19 @@ DROP TABLE IF EXISTS `usuarios`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `usuarios` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nome` varchar(120) DEFAULT NULL,
-  `email` varchar(150) DEFAULT NULL,
+  `nome` varchar(120) NOT NULL,
+  `email` varchar(150) NOT NULL,
   `telefone` varchar(20) DEFAULT NULL,
-  `senha` varchar(255) DEFAULT NULL,
+  `senha` varchar(255) NOT NULL,
   `tipo_usuario` enum('admin','empresa') DEFAULT NULL,
-  `status` tinyint(1) DEFAULT 1,
+  `status` tinyint(1) NOT NULL DEFAULT 1,
+  `ativo` tinyint(1) NOT NULL DEFAULT 1,
   `ultimo_login` datetime DEFAULT NULL,
   `criado_em` timestamp NOT NULL DEFAULT current_timestamp(),
   `atualizado_em` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
-  UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  UNIQUE KEY `uq_email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -96,4 +158,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-06-22 11:34:49
+-- Dump completed on 2026-07-22 16:14:57
