@@ -308,21 +308,15 @@ a {
 .floating-lines span{
   width: 8px;
   height: 80px;
-  background-color: black;
-  margin: 0 53px;
+  background-color: #9fb6ad;
+  margin: 0 58px;
   border-radius: 30px;
-  animation: animar calc(18s / var(--i)) infinite linear;
+  animation: animar calc(25s / var(--i)) infinite linear;
 }
-.floating-lines span:nth-of-type(3n + 1) {
-  background: #9fb6ad;
-}
-
-.floating-lines span:nth-of-type(3n + 2) {
-  background: #161f1d;
-}
-
-.floating-lines span:nth-of-type(3n) {
-  background: #344e49;
+.floating-lines span:nth-child(6),
+.floating-lines span:nth-child(7),
+.floating-lines span:nth-child(8){
+    visibility: hidden;
 }
 @keyframes animar {
   0%{
