@@ -223,39 +223,52 @@ a {
   z-index: 1;
   border-radius: 32px;
 }
-.shape-dark {
+.shape-primary {
   background: var(--ink);
-  opacity: 0.92;
 }
 .shape-light {
   background: linear-gradient(180deg, #ffffff 0%, #c4cdbf 100%);
 }
+.shape-dark {
+  background-color: black;
+}
 .shape-left {
-  width: 150px;
+  width: 165px;
   height: 250px;
   left: -40px;
-  bottom: 30%;
+  bottom: 33%;
 }
 .shape-left-small {
-  width: 90px;
+  width: 98px;
   height: 150px;
-  left: 20px;
-  bottom: 48%;
+  left: 30px;
+  bottom: 43%;
+}
+.shape-left-large {
+  width: 193px;
+  height: 260px;
+  left: -40px;
+  bottom: 24%;
 }
 .shape-right {
   width: 150px;
-  height: 250px;
+  height: 270px;
   right: -50px;
-  top: 18%;
+  top: 26%;
   border-radius: 32px 0 0 32px;
 }
 .shape-right-small {
   width: 90px;
   height: 150px;
   right: 30px;
-  top: 28%;
+  top: 36%;
 }
-
+.shape-right-large {
+  width:190px;
+  height:265px;
+  right:-50px;
+  top:19%;
+}
 .hero-lines {
   position: absolute;
   inset: 0;
@@ -273,8 +286,11 @@ a {
 @media (max-width: 720px) {
   .shape-left,
   .shape-left-small,
+  .shape-left-large,
   .shape-right,
-  .shape-right-small {
+  .shape-right-small 
+  .shape-right-large,
+  .shape-{
     transform: scale(0.6);
   }
   .shape-left {
@@ -284,6 +300,39 @@ a {
     right: -70px;
   }
 }
+.floating-lines{
+  position: absolute;
+  display: flex;
+  top:0;
+}
+.floating-lines span{
+  width: 8px;
+  height: 80px;
+  background-color: black;
+  margin: 0 53px;
+  border-radius: 30px;
+  animation: animar calc(18s / var(--i)) infinite linear;
+}
+.floating-lines span:nth-of-type(3n + 1) {
+  background: #9fb6ad;
+}
+
+.floating-lines span:nth-of-type(3n + 2) {
+  background: #161f1d;
+}
+
+.floating-lines span:nth-of-type(3n) {
+  background: #344e49;
+}
+@keyframes animar {
+  0%{
+  transform: translateY(100vh) scale(1);
+  }
+  100%{
+  transform: translateY(-50vh) scale(1,5);
+  }
+}
+
 @media (max-width: 540px) {
   .shape,
   .hero-lines {
