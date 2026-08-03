@@ -6,7 +6,7 @@ session_start();
 
 // ── Exige login ────────────────────────────────────────────────────────────
 if (!isset($_SESSION['id'])) {
-    header('Location: ../auth/index.php');
+    header('Location: ../../auth/index.php');
     exit;
 }
 

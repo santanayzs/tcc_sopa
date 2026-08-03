@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION['id'])) {
-    header('Location: ../auth/index.php');
+    header('Location: ../../auth/index.php');
     exit;
 }
 
@@ -30,22 +30,22 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
         rel="stylesheet" />
 
     <!-- CSS -->
-    <link rel="stylesheet" href="../CSS/style.css" />
+    <link rel="stylesheet" href="../../CSS/style.css" />
 </head>
 
 <body class="dashboard-page">
     <!-- HEADER -->
     <header class="site-header">
-        <a href="../index.html" class="logo">
+        <a href="../../index.html" class="logo">
             <span class="logo-badge">S</span>
             <span class="logo-word">S.O.P.A.</span>
         </a>
 
         <nav class="main-nav">
-            <a href="../index.html">Início</a>
-            <a href="../dashboard/index.php">Painel</a>
+            <a href="../../index.html">Início</a>
+            <a href="../../dashboard/index.php">Painel</a>
             <a href="../ver-cardapio/ver-cardapio.php">Ver Cardápio</a>
-            <a href="../auth/logout.php">Sair</a>
+            <a href="../../auth/logout.php">Sair</a>
         </nav>
     </header>
 

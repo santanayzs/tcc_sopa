@@ -44,7 +44,7 @@ $nomeUsuario = isset($_SESSION['nome']) ? $_SESSION['nome'] : 'Usuário';
       </p>
 
       <div class="card-grid" style="margin-top: 32px;">
-        <a class="feature-card" href="../criar-cardapio/criar-cardapio.php" style="text-decoration:none; color:inherit;">
+        <a class="feature-card" href="../CRUD-Cardapio/criar-cardapio/criar-cardapio.php" style="text-decoration:none; color:inherit;">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
             <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
             <path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"></path>
@@ -54,7 +54,7 @@ $nomeUsuario = isset($_SESSION['nome']) ? $_SESSION['nome'] : 'Usuário';
           <h3>Criar Cardápio</h3>
         </a>
 
-        <a class="feature-card" href="../ver-cardapio/ver-cardapio.php" style="text-decoration:none; color:inherit;">
+        <a class="feature-card" href="../CRUD-Cardapio/ver-cardapio/ver-cardapio.php" style="text-decoration:none; color:inherit;">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
             <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"></path>
             <circle cx="12" cy="12" r="3"></circle>
