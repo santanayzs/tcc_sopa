@@ -311,14 +311,14 @@ a {
   background-color: #9fb6ad;
   margin: 0 58px;
   border-radius: 30px;
-  animation: animar calc(25s / var(--i)) infinite linear;
+  animation: animar1 calc(25s / var(--i)) infinite linear;
 }
 .floating-lines span:nth-child(6),
 .floating-lines span:nth-child(7),
 .floating-lines span:nth-child(8){
     visibility: hidden;
 }
-@keyframes animar {
+@keyframes animar1 {
   0%{
   transform: translateY(100vh) scale(1);
   }
@@ -722,8 +722,9 @@ a {
 .btn-pill:hover {
   transform: translateY(-2px);
   box-shadow: 0 18px 36px -10px rgba(0, 0, 0, 0.6);
+  background: var(--green-900);
+  color: #ffffff;
 }
-
 /* ============================================================
    Dashboard / authenticated area
    ============================================================ */
