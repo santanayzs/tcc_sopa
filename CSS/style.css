@@ -189,34 +189,6 @@ a {
   color: var(--green-800);
 }
 
-.hero-logo {
-  margin: 0;
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: clamp(3.2rem, 11vw, 7rem);
-  line-height: 1;
-  color: var(--sage);
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
-  border-top: 6px solid var(--ink);
-  display: inline-block;
-  padding-top: 0.18em;
-}
-.hero-logo .letter-dark {
-  color: var(--ink);
-}
-.hero-logo .dot {
-  color: var(--sage);
-  opacity: 0.8;
-}
-
-.hero-bowl {
-  width: clamp(120px, 18vw, 220px);
-  height: clamp(60px, 9vw, 110px);
-  margin: 18px auto 0;
-  background: var(--green-800);
-  border-radius: 0 0 999px 999px;
-}
-
 /* decorative blob shapes */
 .shape {
   position: absolute;
