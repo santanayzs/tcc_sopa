@@ -375,57 +375,17 @@ function csrfField(string $token): string {
               </div>
 
               <div>
+                <input type="hidden" name="metodo" value="email" />
                 <p style="font-size:0.88rem;color:rgba(255,255,255,0.7);margin:0 0 6px">
-                  Receber o código por:
+                  Caso houver um cadastro com esse e-mail, você receberá um link para redefinir sua senha.
                 </p>
-                <div class="metodo-selector">
-                  <label>
-                    <input type="radio" name="metodo" value="email" checked />
-                    E-mail
-                  </label>
-                  <label>
-                    <input type="radio" name="metodo" value="sms" />
-                    SMS
-                  </label>
-                </div>
               </div>
 
               <button type="submit">Enviar código</button>
             </form>
           </div>
 
-          <!-- ── REDEFINIR — código SMS ─────────────────────────── -->
-          <div class="form-panel" id="panel-codigo-sms">
-            <form action="redefinir-senha.php" method="post" novalidate>
-              <?= csrfField($csrfToken) ?>
-              <input type="hidden" name="etapa" value="sms" />
-
-              <div>
-                <label for="codigoSms">Código de 6 dígitos (SMS)</label>
-                <input type="text" id="codigoSms" name="codigo"
-                       inputmode="numeric" pattern="\d{6}"
-                       maxlength="6" placeholder="000000" required />
-              </div>
-
-              <div>
-                <label for="novaSenhaSms">Nova senha</label>
-                <input type="password" id="novaSenhaSms" name="nova_senha"
-                       autocomplete="new-password" minlength="8" required />
-                <p class="senha-hint">
-                  Mínimo 8 caracteres · maiúscula · minúscula · número · símbolo
-                </p>
-              </div>
-
-              <div>
-                <label for="confirmaSenhaSms">Confirmar nova senha</label>
-                <input type="password" id="confirmaSenhaSms" name="confirma_senha"
-                       autocomplete="new-password" required />
-                <p class="senha-feedback" id="feedbackSms" aria-live="polite"></p>
-              </div>
-
-              <button type="submit">Redefinir senha</button>
-            </form>
-          </div>
+          <!-- Código SMS removido: o sistema usa apenas link por e-mail -->
 
           <!-- ── REDEFINIR — link de e-mail ────────────────────── -->
           <div class="form-panel" id="panel-nova-senha">
@@ -548,10 +508,10 @@ function csrfField(string $token): string {
 
         // Etapas de redefinição (vindas de redefinir-senha.php via GET)
         const etapa = params.get('etapa');
-        if (etapa === 'sms' || etapa === 'nova_senha') {
+        if (etapa === 'nova_senha') {
           document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
           document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
-          const alvo = etapa === 'sms' ? 'panel-codigo-sms' : 'panel-nova-senha';
+          const alvo = 'panel-nova-senha';
           document.getElementById(alvo).classList.add('active');
         }
 
@@ -591,7 +551,6 @@ function csrfField(string $token): string {
       }
 
       ligarConfirmacaoSenha('senhaCadastro', 'confirma', 'feedbackCadastro');
-      ligarConfirmacaoSenha('novaSenhaSms', 'confirmaSenhaSms', 'feedbackSms');
       ligarConfirmacaoSenha('novaSenhaEmail', 'confirmaSenhaEmail', 'feedbackEmail');
 
       // ── Ícones SVG do olhinho (aberto / riscado) ────────────────────────────────
