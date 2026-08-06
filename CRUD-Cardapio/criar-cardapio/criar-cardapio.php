@@ -105,6 +105,10 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
 
                 <input type="hidden" id="itensJson" name="itens">
             </form>
+
+            <div class="dashboard-actions">
+                <a class="dashboard-btn secondary dashboard-link" href="../../dashboard/index.php">Voltar</a>
+            </div>
         </div>
     </main>
 
