@@ -94,8 +94,7 @@ $objetivosEspecificos = [
         </a>
 
         <nav class="main-nav" id="main-nav">
-            <a href="quem-somos.php" aria-current="page">Quem somos</a>
-            <a href="../index.html#recursos">Recursos do Sistema</a>
+            <a href="../index.html" aria-current="page" class="nav-link">Voltar</a>
             <a href="../auth/index.php" class="nav-cta">Criar cardápio</a>
         </nav>
 
