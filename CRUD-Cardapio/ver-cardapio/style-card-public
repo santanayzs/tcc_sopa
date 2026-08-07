@@ -1,0 +1,80 @@
+/* Style do cardapio que fica publico para acessar por meio de um QR Code */
+.cardapio-publico-shell {
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 60px 20px 80px;
+        }
+
+        .cardapio-publico-cabecalho {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+
+        .cardapio-publico-cabecalho h1 {
+            font-family: var(--font-display);
+            font-size: 2.1rem;
+            color: var(--cream-1);
+            margin: 0 0 8px;
+        }
+
+        .cardapio-publico-categoria {
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--sage);
+        }
+
+        .cardapio-itens {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .cardapio-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+        }
+
+        .cardapio-item-nome {
+            font-weight: 500;
+            color: #fff
+        }
+
+        .cardapio-item-preco {
+            font-family: var(--font-display);
+            font-weight: 700;
+            color: var(--cream-1);
+            white-space: nowrap;
+        }
+
+        .cardapio-item.indisponivel {
+            opacity: 0.5;
+        }
+
+        .cardapio-item-badge {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: #ff9b9b;
+            margin-left: 8px;
+        }
+
+        .cardapio-publico-rodape {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.8rem;
+            color: var(--cream-2);
+        }
+
+        .cardapio-nao-encontrado {
+            text-align: center;
+            padding: 100px 20px;
+        }

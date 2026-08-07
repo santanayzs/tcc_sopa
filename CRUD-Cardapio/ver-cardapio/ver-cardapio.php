@@ -299,6 +299,10 @@ $stmt->close();
                                    href="../editar-cardapio/editar-cardapio.php?id=<?php echo (int) $cardapio['id']; ?>">
                                     Editar
                                 </a>
+                                <a class="btn-mini"
+                                   href="qrcode-cardapio.php?id=<?php echo (int) $cardapio['id']; ?>">
+                                    QR Code
+                                </a>
                                 <form action="../deletar-cardapio/deletarCardapio.php" method="POST"
                                       onsubmit="return confirm('Tem certeza que deseja excluir o cardápio &quot;<?php echo htmlspecialchars(addslashes($cardapio['nome_restaurante']), ENT_QUOTES, 'UTF-8'); ?>&quot;? Essa ação não pode ser desfeita.');">
                                     <input type="hidden" name="id" value="<?php echo (int) $cardapio['id']; ?>">
