@@ -155,7 +155,7 @@ $objetivosEspecificos = [
             <div class="zigzag" aria-hidden="true"></div>
             <div class="section-inner">
                 <h2 class="boxed-title">Nossa missão</h2>
-                <p class="about-block lead">
+                <p class="about-dosomething lead">
                     Desenvolver e disponibilizar o S.O.P.A., um sistema de
                     gerenciamento de pedidos e cardápio online voltado a
                     estabelecimentos alimentícios, com o intuito de mitigar erros
@@ -221,9 +221,6 @@ $objetivosEspecificos = [
                 </p>
             </div>
         </section>
-
-        <!-- botão para voltar -->
-        <a href="../index.php" class="botao-voltar">Voltar para a página inicial</a>
 
         <!-- CTA -->
         <section class="section section-dark" id="cta-quem-somos">
