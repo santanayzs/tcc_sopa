@@ -82,7 +82,9 @@ function csrfField(string $token): string {
 
       .auth-brand h1 { margin: 0; font-family: var(--font-display, 'Cormorant Garamond', serif); font-size: 2rem; letter-spacing: 0.04em; color: #fff; }
       .auth-brand p  { margin: 0; max-width: 32ch; color: rgba(255,255,255,0.7); line-height: 1.6; }
-      .auth-brand a  { display: inline-flex; align-items: center; width: fit-content; color: #fff; font-weight: 600; text-decoration: underline; text-underline-offset: 0.3em; }
+      .auth-brand a  { display: inline-flex; align-items: center; width: fit-content; color: #fff; font-weight: 600; text-decoration: none; text-underline-offset: 0.3em; }
+
+      .auth-brand a:hover{ text-decoration:underline; }
 
       .auth-forms {
         background: var(--auth-panel-2);
