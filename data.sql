@@ -90,7 +90,7 @@ CREATE TABLE `tokens_recuperacao` (
   `usuario_id` int(11) NOT NULL,
   `email` varchar(255) NOT NULL,
   `token_hash` varchar(255) NOT NULL,
-  `metodo` enum('email','sms') NOT NULL DEFAULT 'email',
+  `metodo` enum('email') NOT NULL DEFAULT 'email',
   `usado` tinyint(1) NOT NULL DEFAULT 0,
   `expira_em` datetime NOT NULL,
   `criado_em` datetime NOT NULL DEFAULT current_timestamp(),
