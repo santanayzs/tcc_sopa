@@ -88,9 +88,8 @@ $objetivosEspecificos = [
 <body>
     <!-- HEADER -->
     <header class="site-header">
-        <a href="../index.html" class="logo" aria-label="S.O.P.A. — voltar ao início">
-            <span class="logo-badge">S</span>
-            <span class="logo-word">S.O.P.A.</span>
+        <a href="../index.html">
+        <img src="../img/logotipo.svg" alt="logotipo" class="logotipo" >
         </a>
 
         <nav class="main-nav" id="main-nav">
@@ -237,10 +236,7 @@ $objetivosEspecificos = [
 
     <!-- FOOTER -->
     <footer class="site-footer">
-        <div class="logo">
-            <span class="logo-badge">S</span>
-            <span class="logo-word">S.O.P.A.</span>
-        </div>
+        <img src="../img/logotipo.svg" alt="logotipor" class="logotipor" >
         <p>Sistema Online de Pedidos e Atendimentos</p>
         <p class="footer-fine">
             &copy; <?php echo htmlspecialchars($anoAtual, ENT_QUOTES, 'UTF-8'); ?> S.O.P.A. — Projeto de TCC, ETEC João Gomes de Araújo.

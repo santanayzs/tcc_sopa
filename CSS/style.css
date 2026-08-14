@@ -71,18 +71,23 @@ a {
 /* ============================================================
    Header / Navigation
    ============================================================ */
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 14px clamp(20px, 4vw, 56px);
-  background: var(--green-800);
-  border-bottom: 2px solid var(--green-900);
-}
+   .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 14px clamp(20px, 4vw, 56px);
+    background: var(--green-800);
+    border-bottom: 2px solid var(--green-900);
+    max-height: 80px;
+  }
+  .logotipo {
+   width: 200px;
+   height: 100px;
+  }
 
 .logo {
   display: flex;
@@ -817,7 +822,13 @@ a {
 .site-footer {
   background: var(--green-900);
   text-align: center;
-  padding: 44px 24px 30px;
+  padding: 26px 24px 10px;
+}
+.logotipor {
+  margin: 0px auto;
+  width: 200px;
+  height: 100px;
+  padding: -20%;
 }
 .site-footer .logo {
   justify-content: center;
