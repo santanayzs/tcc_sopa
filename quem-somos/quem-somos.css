@@ -3,16 +3,76 @@
    Estilos específicos (usa os tokens definidos em CSS/style.css)
    ============================================================ */
 
-/* ---- Cabeçalho da página ---- */
-.about-hero {
-  position: relative;
-  padding: 72px 0 40px;
-  text-align: center;
-  overflow: hidden;
+/* ============================================================
+   Fundo
+   ============================================================ */
+
+body {
+    background: linear-gradient(155deg, #eef1ea 0%,#dde3d5 45%,#c9d1c4 100%);
+    overflow-x: hidden;
+
 }
 
-.about-hero .section-inner {
-  padding-left: clamp(24px, 6vw, 64px);
+
+/* ============================================================
+   Primeira seção
+   ============================================================ */
+
+.about-hero {
+    position: relative;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 72px 0px;
+    background: transparent;
+    color: var(--ink);
+    text-align: center;
+}
+
+.about-hero h1 {
+    margin: 0 0 18px;
+    color: var(--ink);
+}
+
+.about-hero p {
+    max-width: 820px;
+    margin: 0 auto;
+    color: var(--ink);
+    font-family: var(--font-display);
+}
+/* ============================================================
+   Área verde
+   ============================================================ */
+
+.about-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 50px 40px;
+    position: relative;
+    background: var(--green-800);
+    border-radius: 28px 28px 0 0;
+}
+
+
+/* ============================================================
+   Espaçamento entre as partes
+   ============================================================ */
+
+.about-content > .section-inner {
+    padding: 0;
+    margin-bottom: 80px;
+}
+
+
+/* ============================================================
+   CTA
+   ============================================================ */
+
+.cta-about {
+    text-align: center;
+}
+
+.cta-about .lead {
+    margin: 0 auto 24px;
 }
 
 .about-eyebrow {
@@ -245,4 +305,32 @@
 
 .institution-note strong {
   color: var(--white);
+}
+
+.floating-balls{
+  position: absolute;
+  display: flex;
+}
+.floating-balls span{
+  width: 30px;
+  height: 30px;
+  background-color: #cfdbd4;
+  box-shadow: 0 0 0 10px #344e4985,0 0 50px #3f5d57;
+  margin: 0 51px; 
+  border-radius: 50%;
+  animation: animar2 calc(50s / var(--i)) linear infinite;
+}
+.floating-balls span:nth-child(7){
+  visibility: hidden;
+}
+@keyframes animar2{
+  0%{
+    transform: translateY(500vh) scale(0);
+  }
+  75%{
+    transform: translateY(150vh);
+  }
+  100%{
+    transform: translateY(-10vh) scale(1);
+  }
 }

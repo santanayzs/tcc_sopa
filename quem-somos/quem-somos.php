@@ -108,131 +108,179 @@ $objetivosEspecificos = [
         </button>
     </header>
 
-    <main id="topo">
-        <!-- INTRODUÇÃO -->
-        <section class="section section-dark about-hero">
-            <div class="zigzag" aria-hidden="true"></div>
-            <div class="section-inner">
-                <span class="about-eyebrow">Quem somos</span>
-                <h1>O S.O.P.A. nasceu para simplificar o pedido</h1>
-                <p class="lead">
-                    Somos a equipe por trás do S.O.P.A. — Sistema Online de Pedidos
-                    e Atendimento —, um projeto de Trabalho de Conclusão de Curso
-                    (TCC) desenvolvido por estudantes do Curso Técnico em
-                    Desenvolvimento de Sistemas da ETEC João Gomes de Araújo, em
-                    Pindamonhangaba.
-                </p>
-            </div>
-        </section>
+<main id="topo">
+    <!-- BOLAS GULOSAS FLUTUANTES -->
+        <div class="floating-balls" aria-hidden="true">
+                    <span style="--i:6"></span>
+                    <span style="--i:11"></span>
+                    <span style="--i:8"></span>
+                    <span style="--i:13"></span>
+                    <span style="--i:10"></span>
+                    <span style="--i:7"></span>
+                    <span style="--i:12"></span>
+                    <span style="--i:9"></span>
+                    <span style="--i:8"></span>
+                    <span style="--i:6"></span>
+                    <span style="--i:11"></span>
+                    <span style="--i:13"></span>
+                    <span style="--i:10"></span>
+                </div>
+    <!-- INTRODUÇÃO -->
+    <section class="about-hero">
+        <div class="section-inner">
+            <span class="about-eyebrow">Quem somos</span>
+
+            <h1>O S.O.P.A. nasceu para simplificar o pedido</h1>
+
+            <p class="lead">
+                Somos a equipe por trás do S.O.P.A. — Sistema Online de Pedidos
+                e Atendimento —, um projeto de Trabalho de Conclusão de Curso
+                (TCC) desenvolvido por estudantes do Curso Técnico em
+                Desenvolvimento de Sistemas da ETEC João Gomes de Araújo, em
+                Pindamonhangaba.
+            </p>
+        </div>
+    </section>
+
+
+    <!-- CONTEÚDO VERDE -->
+    <section class="about-content">
 
         <!-- NOSSA HISTÓRIA -->
-        <section class="section section-dark" id="historia">
-            <div class="zigzag" aria-hidden="true"></div>
-            <div class="section-inner">
-                <h2 class="boxed-title">Nossa história</h2>
-                <div class="about-block lead bordered-text">
-                    <p>
-                        Durante pesquisas sobre sistemas de pedidos online, percebemos
-                        que muitos estabelecimentos alimentícios ainda dependem de
-                        comandas de papel e controles manuais. Isso gera trocas de
-                        pedidos, confusão entre atendimentos e prejuízo tanto para o
-                        cliente quanto para o próprio negócio, principalmente nos
-                        horários de maior movimento.
-                    </p>
-                    <p>
-                        A partir dessa observação, decidimos propor uma solução
-                        tecnológica acessível: um sistema capaz de modernizar o
-                        atendimento, reduzir erros operacionais e trazer mais
-                        agilidade tanto para quem pede quanto para quem serve.
-                    </p>
-                </div>
-            </div>
-        </section>
+        <div class="section-inner">
+            <h2 class="boxed-title">Nossa história</h2>
 
-        <!-- MISSÃO / OBJETIVO -->
-        <section class="section section-dark" id="missao">
-            <div class="zigzag" aria-hidden="true"></div>
-            <div class="section-inner">
-                <h2 class="boxed-title">Nossa missão</h2>
-                <p class="about-dosomething lead">
-                    Desenvolver e disponibilizar o S.O.P.A., um sistema de
-                    gerenciamento de pedidos e cardápio online voltado a
-                    estabelecimentos alimentícios, com o intuito de mitigar erros
-                    operacionais, otimizar a gestão do atendimento e oferecer uma
-                    solução acessível, gratuita e intuitiva a quem utilizá-lo.
+            <div class="about-block lead bordered-text">
+                <p>
+                    Durante pesquisas sobre sistemas de pedidos online, percebemos
+                    que muitos estabelecimentos alimentícios ainda dependem de
+                    comandas de papel e controles manuais. Isso gera trocas de
+                    pedidos, confusão entre atendimentos e prejuízo tanto para o
+                    cliente quanto para o próprio negócio, principalmente nos
+                    horários de maior movimento.
                 </p>
 
-                <ul class="goals-list">
-                    <?php foreach ($objetivosEspecificos as $objetivo): ?>
-                        <li><?php echo htmlspecialchars($objetivo, ENT_QUOTES, 'UTF-8'); ?></li>
-                    <?php endforeach; ?>
-                </ul>
+                <p>
+                    A partir dessa observação, decidimos propor uma solução
+                    tecnológica acessível: um sistema capaz de modernizar o
+                    atendimento, reduzir erros operacionais e trazer mais
+                    agilidade tanto para quem pede quanto para quem serve.
+                </p>
             </div>
-        </section>
+        </div>
 
-        <!-- O QUE NOS MOVE (VALORES) -->
-        <section class="section section-dark" id="valores">
-            <div class="zigzag" aria-hidden="true"></div>
-            <div class="section-inner">
-                <h2 class="title-plain">O que nos move</h2>
-                <div class="values-grid">
-                    <?php foreach ($valores as $valor): ?>
-                        <article class="value-card">
-                            <span class="value-icon" aria-hidden="true">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-                                    <?php echo $valor['icone']; ?>
-                                </svg>
-                            </span>
-                            <h3><?php echo htmlspecialchars($valor['titulo'], ENT_QUOTES, 'UTF-8'); ?></h3>
-                            <p><?php echo htmlspecialchars($valor['texto'], ENT_QUOTES, 'UTF-8'); ?></p>
-                        </article>
-                    <?php endforeach; ?>
-                </div>
+
+        <!-- MISSÃO -->
+        <div class="section-inner">
+            <h2 class="boxed-title">Nossa missão</h2>
+
+            <p class="about-dosomething lead">
+                Desenvolver e disponibilizar o S.O.P.A., um sistema de
+                gerenciamento de pedidos e cardápio online voltado a
+                estabelecimentos alimentícios, com o intuito de mitigar erros
+                operacionais, otimizar a gestão do atendimento e oferecer uma
+                solução acessível, gratuita e intuitiva a quem utilizá-lo.
+            </p>
+
+            <ul class="goals-list">
+                <?php foreach ($objetivosEspecificos as $objetivo): ?>
+                    <li>
+                        <?php echo htmlspecialchars($objetivo, ENT_QUOTES, 'UTF-8'); ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+
+
+        <!-- VALORES -->
+        <div class="section-inner">
+            <h2 class="title-plain">O que nos move</h2>
+
+            <div class="values-grid">
+                <?php foreach ($valores as $valor): ?>
+                    <article class="value-card">
+                        <span class="value-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="1.6">
+                                <?php echo $valor['icone']; ?>
+                            </svg>
+                        </span>
+
+                        <h3>
+                            <?php echo htmlspecialchars($valor['titulo'], ENT_QUOTES, 'UTF-8'); ?>
+                        </h3>
+
+                        <p>
+                            <?php echo htmlspecialchars($valor['texto'], ENT_QUOTES, 'UTF-8'); ?>
+                        </p>
+                    </article>
+                <?php endforeach; ?>
             </div>
-        </section>
+        </div>
+
 
         <!-- EQUIPE -->
-        <section class="section section-dark" id="equipe">
-            <div class="zigzag" aria-hidden="true"></div>
-            <div class="section-inner">
-                <h2 class="title-plain">Nossa equipe</h2>
+        <div class="section-inner">
+            <h2 class="title-plain">Nossa equipe</h2>
 
-                <div class="team-grid">
-                    <article class="team-card is-advisor">
-                        <span class="team-avatar"><?php echo iniciais($orientadora['nome']); ?></span>
-                        <h3><?php echo htmlspecialchars($orientadora['nome'], ENT_QUOTES, 'UTF-8'); ?></h3>
-                        <span class="team-role"><?php echo htmlspecialchars($orientadora['funcao'], ENT_QUOTES, 'UTF-8'); ?></span>
+            <div class="team-grid">
+                <article class="team-card is-advisor">
+                    <span class="team-avatar">
+                        <?php echo iniciais($orientadora['nome']); ?>
+                    </span>
+
+                    <h3>
+                        <?php echo htmlspecialchars($orientadora['nome'], ENT_QUOTES, 'UTF-8'); ?>
+                    </h3>
+
+                    <span class="team-role">
+                        <?php echo htmlspecialchars($orientadora['funcao'], ENT_QUOTES, 'UTF-8'); ?>
+                    </span>
+                </article>
+
+                <?php foreach ($equipe as $integrante): ?>
+                    <article class="team-card">
+                        <span class="team-avatar">
+                            <?php echo iniciais($integrante['nome']); ?>
+                        </span>
+
+                        <h3>
+                            <?php echo htmlspecialchars($integrante['nome'], ENT_QUOTES, 'UTF-8'); ?>
+                        </h3>
+
+                        <span class="team-role">
+                            <?php echo htmlspecialchars($integrante['funcao'], ENT_QUOTES, 'UTF-8'); ?>
+                        </span>
                     </article>
-
-                    <?php foreach ($equipe as $integrante): ?>
-                        <article class="team-card">
-                            <span class="team-avatar"><?php echo iniciais($integrante['nome']); ?></span>
-                            <h3><?php echo htmlspecialchars($integrante['nome'], ENT_QUOTES, 'UTF-8'); ?></h3>
-                            <span class="team-role"><?php echo htmlspecialchars($integrante['funcao'], ENT_QUOTES, 'UTF-8'); ?></span>
-                        </article>
-                    <?php endforeach; ?>
-                </div>
-
-                <p class="institution-note">
-                    Projeto desenvolvido como <strong>Trabalho de Conclusão de Curso</strong>
-                    do Curso Técnico em Desenvolvimento de Sistemas da
-                    <strong>ETEC João Gomes de Araújo</strong>, em Pindamonhangaba/SP.
-                </p>
+                <?php endforeach; ?>
             </div>
-        </section>
+
+            <p class="institution-note">
+                Projeto desenvolvido como <strong>Trabalho de Conclusão de Curso</strong>
+                do Curso Técnico em Desenvolvimento de Sistemas da
+                <strong>ETEC João Gomes de Araújo</strong>, em Pindamonhangaba/SP.
+            </p>
+        </div>
+
 
         <!-- CTA -->
-        <section class="section section-dark" id="cta-quem-somos">
-            <div class="zigzag" aria-hidden="true"></div>
-            <div class="section-inner" style="text-align:center;">
-                <h2 class="boxed-title">Quer conhecer o sistema na prática?</h2>
-                <p class="lead" style="margin:0 auto 24px;">
-                    Veja o que o S.O.P.A. pode oferecer para o seu estabelecimento.
-                </p>
-                <a href="../auth/index.php" class="btn-pill">Criar meu cardápio</a>
-            </div>
-        </section>
-    </main>
+        <div class="section-inner cta-about">
+            <h2 class="boxed-title">
+                Quer conhecer o sistema na prática?
+            </h2>
+
+            <p class="lead">
+                Veja o que o S.O.P.A. pode oferecer para o seu estabelecimento.
+            </p>
+
+            <a href="../auth/index.php" class="btn-pill">
+                Criar meu cardápio
+            </a>
+        </div>
+
+    </section>
+    
+</main>
 
     <!-- FOOTER -->
     <footer class="site-footer">
