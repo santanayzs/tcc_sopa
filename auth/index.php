@@ -80,7 +80,7 @@ function csrfField(string $token): string {
         gap: 18px;
       }
 
-      .auth-brand h1 { margin: 0; font-family: var(--font-display, 'Cormorant Garamond', serif); font-size: 2rem; letter-spacing: 0.04em; color: #fff; }
+      .auth-brand h1 { margin: 0 auto 30px; font-family: var(--font-display, 'Cormorant Garamond', serif); font-size: 2rem; letter-spacing: 0.04em; color: #fff;}
       .auth-brand p  { margin: 0; max-width: 32ch; color: rgba(255,255,255,0.7); line-height: 1.6; }
       .auth-brand a  { display: inline-flex; align-items: center; width: fit-content; color: #fff; font-weight: 600; text-decoration: none; text-underline-offset: 0.3em; }
 
