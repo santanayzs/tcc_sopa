@@ -17,6 +17,7 @@ $nomeUsuario = $_SESSION['nome'] ?? 'Usuário';
 $mostrarAviso = isset($_GET['salvo']);
 $mostrarAtualizado = isset($_GET['atualizado']);
 $mostrarExcluido = isset($_GET['excluido']);
+$mostrarPersonalizado = isset($_GET['personalizado']);
 $mostrarErroNaoEncontrado = ($_GET['erro'] ?? '') === 'naoencontrado';
 
 // ── Busca os cardápios do usuário logado ──────────────────────────────────
@@ -246,6 +247,10 @@ $stmt->close();
                 <p class="aviso-sucesso">Cardápio excluído com sucesso!</p>
             <?php endif; ?>
 
+            <?php if ($mostrarPersonalizado): ?>
+                <p class="aviso-sucesso">Personalização salva com sucesso!</p>
+            <?php endif; ?>
+
             <?php if ($mostrarErroNaoEncontrado): ?>
                 <p style="background:#f8e5e5;color:#9b1c1c;padding:10px 14px;border-radius:10px;font-weight:600;">
                     Cardápio não encontrado (ou você não tem permissão para acessá-lo).
@@ -302,6 +307,15 @@ $stmt->close();
                                 <a class="btn-mini"
                                    href="qrcode-cardapio.php?id=<?php echo (int) $cardapio['id']; ?>">
                                     QR Code
+                                </a>
+                                <a class="btn-mini"
+                                   href="../personalizar-cardapio/personalizar-cardapio.php?id=<?php echo (int) $cardapio['id']; ?>">
+                                    Personalizar
+                                </a>
+                                <a class="btn-mini"
+                                   href="../imprimir-cardapio/imprimir-cardapio.php?id=<?php echo (int) $cardapio['id']; ?>"
+                                   target="_blank">
+                                    Exportar PDF
                                 </a>
                                 <form action="../deletar-cardapio/deletarCardapio.php" method="POST"
                                       onsubmit="return confirm('Tem certeza que deseja excluir o cardápio &quot;<?php echo htmlspecialchars(addslashes($cardapio['nome_restaurante']), ENT_QUOTES, 'UTF-8'); ?>&quot;? Essa ação não pode ser desfeita.');">
