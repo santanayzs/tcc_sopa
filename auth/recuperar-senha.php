@@ -1,7 +1,7 @@
 <?php
 /**
  * recuperar-senha.php — Inicia o fluxo de recuperação de senha
- * Suporta: token por e-mail  OU  código SMS
+ * Suporta: token por e-mail
  */
 
 declare(strict_types=1);
@@ -15,13 +15,12 @@ session_start([
 
 include('../configs/conexao.php');
 include('../configs/mailer.php');   // Retorna $mailer (PHPMailer ou similar)
-include('../configs/sms.php');      // Retorna $smsClient (Twilio ou similar)
+// SMS removido: sistema de recuperação agora usa apenas e-mail
 
 // ── Constantes ────────────────────────────────────────────────────────────────
 define('TOKEN_EXPIRA_MIN', 30);     // Token/código válido por 30 minutos
 define('MAX_REENVIOS',      3);     // Máximo de pedidos por hora
 define('TOKEN_BYTES',       32);    // Bytes de entropia para o token de e-mail
-define('CODIGO_DIGITOS',    6);     // Dígitos do código SMS
 
 // ── Método ────────────────────────────────────────────────────────────────────
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -37,10 +36,10 @@ if (empty($_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $csr
     exit;
 }
 
-$metodo = $_POST['metodo'] ?? '';   // 'email' ou 'sms'
+$metodo = $_POST['metodo'] ?? '';   // agora apenas 'email'
 $email  = trim(filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL) ?? '');
 
-if (!in_array($metodo, ['email', 'sms'], true) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+if ($metodo !== 'email' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
     header('Location: index.php?erro=campos');
     exit;
 }
@@ -104,38 +103,6 @@ if ($usuario) {
         $mailer->AltBody = renderEmailRecuperacaoTexto($usuario['nome'], $link);
         $mailer->send();
 
-    } else {
-        // ── Código SMS ────────────────────────────────────────────────────────
-        if (empty($usuario['telefone'])) {
-            // Sem telefone cadastrado — falha silenciosa
-            header('Location: index.php?enviado=1');
-            exit;
-        }
-
-        $codigo     = str_pad((string) random_int(0, 10 ** CODIGO_DIGITOS - 1), CODIGO_DIGITOS, '0', STR_PAD_LEFT);
-        $codigoHash = password_hash($codigo, PASSWORD_DEFAULT);
-
-        $ins = $conn->prepare(
-            'INSERT INTO tokens_recuperacao
-               (usuario_id, email, token_hash, metodo, expira_em, criado_em, ip_solicitante)
-             VALUES (?, ?, ?, "sms", ?, NOW(), ?)'
-        );
-        $ins->bind_param('issss', $usuario['id'], $email, $codigoHash, $expira, $ip);
-        $ins->execute();
-
-        $foneFormatado = '+55' . preg_replace('/\D/', '', $usuario['telefone']);
-        $mensagem = "S.O.P.A. - Seu código de redefinição é: {$codigo}\n"
-                  . "Válido por " . TOKEN_EXPIRA_MIN . " minutos. "
-                  . "Se não foi você, ignore esta mensagem.";
-
-        $smsClient->messages->create($foneFormatado, [
-            'from' => getenv('TWILIO_FROM'),
-            'body' => $mensagem,
-        ]);
-
-        // Salva e-mail na sessão para a tela de confirmação de código
-        $_SESSION['recuperacao_email']  = $email;
-        $_SESSION['recuperacao_metodo'] = 'sms';
     }
 }
 
