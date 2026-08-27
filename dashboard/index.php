@@ -73,7 +73,7 @@ $nomeUsuario = isset($_SESSION['nome']) ? $_SESSION['nome'] : 'Usuário';
     </main>
 
     <footer class="site-footer">
-        <img src="../img/logotipo.svg" alt="logotipor" class="logotipor" >
+        <img src="../img/logotipo.svg" alt="logotipoFooter" class="logotipoFooter" >
       <p>Sistema Online de Pedidos e Atendimentos</p>
     </footer>
   </body>
