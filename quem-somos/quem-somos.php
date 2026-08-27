@@ -285,7 +285,7 @@ $objetivosEspecificos = [
 
     <!-- FOOTER -->
     <footer class="site-footer">
-        <img src="../img/logotipo.svg" alt="logotipor" class="logotipor" >
+        <img src="../img/logotipo.svg" alt="logotipoFooter" class="logotipoFooter" >
         <p>Sistema Online de Pedidos e Atendimentos</p>
         <p class="footer-fine">
             &copy; <?php echo htmlspecialchars($anoAtual, ENT_QUOTES, 'UTF-8'); ?> S.O.P.A. — Projeto de TCC, ETEC João Gomes de Araújo.
