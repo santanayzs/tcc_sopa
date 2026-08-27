@@ -6,7 +6,7 @@ session_start();
 
 // ── Exige login ────────────────────────────────────────────────────────────
 if (!isset($_SESSION['id'])) {
-    header('Location: ../auth/index.php');
+    header('Location: ../../auth/index.php');
     exit;
 }
 
@@ -15,6 +15,10 @@ include '../criar-cardapio/conexao.php';
 $usuarioId   = (int) $_SESSION['id'];
 $nomeUsuario = $_SESSION['nome'] ?? 'Usuário';
 $mostrarAviso = isset($_GET['salvo']);
+$mostrarAtualizado = isset($_GET['atualizado']);
+$mostrarExcluido = isset($_GET['excluido']);
+$mostrarPersonalizado = isset($_GET['personalizado']);
+$mostrarErroNaoEncontrado = ($_GET['erro'] ?? '') === 'naoencontrado';
 
 // ── Busca os cardápios do usuário logado ──────────────────────────────────
 $cardapios = [];
@@ -60,7 +64,7 @@ $stmt->close();
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&family=Cormorant+Garamond:wght@500;600&display=swap"
         rel="stylesheet" />
 
-    <link rel="stylesheet" href="../CSS/style.css" />
+    <link rel="stylesheet" href="../../CSS/style.css" />
 
     <style>
         .cardapios-lista {
@@ -172,21 +176,54 @@ $stmt->close();
             color: var(--green-800);
             margin-bottom: 20px;
         }
+
+        .cardapio-acoes {
+            display: flex;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .btn-mini {
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: transparent;
+            color: var(--cream-1);
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.15s ease;
+        }
+
+        .btn-mini:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .btn-mini.excluir {
+            border-color: rgba(255, 120, 120, 0.4);
+            color: #ff9b9b;
+        }
+
+        .btn-mini.excluir:hover {
+            background: rgba(255, 120, 120, 0.12);
+        }
     </style>
 </head>
 
 <body class="dashboard-page">
     <header class="site-header">
-        <a href="../index.html" class="logo">
+        <a href="../../index.html" class="logo">
             <span class="logo-badge">S</span>
             <span class="logo-word">S.O.P.A.</span>
         </a>
 
         <nav class="main-nav">
-            <a href="../index.html">Início</a>
-            <a href="../dashboard/index.php">Painel</a>
+            <a href="../../index.html">Início</a>
+            <a href="../../dashboard/index.php">Painel</a>
             <a href="../criar-cardapio/criar-cardapio.php">Criar Cardápio</a>
-            <a href="../auth/logout.php">Sair</a>
+            <a href="../../auth/logout.php">Sair</a>
         </nav>
     </header>
 
@@ -200,6 +237,24 @@ $stmt->close();
 
             <?php if ($mostrarAviso): ?>
                 <p class="aviso-sucesso">Cardápio salvo com sucesso!</p>
+            <?php endif; ?>
+
+            <?php if ($mostrarAtualizado): ?>
+                <p class="aviso-sucesso">Cardápio atualizado com sucesso!</p>
+            <?php endif; ?>
+
+            <?php if ($mostrarExcluido): ?>
+                <p class="aviso-sucesso">Cardápio excluído com sucesso!</p>
+            <?php endif; ?>
+
+            <?php if ($mostrarPersonalizado): ?>
+                <p class="aviso-sucesso">Personalização salva com sucesso!</p>
+            <?php endif; ?>
+
+            <?php if ($mostrarErroNaoEncontrado): ?>
+                <p style="background:#f8e5e5;color:#9b1c1c;padding:10px 14px;border-radius:10px;font-weight:600;">
+                    Cardápio não encontrado (ou você não tem permissão para acessá-lo).
+                </p>
             <?php endif; ?>
 
             <?php if (empty($cardapios)): ?>
@@ -243,6 +298,31 @@ $stmt->close();
                                     <?php endforeach; ?>
                                 </div>
                             <?php endif; ?>
+
+                            <div class="cardapio-acoes">
+                                <a class="btn-mini"
+                                   href="../editar-cardapio/editar-cardapio.php?id=<?php echo (int) $cardapio['id']; ?>">
+                                    Editar
+                                </a>
+                                <a class="btn-mini"
+                                   href="qrcode-cardapio.php?id=<?php echo (int) $cardapio['id']; ?>">
+                                    QR Code
+                                </a>
+                                <a class="btn-mini"
+                                   href="../personalizar-cardapio/personalizar-cardapio.php?id=<?php echo (int) $cardapio['id']; ?>">
+                                    Personalizar
+                                </a>
+                                <a class="btn-mini"
+                                   href="../imprimir-cardapio/imprimir-cardapio.php?id=<?php echo (int) $cardapio['id']; ?>"
+                                   target="_blank">
+                                    Exportar PDF
+                                </a>
+                                <form action="../deletar-cardapio/deletarCardapio.php" method="POST"
+                                      onsubmit="return confirm('Tem certeza que deseja excluir o cardápio &quot;<?php echo htmlspecialchars(addslashes($cardapio['nome_restaurante']), ENT_QUOTES, 'UTF-8'); ?>&quot;? Essa ação não pode ser desfeita.');">
+                                    <input type="hidden" name="id" value="<?php echo (int) $cardapio['id']; ?>">
+                                    <button type="submit" class="btn-mini excluir">Excluir</button>
+                                </form>
+                            </div>
                         </section>
                     <?php endforeach; ?>
                 </div>
@@ -250,7 +330,7 @@ $stmt->close();
 
             <div class="dashboard-actions">
                 <a class="btn-pill" href="../criar-cardapio/criar-cardapio.php">+ Novo cardápio</a>
-                <a class="btn-pill" href="../dashboard/index.php">Voltar ao painel</a>
+                <a class="btn-pill" href="../../dashboard/index.php">Voltar ao painel</a>
             </div>
         </div>
     </main>
