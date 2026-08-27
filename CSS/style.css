@@ -206,6 +206,10 @@ a {
   letter-spacing: 0.06em;
   color: var(--green-800);
 }
+/*A logo ta aqui só pra poder mudar depois*/
+.logoPrincipal{
+  position:absolute;
+}
 
 /* decorative blob shapes */
 .shape {
@@ -824,7 +828,7 @@ a {
   text-align: center;
   padding: 20px 24px 10px;
 }
-.logotipor {
+.logotipoFooter {
   margin: 0px auto 2px;
   width: 190px;
   height: auto;

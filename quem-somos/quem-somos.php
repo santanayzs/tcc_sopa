@@ -68,6 +68,7 @@ $objetivosEspecificos = [
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quem Somos — S.O.P.A.</title>
+    <link href="../img/icon.svg" rel="icon" class="icon">
     <meta
         name="description"
         content="Conheça o S.O.P.A. — Sistema Online de Pedidos e Atendimento — projeto de TCC da ETEC João Gomes de Araújo, e a equipe por trás dele."
