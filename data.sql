@@ -149,12 +149,12 @@ DROP TABLE IF EXISTS `tokens_recuperacao`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tokens_recuperacao` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `usuario_id` int NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `token_hash` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `metodo` enum('email','sms') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'email',
-  `usado` tinyint(1) NOT NULL DEFAULT '0',
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `usuario_id` int(11) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `token_hash` varchar(255) NOT NULL,
+  `metodo` enum('email') NOT NULL DEFAULT 'email',
+  `usado` tinyint(1) NOT NULL DEFAULT 0,
   `expira_em` datetime NOT NULL,
   `criado_em` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `ip_solicitante` varchar(45) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
@@ -219,8 +219,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
-<<<<<<< HEAD
 -- Dump completed on 2026-08-23 19:23:16
-=======
--- Dump completed on 2026-08-06 10:32:05
->>>>>>> a85a1a29a1d8893794c22ba55e5c6223303cf780
