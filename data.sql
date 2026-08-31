@@ -116,17 +116,22 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `tentativas_login`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+
 CREATE TABLE `tentativas_login` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `ip` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `bem_sucedido` tinyint(1) NOT NULL DEFAULT '0',
-  `criado_em` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `idx_ip_email_data` (`ip`,`email`,`criado_em`)
-) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `ip` VARCHAR(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    `email` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    `bem_sucedido` TINYINT(1) NOT NULL DEFAULT 0,
+    `criado_em` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    PRIMARY KEY (`id`),
+    KEY `idx_ip_email_data` (`ip`, `email`, `criado_em`)
+
+) ENGINE=InnoDB
+  AUTO_INCREMENT=58
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
+
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -143,25 +148,34 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `tokens_recuperacao`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+
 CREATE TABLE `tokens_recuperacao` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `usuario_id` int(11) NOT NULL,
-  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `token_hash` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `metodo` enum('email','sms') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'email',
-  `usado` tinyint(1) NOT NULL DEFAULT '0',
-  `expira_em` datetime NOT NULL,
-  `criado_em` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `ip_solicitante` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`),
-  KEY `idx_email_ativo` (`email`,`usado`,`expira_em`),
-  KEY `idx_token_hash` (`token_hash`(64)),
-  KEY `fk_tokens_usuario` (`usuario_id`),
-  CONSTRAINT `fk_tokens_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+    `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `usuario_id` INT(11) NOT NULL,
+    `email` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `token_hash` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `metodo` ENUM('email','sms') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'email',
+    `usado` TINYINT(1) NOT NULL DEFAULT 0,
+    `expira_em` DATETIME NOT NULL,
+    `criado_em` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `ip_solicitante` VARCHAR(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
+
+    PRIMARY KEY (`id`),
+
+    KEY `idx_email_ativo` (`email`, `usado`, `expira_em`),
+    KEY `idx_token_hash` (`token_hash`(64)),
+    KEY `fk_tokens_usuario` (`usuario_id`),
+
+    CONSTRAINT `fk_tokens_usuario`
+        FOREIGN KEY (`usuario_id`)
+        REFERENCES `usuarios` (`id`)
+        ON DELETE CASCADE
+
+) ENGINE=InnoDB
+  AUTO_INCREMENT=23
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_general_ci;
+
 
 --
 -- Dumping data for table `tokens_recuperacao`
@@ -180,20 +194,25 @@ DROP TABLE IF EXISTS `usuarios`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `usuarios` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nome` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `email` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `telefone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `senha` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `tipo_usuario` enum('admin','empresa') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '1',
-  `ativo` tinyint(1) NOT NULL DEFAULT '1',
-  `ultimo_login` datetime DEFAULT NULL,
-  `criado_em` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `atualizado_em` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uq_email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `nome` VARCHAR(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `email` VARCHAR(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `telefone` VARCHAR(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+    `senha` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `tipo_usuario` ENUM('admin','empresa') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+    `status` TINYINT(1) NOT NULL DEFAULT 1,
+    `ativo` TINYINT(1) NOT NULL DEFAULT 1,
+    `ultimo_login` DATETIME DEFAULT NULL,
+    `criado_em` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `atualizado_em` DATETIME DEFAULT NULL,
+
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uq_email` (`email`)
+
+) ENGINE=InnoDB
+  AUTO_INCREMENT=5
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
