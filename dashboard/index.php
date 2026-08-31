@@ -1,4 +1,5 @@
 <?php
+/*
 session_start();
 
 if (!isset($_SESSION['id'])) {
@@ -7,6 +8,7 @@ if (!isset($_SESSION['id'])) {
 }
 
 $nomeUsuario = isset($_SESSION['nome']) ? $_SESSION['nome'] : 'Usuário';
+*/
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -19,14 +21,15 @@ $nomeUsuario = isset($_SESSION['nome']) ? $_SESSION['nome'] : 'Usuário';
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet" />
+    
     <link rel="stylesheet" href="../CSS/style.css" />
     <link rel="stylesheet" href="../dashboard/dashboard.css" />
   </head>
 
   <body class="dashboard-page">
     <header class="site-header">
-      <a href="../index.html" class="logo" aria-label="S.O.P.A. — voltar ao início">
-        <img src="../img/logotipo.svg" alt="logotipo" class="logotipo" >
+      <a href="../dashboard/index.php" class="logo" aria-label="S.O.P.A. — voltar ao Painel">
+        <img src="../img/logotipo.svg" alt="logotipo" class="logotipo" >    <!-- Trocar esse logotipo pra cores invertidas -->
       </a>
 
       <nav class="main-nav">
@@ -38,7 +41,7 @@ $nomeUsuario = isset($_SESSION['nome']) ? $_SESSION['nome'] : 'Usuário';
     <main class="dashboard-shell">
       <section class="dashboard-card">
         <p class="dashboard-eyebrow">Painel do estabelecimento</p>
-        <h1>Bem-vindo(a), <?php echo htmlspecialchars($nomeUsuario); ?>!</h1>
+        <h1>Bem-vindo(a), <?php /*echo htmlspecialchars($nomeUsuario);*/ ?>!</h1>
         <p class="dashboard-text">
           Aqui você pode organizar seu cardápio, acompanhar pedidos e manter tudo em ordem.
         </p>
@@ -75,6 +78,9 @@ $nomeUsuario = isset($_SESSION['nome']) ? $_SESSION['nome'] : 'Usuário';
     <footer class="site-footer">
         <img src="../img/logotipo.svg" alt="logotipoFooter" class="logotipoFooter" >
       <p>Sistema Online de Pedidos e Atendimentos</p>
+      <p class="footer-fine">
+        &copy; 2026 S.O.P.A. — Projeto de TCC, ETEC João Gomes de Araújo.
+      </p>
     </footer>
   </body>
 </html>
