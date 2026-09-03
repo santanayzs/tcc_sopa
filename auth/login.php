@@ -13,6 +13,7 @@ session_start([
 ]);
 
 include('../configs/conexao.php');
+include('../configs/remember.php');
 
 // ── Constantes de segurança ───────────────────────────────────────────────────
 define('MAX_TENTATIVAS',   5);          // Tentativas antes de bloquear
@@ -146,6 +147,12 @@ if (password_needs_rehash($usuario['senha'], PASSWORD_DEFAULT)) {
 registrarTentativa($conn, $ip, $email, true);
 limparTentativasAntigas($conn);
 iniciarSessaoSegura($usuario);
+
+// Se o usuário marcou "Lembrar-me", cria token persistente (30 dias)
+if (!empty($_POST['remember'])) {
+    $payload = create_remember_token($conn, (int)$usuario['id'], 30);
+    set_remember_cookie($payload, 30);
+}
 
 header('Location: ../dashboard/index.php');
 exit;

@@ -233,6 +233,26 @@ function csrfField(string $token): string {
       }
       .link-aux:hover { color: rgba(255,255,255,0.9); }
 
+      /* Agrupa lembrar-me + esqueci numa única linha */
+      .login-actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-top: 6px;
+      }
+      .login-actions .remember {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: rgba(255,255,255,0.85);
+        font-weight: 500;
+      }
+      @media (max-width: 600px) {
+        .login-actions { flex-direction: column; align-items: stretch; }
+        .login-actions .link-aux { text-align: left; }
+      }
+
       .message {
         display: none;
         padding: 10px 14px;
@@ -305,9 +325,17 @@ function csrfField(string $token): string {
                        autocomplete="current-password" required />
               </div>
 
-              <button type="button" class="link-aux" data-panel="recuperar">
-                Esqueci minha senha
-              </button>
+
+              <div class="login-actions">
+                <label class="remember">
+                  <input type="checkbox" name="remember" value="1" />
+                  Lembrar-me
+                </label>
+
+                <button type="button" class="link-aux" data-panel="recuperar">
+                  Esqueci minha senha
+                </button>
+              </div>
 
               <button type="submit">Entrar</button>
             </form>

@@ -1,9 +1,9 @@
 <?php
-session_start();
+require_once __DIR__ . '/../configs/session_helper.php';
 
 if (!isset($_SESSION['id'])) {
-    header('Location: ../auth/index.php');
-    exit;
+  header('Location: ../auth/index.php');
+  exit;
 }
 
 $nomeUsuario = isset($_SESSION['nome']) ? $_SESSION['nome'] : 'Usuário';
