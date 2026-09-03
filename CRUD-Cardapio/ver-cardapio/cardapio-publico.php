@@ -7,7 +7,7 @@ include '../criar-cardapio/conexao.php';
 $idCardapio = (int) ($_GET['id'] ?? 0);
 
 $stmt = $conexao->prepare(
-    'SELECT nome_restaurante, categoria, cor_primaria, cor_texto, logo
+    'SELECT nome_restaurante, categoria, cor_primaria, cor_texto, cor_fundo_cardapio, cor_fundo_item, logo
      FROM cardapios
      WHERE id = ?'
 );
@@ -18,6 +18,8 @@ $stmt->close();
 
 $corPrimaria = $cardapio['cor_primaria'] ?? '#2f6b4f';
 $corTexto    = $cardapio['cor_texto'] ?? '#1c1c1c';
+$corFundoCardapio = $cardapio['cor_fundo_cardapio'] ?? '#f7f5f0';
+$corFundoItem = $cardapio['cor_fundo_item'] ?? '#ffffff';
 
 $itens = [];
 
@@ -143,7 +145,7 @@ if ($cardapio) {
     </style>
 </head>
 
-<body class="cardapio-publico-body" style="color: <?php echo htmlspecialchars($corTexto, ENT_QUOTES, 'UTF-8'); ?>;">
+<body class="cardapio-publico-body" style="color: <?php echo htmlspecialchars($corTexto, ENT_QUOTES, 'UTF-8'); ?>; background: <?php echo htmlspecialchars($corFundoCardapio, ENT_QUOTES, 'UTF-8'); ?>;">
 
     <?php if (!$cardapio): ?>
         <div class="cardapio-nao-encontrado">
@@ -173,14 +175,14 @@ if ($cardapio) {
             <?php else: ?>
                 <div class="cardapio-itens">
                     <?php foreach ($itens as $item): ?>
-                        <div class="cardapio-item <?php echo $item['disponivel'] ? '' : 'indisponivel'; ?>">
+                        <div class="cardapio-item <?php echo $item['disponivel'] ? '' : 'indisponivel'; ?>" style="background: <?php echo htmlspecialchars($corFundoItem, ENT_QUOTES, 'UTF-8'); ?>;">
                             <span class="cardapio-item-nome">
                                 <?php echo htmlspecialchars($item['nome'], ENT_QUOTES, 'UTF-8'); ?>
                                 <?php if (!$item['disponivel']): ?>
                                     <span class="cardapio-item-badge">Indisponível</span>
                                 <?php endif; ?>
                             </span>
-                            <span class="cardapio-item-preco" style="color: <?php echo htmlspecialchars($corPrimaria, ENT_QUOTES, 'UTF-8'); ?>;">
+                            <span class="cardapio-item-preco" style="color: <?php echo htmlspecialchars($corTexto, ENT_QUOTES, 'UTF-8'); ?>;">
                                 R$ <?php echo number_format((float) $item['preco'], 2, ',', '.'); ?>
                             </span>
                         </div>

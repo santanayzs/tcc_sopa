@@ -17,7 +17,7 @@ $idCardapio = (int) ($_GET['id'] ?? 0);
 
 // ── Confirma que o cardápio existe e pertence ao usuário logado ──────────
 $stmt = $conexao->prepare(
-    'SELECT nome_restaurante, categoria, cor_primaria, cor_texto, logo
+    'SELECT nome_restaurante, categoria, cor_primaria, cor_texto, cor_fundo_cardapio, cor_fundo_item, logo
      FROM cardapios
      WHERE id = ? AND usuario_id = ?'
 );
@@ -33,6 +33,8 @@ if (!$cardapio) {
 
 $corPrimaria = $cardapio['cor_primaria'] ?: '#2f6b4f';
 $corTexto    = $cardapio['cor_texto'] ?: '#1c1c1c';
+$corFundoCardapio = $cardapio['cor_fundo_cardapio'] ?: '#f7f5f0';
+$corFundoItem = $cardapio['cor_fundo_item'] ?: '#ffffff';
 
 $stmtItens = $conexao->prepare(
     'SELECT nome, preco, disponivel
@@ -104,7 +106,7 @@ $stmtItens->close();
             width: 210mm;
             min-height: 297mm;
             margin: 0 auto;
-            background: #ffffff;
+            background: <?php echo htmlspecialchars($corFundoCardapio, ENT_QUOTES, 'UTF-8'); ?>;
             box-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
             padding: 20mm 18mm;
             color: <?php echo htmlspecialchars($corTexto, ENT_QUOTES, 'UTF-8'); ?>;
@@ -145,6 +147,9 @@ $stmtItens->close();
             gap: 8px;
             margin-bottom: 7mm;
             page-break-inside: avoid;
+            background: <?php echo htmlspecialchars($corFundoItem, ENT_QUOTES, 'UTF-8'); ?>;
+            padding: 6px 10px;
+            border-radius: 8px;
         }
 
         .folha-item-nome {
@@ -242,7 +247,7 @@ $stmtItens->close();
                         <?php endif; ?>
                     </span>
                     <span class="folha-item-linha"></span>
-                    <span class="folha-item-preco">
+                    <span class="folha-item-preco" style="color: <?php echo htmlspecialchars($corTexto, ENT_QUOTES, 'UTF-8'); ?>;">
                         R$ <?php echo number_format((float) $item['preco'], 2, ',', '.'); ?>
                     </span>
                 </div>
