@@ -58,6 +58,20 @@
             border-radius: 10px;
         }
 
+        .cardapio-item-esquerda {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .cardapio-item-thumb {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+
         .cardapio-item-nome {
             font-weight: 500;
         }

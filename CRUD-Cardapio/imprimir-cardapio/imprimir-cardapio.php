@@ -37,7 +37,7 @@ $corFundoCardapio = $cardapio['cor_fundo_cardapio'] ?: '#f7f5f0';
 $corFundoItem = $cardapio['cor_fundo_item'] ?: '#ffffff';
 
 $stmtItens = $conexao->prepare(
-    'SELECT nome, preco, disponivel
+    'SELECT nome, preco, disponivel, imagem
      FROM itens_cardapio
      WHERE cardapio_id = ?
      ORDER BY id'
@@ -95,6 +95,11 @@ $stmtItens->close();
         <?php else: ?>
             <?php foreach ($itens as $item): ?>
                 <div class="folha-item <?php echo $item['disponivel'] ? '' : 'indisponivel'; ?>">
+                    <?php if (!empty($item['imagem'])): ?>
+                        <img class="folha-item-thumb"
+                             src="../../uploads/itens/<?php echo htmlspecialchars($item['imagem'], ENT_QUOTES, 'UTF-8'); ?>"
+                             alt="">
+                    <?php endif; ?>
                     <span class="folha-item-nome">
                         <?php echo htmlspecialchars($item['nome'], ENT_QUOTES, 'UTF-8'); ?>
                         <?php if (!$item['disponivel']): ?>

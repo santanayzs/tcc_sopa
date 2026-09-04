@@ -25,7 +25,7 @@ $itens = [];
 
 if ($cardapio) {
     $stmtItens = $conexao->prepare(
-        'SELECT nome, preco, disponivel
+        'SELECT nome, preco, disponivel, imagem
          FROM itens_cardapio
          WHERE cardapio_id = ?
          ORDER BY id'
@@ -86,12 +86,19 @@ if ($cardapio) {
                 <div class="cardapio-itens">
                     <?php foreach ($itens as $item): ?>
                         <div class="cardapio-item <?php echo $item['disponivel'] ? '' : 'indisponivel'; ?>" style="background: <?php echo htmlspecialchars($corFundoItem, ENT_QUOTES, 'UTF-8'); ?>;">
-                            <span class="cardapio-item-nome">
-                                <?php echo htmlspecialchars($item['nome'], ENT_QUOTES, 'UTF-8'); ?>
-                                <?php if (!$item['disponivel']): ?>
-                                    <span class="cardapio-item-badge">Indisponível</span>
+                            <div class="cardapio-item-esquerda">
+                                <?php if (!empty($item['imagem'])): ?>
+                                    <img class="cardapio-item-thumb"
+                                         src="../../uploads/itens/<?php echo htmlspecialchars($item['imagem'], ENT_QUOTES, 'UTF-8'); ?>"
+                                         alt="">
                                 <?php endif; ?>
-                            </span>
+                                <span class="cardapio-item-nome">
+                                    <?php echo htmlspecialchars($item['nome'], ENT_QUOTES, 'UTF-8'); ?>
+                                    <?php if (!$item['disponivel']): ?>
+                                        <span class="cardapio-item-badge">Indisponível</span>
+                                    <?php endif; ?>
+                                </span>
+                            </div>
                             <span class="cardapio-item-preco" style="color: <?php echo htmlspecialchars($corTexto, ENT_QUOTES, 'UTF-8'); ?>;">
                                 R$ <?php echo number_format((float) $item['preco'], 2, ',', '.'); ?>
                             </span>

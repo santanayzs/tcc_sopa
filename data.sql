@@ -98,6 +98,7 @@ CREATE TABLE `itens_cardapio` (
   `descricao` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `preco` decimal(10,2) NOT NULL,
   `disponivel` tinyint(1) DEFAULT '1',
+  `imagem` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `cardapio_id` (`cardapio_id`),
   CONSTRAINT `itens_cardapio_ibfk_1` FOREIGN KEY (`cardapio_id`) REFERENCES `cardapios` (`id`) ON DELETE CASCADE

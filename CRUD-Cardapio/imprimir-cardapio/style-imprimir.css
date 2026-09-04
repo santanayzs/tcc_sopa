@@ -87,6 +87,15 @@ body {
     border-radius: 8px;
 }
 
+.folha-item-thumb {
+    width: 10mm;
+    height: 10mm;
+    object-fit: cover;
+    border-radius: 4px;
+    align-self: center;
+    flex-shrink: 0;
+}
+
 .folha-item-nome {
     font-size: 12pt;
     font-weight: 500;
