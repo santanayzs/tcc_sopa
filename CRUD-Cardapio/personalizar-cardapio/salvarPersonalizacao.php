@@ -46,7 +46,7 @@ $corTexto = preg_match('/^#[0-9a-fA-F]{6}$/', $_POST['cor_texto'] ?? '')
 
 $logoAtual = $cardapio['logo'];
 $logoFinal = $logoAtual;
-$pastaLogos = __DIR__ . '/../uploads/logos/';
+$pastaLogos = __DIR__ . '/../../uploads/logos/';
 
 // ── Remoção da logo atual, se marcada ──────────────────────────────────────
 if (!empty($_POST['remover_logo']) && $logoAtual) {

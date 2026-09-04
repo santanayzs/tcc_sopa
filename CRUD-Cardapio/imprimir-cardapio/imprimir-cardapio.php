@@ -222,7 +222,7 @@ $stmtItens->close();
     <div class="folha-a4">
         <div class="folha-cabecalho">
             <?php if (!empty($cardapio['logo'])): ?>
-                <img src="../uploads/logos/<?php echo htmlspecialchars($cardapio['logo'], ENT_QUOTES, 'UTF-8'); ?>" alt="Logo">
+                <img src="../../uploads/logos/<?php echo htmlspecialchars($cardapio['logo'], ENT_QUOTES, 'UTF-8'); ?>" alt="Logo">
             <?php endif; ?>
             <h1><?php echo htmlspecialchars($cardapio['nome_restaurante'], ENT_QUOTES, 'UTF-8'); ?></h1>
             <?php if (!empty($cardapio['categoria'])): ?>

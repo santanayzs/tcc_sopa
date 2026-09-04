@@ -195,7 +195,7 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
 
                         <?php if (!empty($cardapio['logo'])): ?>
                             <div class="logo-atual">
-                                <img src="../uploads/logos/<?php echo htmlspecialchars($cardapio['logo'], ENT_QUOTES, 'UTF-8'); ?>" alt="Logo atual">
+                                <img src="../../uploads/logos/<?php echo htmlspecialchars($cardapio['logo'], ENT_QUOTES, 'UTF-8'); ?>" alt="Logo atual">
                                 <label style="font-weight:400; font-size:0.85rem;">
                                     <input type="checkbox" name="remover_logo" value="1"> Remover logo atual
                                 </label>
@@ -214,7 +214,7 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
                         Pré-visualização
                     </p>
                     <img id="previewLogo"
-                         src="<?php echo !empty($cardapio['logo']) ? htmlspecialchars('../uploads/logos/' . $cardapio['logo'], ENT_QUOTES, 'UTF-8') : ''; ?>"
+                         src="<?php echo !empty($cardapio['logo']) ? htmlspecialchars('../../uploads/logos/' . $cardapio['logo'], ENT_QUOTES, 'UTF-8') : ''; ?>"
                          style="<?php echo empty($cardapio['logo']) ? 'display:none;' : ''; ?>">
                     <h2 id="previewNome" style="color: <?php echo htmlspecialchars($corPrimaria, ENT_QUOTES, 'UTF-8'); ?>;">
                         <?php echo htmlspecialchars($cardapio['nome_restaurante'], ENT_QUOTES, 'UTF-8'); ?>

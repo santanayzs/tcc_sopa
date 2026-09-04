@@ -155,7 +155,7 @@ if ($cardapio) {
             <div class="cardapio-publico-cabecalho">
                 <?php if (!empty($cardapio['logo'])): ?>
                     <img class="cardapio-publico-logo"
-                         src="../uploads/logos/<?php echo htmlspecialchars($cardapio['logo'], ENT_QUOTES, 'UTF-8'); ?>"
+                         src="../../uploads/logos/<?php echo htmlspecialchars($cardapio['logo'], ENT_QUOTES, 'UTF-8'); ?>"
                          alt="Logo">
                 <?php endif; ?>
                 <h1 style="color: <?php echo htmlspecialchars($corPrimaria, ENT_QUOTES, 'UTF-8'); ?>;">
