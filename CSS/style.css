@@ -198,7 +198,7 @@ a {
 }
 
 .hero-eyebrow {
-  margin: 0 0 8px;
+  margin: 0 0 -70px;
   font-family: var(--font-accent);
   font-variant: small-caps;
   font-weight: 600;
@@ -208,7 +208,9 @@ a {
 }
 /*A logo ta aqui só pra poder mudar depois*/
 .logoPrincipal{
-  position:absolute;
+  width: 570px;
+  height: auto;
+  margin: 0 auto;
 }
 
 /* decorative blob shapes */

@@ -29,12 +29,15 @@ $nomeUsuario = isset($_SESSION['nome']) ? $_SESSION['nome'] : 'Usuário';
   <body class="dashboard-page">
     <header class="site-header">
       <a href="../dashboard/index.php" class="logo" aria-label="S.O.P.A. — voltar ao Painel">
-        <img src="../img/logotipo.svg" alt="logotipo" class="logotipo" >    <!-- Trocar esse logotipo pra cores invertidas -->
+        <img src="../img/logotipoBranco.svg" alt="logotipo" class="logotipo" >    
       </a>
 
       <nav class="main-nav">
         <a href="../index.html">Home</a>
         <a href="../auth/logout.php">Sair</a>
+    <!-- Tem que dar uma arrumada nisso ainda      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="var(--green-900)" class="bi bi-list" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
+          </svg>      -->
       </nav>
     </header>
 
@@ -76,7 +79,7 @@ $nomeUsuario = isset($_SESSION['nome']) ? $_SESSION['nome'] : 'Usuário';
     </main>
 
     <footer class="site-footer">
-        <img src="../img/logotipo.svg" alt="logotipoFooter" class="logotipoFooter" >
+        <img src="../img/logotipoBranco.svg" alt="logotipoFooter" class="logotipoFooter" >
       <p>Sistema Online de Pedidos e Atendimentos</p>
       <p class="footer-fine">
         &copy; 2026 S.O.P.A. — Projeto de TCC, ETEC João Gomes de Araújo.

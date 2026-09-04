@@ -2,7 +2,7 @@
     background: var(--cream-1);
     border-bottom: 2px solid var(--green-800);
 }
-.dashboard-page {
+  .dashboard-page {
     background: linear-gradient(155deg, #eef1ea 0%, #dde3d5 45%, #c9d1c4 100%);
     color: var(--ink);
   }
@@ -73,12 +73,19 @@
     border: 1px solid rgba(36, 57, 53, 0.15);
   }
   
-
-
-a{
-    color: white;
-}
-.site-footer{
+  a{
+    color: var(--green-900);
+  }
+  .site-footer{
     background: var(--cream-1);
     border-top: 2px solid var(--green-800);
+  }
+  .site-footer p {
+  margin: 4px 0;
+  color: var(--green-900);
+  font-size: 0.9rem;
+}
+.footer-fine {
+  font-size: 0.78rem;
+  opacity: 0.6;
 }
