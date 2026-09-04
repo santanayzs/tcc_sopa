@@ -1,0 +1,142 @@
+.cardapios-lista {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            margin-top: 32px;
+        }
+
+        .cardapio-bloco {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-md);
+            padding: 26px 28px;
+        }
+
+        .cardapio-bloco-topo {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 4px;
+        }
+
+        .cardapio-bloco h2 {
+            margin: 0;
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            color: var(--cream-1);
+        }
+
+        .cardapio-categoria {
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: var(--sage);
+        }
+
+        .cardapio-data {
+            font-size: 0.8rem;
+            color: var(--cream-2);
+            margin: 4px 0 18px;
+        }
+
+        .cardapio-itens {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .cardapio-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            background: rgb(255, 252, 252);
+            border-radius: 10px;
+        }
+
+        .cardapio-item-nome {
+            font-weight: 500;
+        }
+
+        .cardapio-item-preco {
+            font-family: var(--font-display);
+            font-weight: 700;
+            color: var(--cream-1);
+            white-space: nowrap;
+            color: #243935;
+        }
+
+        .cardapio-item.indisponivel {
+            opacity: 0.5;
+        }
+
+        .cardapio-item-badge {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: #ff9b9b;
+            margin-left: 8px;
+        }
+
+        .cardapio-vazio {
+            font-size: 0.9rem;
+            color: var(--cream-2);
+            font-style: italic;
+        }
+
+        .aviso-sucesso {
+            background: #e7f6ee;
+            color: #1f6d45;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .estado-vazio {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .estado-vazio p {
+            color: var(--green-800);
+            margin-bottom: 20px;
+        }
+
+        .cardapio-acoes {
+            display: flex;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .btn-mini {
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: transparent;
+            color: var(--cream-1);
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.15s ease;
+        }
+
+        .btn-mini:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .btn-mini.excluir {
+            border-color: rgba(255, 120, 120, 0.4);
+            color: #ff9b9b;
+        }
+
+        .btn-mini.excluir:hover {
+            background: rgba(255, 120, 120, 0.12);
+        }
