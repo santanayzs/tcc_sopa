@@ -17,7 +17,7 @@ $idCardapio = (int) ($_GET['id'] ?? 0);
 
 // ── Confirma que o cardápio existe e pertence ao usuário logado ──────────
 $stmt = $conexao->prepare(
-    'SELECT id, nome_restaurante, cor_primaria, cor_texto, logo
+    'SELECT id, nome_restaurante, cor_primaria, cor_texto, cor_fundo_cardapio, cor_fundo_item, logo
      FROM cardapios
      WHERE id = ? AND usuario_id = ?'
 );
@@ -33,6 +33,8 @@ if (!$cardapio) {
 
 $corPrimaria = $cardapio['cor_primaria'] ?: '#2f6b4f';
 $corTexto    = $cardapio['cor_texto'] ?: '#1c1c1c';
+$corFundoCardapio = $cardapio['cor_fundo_cardapio'] ?: '#f7f5f0';
+$corFundoItem = $cardapio['cor_fundo_item'] ?: '#ffffff';
 
 $mensagensErro = [
     'formato'  => 'A imagem precisa ser JPG, PNG ou WEBP (até 2MB).',
@@ -114,6 +116,7 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
             border-radius: var(--radius-md);
             padding: 28px 24px;
             text-align: center;
+            transition: background-color 0.2s ease;
         }
 
         #previewLogo {
@@ -181,13 +184,23 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
                     <input type="hidden" name="id" value="<?php echo (int) $cardapio['id']; ?>">
 
                     <div class="campo-cor">
-                        <label for="corPrimaria">Cor principal (títulos e preços)</label>
+                        <label for="corPrimaria">Cor principal (títulos e destaques)</label>
                         <input type="color" id="corPrimaria" name="cor_primaria" value="<?php echo htmlspecialchars($corPrimaria, ENT_QUOTES, 'UTF-8'); ?>">
                     </div>
 
                     <div class="campo-cor">
-                        <label for="corTexto">Cor do texto</label>
+                        <label for="corTexto">Cor do texto e do preço</label>
                         <input type="color" id="corTexto" name="cor_texto" value="<?php echo htmlspecialchars($corTexto, ENT_QUOTES, 'UTF-8'); ?>">
+                    </div>
+
+                    <div class="campo-cor">
+                        <label for="corFundoCardapio">Fundo do cardápio</label>
+                        <input type="color" id="corFundoCardapio" name="cor_fundo_cardapio" value="<?php echo htmlspecialchars($corFundoCardapio, ENT_QUOTES, 'UTF-8'); ?>">
+                    </div>
+
+                    <div class="campo-cor">
+                        <label for="corFundoItem">Fundo do item do cardápio</label>
+                        <input type="color" id="corFundoItem" name="cor_fundo_item" value="<?php echo htmlspecialchars($corFundoItem, ENT_QUOTES, 'UTF-8'); ?>">
                     </div>
 
                     <div class="form-group">
@@ -209,7 +222,7 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
                     <button type="submit">Salvar Personalização</button>
                 </form>
 
-                <div class="preview-box">
+                <div class="preview-box" id="previewBox" style="background: <?php echo htmlspecialchars($corFundoCardapio, ENT_QUOTES, 'UTF-8'); ?>;">
                     <p style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.05em; color:#8a8a86; margin-bottom:14px;">
                         Pré-visualização
                     </p>
@@ -219,9 +232,9 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
                     <h2 id="previewNome" style="color: <?php echo htmlspecialchars($corPrimaria, ENT_QUOTES, 'UTF-8'); ?>;">
                         <?php echo htmlspecialchars($cardapio['nome_restaurante'], ENT_QUOTES, 'UTF-8'); ?>
                     </h2>
-                    <div class="preview-item" style="color: <?php echo htmlspecialchars($corTexto, ENT_QUOTES, 'UTF-8'); ?>;">
+                    <div class="preview-item" id="previewItem" style="color: <?php echo htmlspecialchars($corTexto, ENT_QUOTES, 'UTF-8'); ?>; background: <?php echo htmlspecialchars($corFundoItem, ENT_QUOTES, 'UTF-8'); ?>;">
                         <span>Prato exemplo</span>
-                        <span id="previewPreco" style="color: <?php echo htmlspecialchars($corPrimaria, ENT_QUOTES, 'UTF-8'); ?>;">R$ 29,90</span>
+                        <span id="previewPreco" style="color: <?php echo htmlspecialchars($corTexto, ENT_QUOTES, 'UTF-8'); ?>;">R$ 29,90</span>
                     </div>
                 </div>
             </div>
@@ -243,19 +256,30 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
     <script>
         const corPrimaria = document.getElementById('corPrimaria');
         const corTexto = document.getElementById('corTexto');
+        const corFundoCardapio = document.getElementById('corFundoCardapio');
+        const corFundoItem = document.getElementById('corFundoItem');
         const previewNome = document.getElementById('previewNome');
         const previewPreco = document.getElementById('previewPreco');
-        const previewItem = document.querySelector('.preview-item');
+        const previewItem = document.getElementById('previewItem');
+        const previewBox = document.getElementById('previewBox');
         const logoInput = document.getElementById('logoInput');
         const previewLogo = document.getElementById('previewLogo');
 
         corPrimaria.addEventListener('input', () => {
             previewNome.style.color = corPrimaria.value;
-            previewPreco.style.color = corPrimaria.value;
         });
 
         corTexto.addEventListener('input', () => {
             previewItem.style.color = corTexto.value;
+            previewPreco.style.color = corTexto.value;
+        });
+
+        corFundoCardapio.addEventListener('input', () => {
+            previewBox.style.background = corFundoCardapio.value;
+        });
+
+        corFundoItem.addEventListener('input', () => {
+            previewItem.style.background = corFundoItem.value;
         });
 
         logoInput.addEventListener('change', () => {

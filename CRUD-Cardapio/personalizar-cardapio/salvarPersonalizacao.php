@@ -35,6 +35,8 @@ if (!$cardapio) {
 // ── Valida as cores (formato hexadecimal, ex: #2f6b4f) ────────────────────
 $corPrimariaPadrao = '#2f6b4f';
 $corTextoPadrao    = '#1c1c1c';
+$corFundoCardapioPadrao = '#f7f5f0';
+$corFundoItemPadrao = '#ffffff';
 
 $corPrimaria = preg_match('/^#[0-9a-fA-F]{6}$/', $_POST['cor_primaria'] ?? '')
     ? $_POST['cor_primaria']
@@ -43,6 +45,14 @@ $corPrimaria = preg_match('/^#[0-9a-fA-F]{6}$/', $_POST['cor_primaria'] ?? '')
 $corTexto = preg_match('/^#[0-9a-fA-F]{6}$/', $_POST['cor_texto'] ?? '')
     ? $_POST['cor_texto']
     : $corTextoPadrao;
+
+$corFundoCardapio = preg_match('/^#[0-9a-fA-F]{6}$/', $_POST['cor_fundo_cardapio'] ?? '')
+    ? $_POST['cor_fundo_cardapio']
+    : $corFundoCardapioPadrao;
+
+$corFundoItem = preg_match('/^#[0-9a-fA-F]{6}$/', $_POST['cor_fundo_item'] ?? '')
+    ? $_POST['cor_fundo_item']
+    : $corFundoItemPadrao;
 
 $logoAtual = $cardapio['logo'];
 $logoFinal = $logoAtual;
@@ -96,10 +106,10 @@ if (!empty($_FILES['logo']['name']) && $_FILES['logo']['error'] === UPLOAD_ERR_O
 // ── Salva no banco ──────────────────────────────────────────────────────────
 $stmtUpdate = $conexao->prepare(
     'UPDATE cardapios
-     SET cor_primaria = ?, cor_texto = ?, logo = ?
+     SET cor_primaria = ?, cor_texto = ?, cor_fundo_cardapio = ?, cor_fundo_item = ?, logo = ?
      WHERE id = ? AND usuario_id = ?'
 );
-$stmtUpdate->bind_param('sssii', $corPrimaria, $corTexto, $logoFinal, $idCardapio, $usuarioId);
+$stmtUpdate->bind_param('sssssii', $corPrimaria, $corTexto, $corFundoCardapio, $corFundoItem, $logoFinal, $idCardapio, $usuarioId);
 $stmtUpdate->execute();
 $stmtUpdate->close();
 
