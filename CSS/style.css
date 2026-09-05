@@ -86,7 +86,7 @@ a {
   }
   .logotipo {
    width: 200px;
-   height: 100px;
+   height: auto;
   }
 
 .logo {
@@ -195,10 +195,15 @@ a {
   z-index: 3;
   text-align: center;
   padding: 0 24px;
+  display: flex;
+  align-items:center;
+  flex-direction: column;
+  gap:0;
 }
 
 .hero-eyebrow {
-  margin: 0 0 -70px;
+  margin: 0 ;
+  display:block;
   font-family: var(--font-accent);
   font-variant: small-caps;
   font-weight: 600;
@@ -206,11 +211,11 @@ a {
   letter-spacing: 0.06em;
   color: var(--green-800);
 }
-/*A logo ta aqui só pra poder mudar depois*/
+
 .logoPrincipal{
-  width: 570px;
+  width: clamp(280px, 45vw, 570px);
   height: auto;
-  margin: 0 auto;
+  margin: -35px auto 0;
 }
 
 /* decorative blob shapes */
@@ -284,7 +289,7 @@ a {
   .shape-left-small,
   .shape-left-large,
   .shape-right,
-  .shape-right-small 
+  .shape-right-small,
   .shape-right-large,
   .shape-{
     transform: scale(0.6);

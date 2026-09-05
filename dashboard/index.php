@@ -35,9 +35,14 @@ $nomeUsuario = isset($_SESSION['nome']) ? $_SESSION['nome'] : 'Usuário';
       <nav class="main-nav">
         <a href="../index.html">Home</a>
         <a href="../auth/logout.php">Sair</a>
-    <!-- Tem que dar uma arrumada nisso ainda      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="var(--green-900)" class="bi bi-list" viewBox="0 0 16 16">
+
+        
+
+        <!-- Tem que dar uma arrumada nisso ainda      
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="var(--green-900)" class="bi bi-list" viewBox="0 0 16 16">
             <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
-          </svg>      -->
+          </svg>
+        -->
       </nav>
     </header>
 
@@ -45,9 +50,7 @@ $nomeUsuario = isset($_SESSION['nome']) ? $_SESSION['nome'] : 'Usuário';
       <section class="dashboard-card">
         <p class="dashboard-eyebrow">Painel do estabelecimento</p>
         <h1>Bem-vindo(a), <?php /*echo htmlspecialchars($nomeUsuario);*/ ?>!</h1>
-        <p class="dashboard-text">
-          Aqui você pode organizar seu cardápio, acompanhar pedidos e manter tudo em ordem.
-        </p>
+        <p class="dashboard-text">Aqui você pode organizar seu cardápio, acompanhar pedidos e manter tudo em ordem.</p>
 
         <div class="card-grid" style="margin-top: 32px;">
           <a class="feature-card" href="../criar-cardapio/criar-cardapio.php" style="text-decoration:none; color:inherit;">
@@ -71,10 +74,6 @@ $nomeUsuario = isset($_SESSION['nome']) ? $_SESSION['nome'] : 'Usuário';
           <!-- Próximas funcionalidades entram aqui, seguindo o mesmo padrão de .feature-card -->
         </div>
 
-        <div class="dashboard-actions">
-          <a class="btn-pill" href="../index.html">Voltar para a home</a>
-          <a class="btn-pill" href="../auth/logout.php">Sair</a>
-        </div>
       </section>
     </main>
 
