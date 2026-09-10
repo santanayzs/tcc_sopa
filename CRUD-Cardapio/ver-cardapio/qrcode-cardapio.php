@@ -50,52 +50,10 @@ $urlPublica = $scheme . '://' . $host . $pasta . '/cardapio-publico.php?id=' . $
         rel="stylesheet" />
 
     <link rel="stylesheet" href="../../CSS/style.css" />
+    <link rel="stylesheet" href="style-qrcode.css" />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
-    <style>
-        .qr-shell {
-            text-align: center;
-        }
-
-        #qrcode {
-            display: inline-block;
-            margin: 24px auto;
-            padding: 18px;
-            background: #ffffff;
-            border-radius: var(--radius-md);
-        }
-
-        .qr-link-box {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin: 16px 0 28px;
-        }
-
-        .qr-link-box input {
-            font-family: var(--font-body);
-            font-size: 0.85rem;
-            padding: 10px 14px;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            background: rgba(255, 255, 255, 0.06);
-            color: var(--cream-1);
-            min-width: 260px;
-            max-width: 380px;
-        }
-
-        .qr-copiado {
-            font-size: 0.8rem;
-            color: var(--sage);
-            font-weight: 600;
-            margin-top: -14px;
-            margin-bottom: 20px;
-            min-height: 1.2em;
-        }
-    </style>
 </head>
 
 <body class="dashboard-page">

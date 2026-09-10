@@ -1,0 +1,61 @@
+.item-linha {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 10px 14px;
+            margin-bottom: 8px;
+        }
+
+        .item-thumb {
+            width: 42px;
+            height: 42px;
+            object-fit: cover;
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+
+        .item-linha-info {
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .item-linha-nome {
+            font-weight: 500;
+        }
+
+        .item-linha-preco {
+            font-weight: 700;
+        }
+
+        .item-trocar-imagem,
+        .item-remover-imagem {
+            font-size: 0.78rem;
+            color: var(--cream-2);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        .item-trocar-imagem input[type="file"] {
+            max-width: 110px;
+            font-size: 0.72rem;
+        }
+
+        .btn-remover-item {
+            background: none;
+            border: none;
+            color: #ff9b9b;
+            font-size: 1rem;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .item-inputs input[type="file"] {
+            max-width: 160px;
+        }

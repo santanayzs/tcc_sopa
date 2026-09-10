@@ -32,9 +32,9 @@ if (!$cardapio) {
     exit;
 }
 
-// ── Busca os itens atuais do cardápio ─────────────────────────────────────
+// ── Busca os itens atuais do cardápio (incluindo a imagem) ────────────────
 $stmtItens = $conexao->prepare(
-    'SELECT nome, preco FROM itens_cardapio WHERE cardapio_id = ? ORDER BY id'
+    'SELECT nome, preco, imagem FROM itens_cardapio WHERE cardapio_id = ? ORDER BY id'
 );
 $stmtItens->bind_param('i', $idCardapio);
 $stmtItens->execute();
@@ -43,6 +43,7 @@ $stmtItens->close();
 
 $mensagensErro = [
     'campos'   => 'Preencha o nome do restaurante e adicione pelo menos um item.',
+    'formato'  => 'Uma das imagens enviadas não é válida (use JPG, PNG ou WEBP, até 2MB).',
     'servidor' => 'Erro ao atualizar o cardápio. Tente novamente em instantes.',
 ];
 $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
@@ -64,6 +65,8 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
 
     <!-- CSS -->
     <link rel="stylesheet" href="../../CSS/style.css" />
+    <link rel="stylesheet" href="style-editar.css" />
+
 </head>
 
 <body class="dashboard-page">
@@ -99,7 +102,7 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
             <?php endif; ?>
 
             <!-- FORMULÁRIO -->
-            <form class="cardapio-form" action="atualizarCardapio.php" method="POST" onsubmit="return prepararEnvio()">
+            <form class="cardapio-form" action="atualizarCardapio.php" method="POST" enctype="multipart/form-data" onsubmit="return prepararEnvio()">
                 <input type="hidden" name="id" value="<?php echo (int) $cardapio['id']; ?>">
 
                 <!-- Nome do restaurante -->
@@ -126,10 +129,16 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
 
                         <input type="number" id="precoItem" placeholder="Preço" step="0.01">
 
+                        <input type="file" id="imagemItem" accept="image/png, image/jpeg, image/webp" title="Foto do item (opcional)">
+
                         <button type="button" class="btn-add" onclick="adicionarItem()">
                             Adicionar
                         </button>
                     </div>
+
+                    <p style="font-size:0.78rem; color:var(--cream-2); margin: 4px 0 14px;">
+                        A foto é opcional, até 2MB (JPG, PNG ou WEBP).
+                    </p>
 
                     <div id="listaItens"></div>
 
@@ -138,8 +147,6 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
                 <button type="submit">
                     Salvar Alterações
                 </button>
-
-                <input type="hidden" id="itensJson" name="itens">
             </form>
         </div>
     </main>
@@ -154,79 +161,161 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
     </footer>
 
     <script>
-        // Pré-carrega os itens já cadastrados desse cardápio
-        let itens = <?php echo json_encode($itensAtuais, JSON_UNESCAPED_UNICODE); ?>;
+        // Itens já cadastrados desse cardápio (vindos do PHP)
+        const itensExistentes = <?php echo json_encode($itensAtuais, JSON_UNESCAPED_UNICODE); ?>;
 
+        let contadorItem = 0;
+
+        function criarCampoHidden(name, value) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = name;
+            input.value = value;
+            return input;
+        }
+
+        // Monta o "esqueleto" comum de uma linha de item (nome, preço, miniatura, botão de remover)
+        function montarLinhaBase(idx, nome, preco) {
+            const linha = document.createElement('div');
+            linha.className = 'item-linha';
+
+            linha.appendChild(criarCampoHidden(`itens[${idx}][nome]`, nome));
+            linha.appendChild(criarCampoHidden(`itens[${idx}][preco]`, preco));
+
+            const thumb = document.createElement('img');
+            thumb.className = 'item-thumb';
+            thumb.style.display = 'none';
+            linha.appendChild(thumb);
+
+            const info = document.createElement('div');
+            info.className = 'item-linha-info';
+
+            const spanNome = document.createElement('span');
+            spanNome.className = 'item-linha-nome';
+            spanNome.textContent = nome;
+
+            const spanPreco = document.createElement('span');
+            spanPreco.className = 'item-linha-preco';
+            spanPreco.textContent = 'R$ ' + parseFloat(preco).toFixed(2);
+
+            info.appendChild(spanNome);
+            info.appendChild(spanPreco);
+            linha.appendChild(info);
+
+            const btnRemover = document.createElement('button');
+            btnRemover.type = 'button';
+            btnRemover.className = 'btn-remover-item';
+            btnRemover.textContent = '✕';
+            btnRemover.onclick = () => linha.remove();
+            linha.appendChild(btnRemover);
+
+            return { linha, thumb };
+        }
+
+        // Adiciona um item NOVO (a partir dos campos de "Adicionar Item")
         function adicionarItem() {
-
             const nome = document.getElementById("nomeItem");
             const preco = document.getElementById("precoItem");
+            const imagemInput = document.getElementById("imagemItem");
 
             if (!nome.value || !preco.value) return;
 
-            itens.push({
-                nome: nome.value,
-                preco: preco.value
-            });
+            const idx = contadorItem++;
+            const { linha, thumb } = montarLinhaBase(idx, nome.value, preco.value);
 
-            atualizarLista();
+            if (imagemInput.files && imagemInput.files.length > 0) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    thumb.src = e.target.result;
+                    thumb.style.display = 'block';
+                };
+                reader.readAsDataURL(imagemInput.files[0]);
+
+                imagemInput.name = `itens[${idx}][imagem]`;
+                imagemInput.style.display = 'none';
+                linha.appendChild(imagemInput);
+
+                const container = document.querySelector('.item-inputs');
+                const novoInput = document.createElement('input');
+                novoInput.type = 'file';
+                novoInput.id = 'imagemItem';
+                novoInput.accept = 'image/png, image/jpeg, image/webp';
+                novoInput.title = 'Foto do item (opcional)';
+                container.insertBefore(novoInput, container.querySelector('.btn-add'));
+            }
+
+            document.getElementById('listaItens').appendChild(linha);
 
             nome.value = "";
             preco.value = "";
         }
 
+        // Carrega os itens JÁ EXISTENTES desse cardápio, com opção de trocar/remover a foto
+        function carregarItensExistentes() {
+            itensExistentes.forEach((item) => {
+                const idx = contadorItem++;
+                const { linha, thumb } = montarLinhaBase(idx, item.nome, item.preco);
 
-        function atualizarLista() {
+                // Guarda o nome do arquivo atual, pra manter caso o usuário não mexa na imagem
+                linha.appendChild(criarCampoHidden(`itens[${idx}][imagem_atual]`, item.imagem || ''));
 
-            const lista = document.getElementById("listaItens");
+                if (item.imagem) {
+                    thumb.src = '../../uploads/itens/' + item.imagem;
+                    thumb.style.display = 'block';
 
-            if (!lista) return;
+                    const labelRemover = document.createElement('label');
+                    labelRemover.className = 'item-remover-imagem';
 
-            lista.innerHTML = "";
+                    const chkRemover = document.createElement('input');
+                    chkRemover.type = 'checkbox';
+                    chkRemover.name = `itens[${idx}][remover_imagem]`;
+                    chkRemover.value = '1';
+                    chkRemover.onchange = () => {
+                        thumb.style.display = chkRemover.checked ? 'none' : 'block';
+                    };
 
-            itens.forEach((item, index) => {
+                    labelRemover.appendChild(chkRemover);
+                    labelRemover.appendChild(document.createTextNode(' Remover foto'));
+                    linha.appendChild(labelRemover);
+                }
 
-                lista.innerHTML += `
-            <div class="item-linha">
+                const labelTrocar = document.createElement('label');
+                labelTrocar.className = 'item-trocar-imagem';
 
-                <span>${item.nome}</span>
+                const inputTrocar = document.createElement('input');
+                inputTrocar.type = 'file';
+                inputTrocar.accept = 'image/png, image/jpeg, image/webp';
+                inputTrocar.name = `itens[${idx}][imagem]`;
+                inputTrocar.onchange = () => {
+                    if (inputTrocar.files && inputTrocar.files[0]) {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            thumb.src = e.target.result;
+                            thumb.style.display = 'block';
+                        };
+                        reader.readAsDataURL(inputTrocar.files[0]);
+                    }
+                };
 
-                <span>
-                    R$ ${parseFloat(item.preco).toFixed(2)}
-                </span>
+                labelTrocar.appendChild(inputTrocar);
+                labelTrocar.appendChild(document.createTextNode(item.imagem ? ' Trocar foto' : ' Adicionar foto'));
+                linha.appendChild(labelTrocar);
 
-                <button type="button" onclick="remover(${index})">
-                    ✕
-                </button>
-
-            </div>
-        `;
+                document.getElementById('listaItens').appendChild(linha);
             });
         }
 
         function prepararEnvio() {
-
-            if (itens.length === 0) {
+            const lista = document.getElementById('listaItens');
+            if (lista.children.length === 0) {
                 alert("Adicione pelo menos um item ao cardápio.");
                 return false;
             }
-
-            document.getElementById("itensJson").value =
-                JSON.stringify(itens);
-
             return true;
         }
 
-        function remover(index) {
-
-            itens.splice(index, 1);
-
-            atualizarLista();
-
-        }
-
         // Mostra os itens já cadastrados assim que a página carrega
-        atualizarLista();
+        carregarItensExistentes();
     </script>
 
 </body>
