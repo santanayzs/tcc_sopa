@@ -1,5 +1,6 @@
 <?php
 
+/*
 declare(strict_types=1);
 
 session_start();
@@ -45,6 +46,7 @@ while ($cardapio = $resultado->fetch_assoc()) {
     $cardapios[] = $cardapio;
 }
 $stmt->close();
+*/
 ?>
 <!doctype html>
 <html lang="pt-br">
@@ -53,6 +55,7 @@ $stmt->close();
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Meus Cardápios — S.O.P.A.</title>
+    <link href="../img/icon.svg" rel="icon" class="icon">
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -61,6 +64,7 @@ $stmt->close();
         rel="stylesheet" />
 
     <link rel="stylesheet" href="../CSS/style.css" />
+    <link rel="stylesheet" href="../dashboard/dashboard.css" />
 
     <style>
         .cardapios-lista {
@@ -177,14 +181,12 @@ $stmt->close();
 
 <body class="dashboard-page">
     <header class="site-header">
-        <a href="../index.html" class="logo">
-            <span class="logo-badge">S</span>
-            <span class="logo-word">S.O.P.A.</span>
+        <a href="../dashboard/index.php" class="logo" aria-label="S.O.P.A. — voltar ao Painel">
+            <img src="../img/logotipoBranco.svg" alt="logotipo" class="logotipo" >    
         </a>
 
         <nav class="main-nav">
-            <a href="../index.html">Início</a>
-            <a href="../dashboard/index.php">Painel</a>
+            <a href="../dashboard/index.php">Início</a>
             <a href="../criar-cardapio/criar-cardapio.php">Criar Cardápio</a>
             <a href="../auth/logout.php">Sair</a>
         </nav>
@@ -256,10 +258,7 @@ $stmt->close();
     </main>
 
     <footer class="site-footer">
-        <div class="logo">
-            <span class="logo-badge">S</span>
-            <span class="logo-word">S.O.P.A.</span>
-        </div>
+        <img src="../img/logotipoBranco.svg" alt="logotipoFooter" class="logotipoFooter" >
         <p>Sistema Online de Pedidos e Atendimentos</p>
     </footer>
 </body>

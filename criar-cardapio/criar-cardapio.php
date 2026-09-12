@@ -1,4 +1,5 @@
 <?php
+/*
 session_start();
 
 if (!isset($_SESSION['id'])) {
@@ -13,6 +14,7 @@ $mensagensErro = [
     'servidor' => 'Erro ao salvar o cardápio. Tente novamente em instantes.',
 ];
 $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
+*/
 ?>
 <!doctype html>
 <html lang="pt-br">
@@ -21,6 +23,7 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Criar Cardápio — S.O.P.A.</title>
+    <link href="../img/icon.svg" rel="icon" class="icon">
 
     <!-- FONTES -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -30,20 +33,21 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
         rel="stylesheet" />
 
     <!-- CSS -->
+
     <link rel="stylesheet" href="../CSS/style.css" />
+    <link rel="stylesheet" href="../dashboard/dashboard.css" />
+
 </head>
 
 <body class="dashboard-page">
     <!-- HEADER -->
     <header class="site-header">
-        <a href="../index.html" class="logo">
-            <span class="logo-badge">S</span>
-            <span class="logo-word">S.O.P.A.</span>
+        <a href="../dashboard/index.php" class="logo" aria-label="S.O.P.A. — voltar ao Painel">
+            <img src="../img/logotipoBranco.svg" alt="logotipo" class="logotipo" >    
         </a>
 
         <nav class="main-nav">
-            <a href="../index.html">Início</a>
-            <a href="../dashboard/index.php">Painel</a>
+            <a href="../dashboard/index.php">Início</a>
             <a href="../ver-cardapio/ver-cardapio.php">Ver Cardápio</a>
             <a href="../auth/logout.php">Sair</a>
         </nav>
@@ -110,10 +114,7 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
 
     <!-- FOOTER -->
     <footer class="site-footer">
-        <div class="logo">
-            <span class="logo-badge">S</span>
-            <span class="logo-word">S.O.P.A.</span>
-        </div>
+        <img src="../img/logotipoBranco.svg" alt="logotipoFooter" class="logotipoFooter" >
         <p>Sistema Online de Pedidos e Atendimentos</p>
     </footer>
 
