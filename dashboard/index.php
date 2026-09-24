@@ -32,18 +32,21 @@ $nomeUsuario = isset($_SESSION['nome']) ? $_SESSION['nome'] : 'Usuário';
         <img src="../img/logotipoBranco.svg" alt="logotipo" class="logotipo" >    
       </a>
 
-      <nav class="main-nav">
+      <nav class="main-nav" id="main-nav">
         <a href="../index.html">Home</a>
         <a href="../auth/logout.php">Sair</a>
 
-        
-
-        <!-- Tem que dar uma arrumada nisso ainda      
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="var(--green-900)" class="bi bi-list" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
-          </svg>
-        -->
       </nav>
+      
+      <button
+        class="nav-toggle"
+        id="nav-toggle"
+        aria-label="Abrir menu"
+        aria-expanded="false"
+        aria-controls="main-nav"
+      >
+        <span></span><span></span><span></span>
+      </button>
     </header>
 
     <main class="dashboard-shell">
@@ -84,5 +87,6 @@ $nomeUsuario = isset($_SESSION['nome']) ? $_SESSION['nome'] : 'Usuário';
         &copy; 2026 S.O.P.A. — Projeto de TCC, ETEC João Gomes de Araújo.
       </p>
     </footer>
+    <script src="../JS/main-nav.js"></script>
   </body>
 </html>
