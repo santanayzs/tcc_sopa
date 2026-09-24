@@ -783,6 +783,42 @@ a {
   margin-top: 28px;
 }
 
+.dashboard-recentes {
+  margin-top: 36px;
+}
+
+.dashboard-recentes-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.dashboard-link-ver-todos {
+  background: var(--green-800);
+  color: var(--white);
+  border: 1px solid rgba(36, 57, 53, 0.15);
+}
+
+.dashboard-cardapios-lista {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+@media (max-width: 980px) {
+  .dashboard-cardapios-lista {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard-cardapios-lista {
+    grid-template-columns: 1fr;
+  }
+}
+
 .dashboard-btn {
   display: inline-flex;
   align-items: center;

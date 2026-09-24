@@ -24,7 +24,7 @@ $mostrarErroNaoEncontrado = ($_GET['erro'] ?? '') === 'naoencontrado';
 $cardapios = [];
 
 $stmt = $conexao->prepare(
-    'SELECT id, nome_restaurante, categoria, data_criacao
+    'SELECT id, nome_restaurante, categoria, data_criacao, cor_primaria, cor_texto, cor_fundo_cardapio, cor_fundo_item, logo
      FROM cardapios
      WHERE usuario_id = ?
      ORDER BY data_criacao DESC'
@@ -123,29 +123,48 @@ $stmt->close();
                 <div class="cardapios-lista">
                     <?php foreach ($cardapios as $cardapio): ?>
                         <article class="cardapio-bloco">
-                            <div class="cardapio-preview">
-                                <?php if (empty($cardapio['itens'])): ?>
-                                    <div class="cardapio-preview-vazio">Sem itens cadastrados</div>
-                                <?php else: ?>
-                                    <div class="cardapio-preview-lista">
-                                        <?php foreach (array_slice($cardapio['itens'], 0, 4) as $item): ?>
-                                            <div class="preview-item <?php echo $item['disponivel'] ? '' : 'preview-indisponivel'; ?>">
-                                                <?php if (!empty($item['imagem'])): ?>
-                                                    <img src="../../uploads/itens/<?php echo htmlspecialchars($item['imagem'], ENT_QUOTES, 'UTF-8'); ?>"
-                                                         alt="<?php echo htmlspecialchars($item['nome'], ENT_QUOTES, 'UTF-8'); ?>">
-                                                <?php else: ?>
-                                                    <span class="preview-item-icone">🍽️</span>
-                                                <?php endif; ?>
+                            <?php
+                            $corPrimariaPreview = $cardapio['cor_primaria'] ?: '#2f6b4f';
+                            $corTextoPreview = $cardapio['cor_texto'] ?: '#1c1c1c';
+                            $corFundoCardapioPreview = $cardapio['cor_fundo_cardapio'] ?: '#f7f5f0';
+                            $corFundoItemPreview = $cardapio['cor_fundo_item'] ?: '#ffffff';
+                            ?>
+                            <a class="cardapio-preview-link" href="cardapio-publico.php?id=<?php echo (int) $cardapio['id']; ?>" aria-label="Abrir cardápio público de <?php echo htmlspecialchars($cardapio['nome_restaurante'], ENT_QUOTES, 'UTF-8'); ?>">
+                                <div class="cardapio-preview">
+                                    <div class="cardapio-preview-personalizado"
+                                         style="background: <?php echo htmlspecialchars($corFundoCardapioPreview, ENT_QUOTES, 'UTF-8'); ?>; color: <?php echo htmlspecialchars($corTextoPreview, ENT_QUOTES, 'UTF-8'); ?>;">
+                                    <div class="cardapio-preview-cabecalho">
+                                        <?php if (!empty($cardapio['logo'])): ?>
+                                            <img src="../../uploads/logos/<?php echo htmlspecialchars($cardapio['logo'], ENT_QUOTES, 'UTF-8'); ?>"
+                                                 alt="Logo do restaurante">
+                                        <?php endif; ?>
 
-                                                <div class="preview-item-texto">
-                                                    <strong><?php echo htmlspecialchars($item['nome'], ENT_QUOTES, 'UTF-8'); ?></strong>
+                                        <div class="cardapio-preview-titulo">
+                                            <h3 style="color: <?php echo htmlspecialchars($corPrimariaPreview, ENT_QUOTES, 'UTF-8'); ?>;">
+                                                <?php echo htmlspecialchars($cardapio['nome_restaurante'], ENT_QUOTES, 'UTF-8'); ?>
+                                            </h3>
+                                            <?php if (!empty($cardapio['categoria'])): ?>
+                                                <span style="color: <?php echo htmlspecialchars($corPrimariaPreview, ENT_QUOTES, 'UTF-8'); ?>;">
+                                                    <?php echo htmlspecialchars($cardapio['categoria'], ENT_QUOTES, 'UTF-8'); ?>
+                                                </span>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+
+                                        <?php if (empty($cardapio['itens'])): ?>
+                                            <div class="cardapio-preview-vazio-personalizado">Sem itens cadastrados</div>
+                                        <?php else: ?>
+                                            <?php foreach (array_slice($cardapio['itens'], 0, 2) as $item): ?>
+                                                <div class="cardapio-preview-item-personalizado"
+                                                     style="background: <?php echo htmlspecialchars($corFundoItemPreview, ENT_QUOTES, 'UTF-8'); ?>; color: <?php echo htmlspecialchars($corTextoPreview, ENT_QUOTES, 'UTF-8'); ?>;">
+                                                    <span><?php echo htmlspecialchars($item['nome'], ENT_QUOTES, 'UTF-8'); ?></span>
                                                     <span>R$ <?php echo number_format((float) $item['preco'], 2, ',', '.'); ?></span>
                                                 </div>
-                                            </div>
-                                        <?php endforeach; ?>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
                                     </div>
-                                <?php endif; ?>
-                            </div>
+                                </div>
+                            </a>
 
                             <div class="cardapio-info">
                                 <div class="cardapio-bloco-topo">
