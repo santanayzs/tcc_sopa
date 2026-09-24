@@ -37,8 +37,8 @@ $conexao->begin_transaction();
 
 try {
     // ── Cria o cardápio, já vinculado ao usuário logado ───────────────────────
-    $sql = 'INSERT INTO cardapios (usuario_id, nome_restaurante, categoria)
-            VALUES (?, ?, ?)';
+    $sql = 'INSERT INTO cardapios (usuario_id, nome_restaurante, categoria, atualizado_em)
+            VALUES (?, ?, ?, NOW())';
     $stmt = $conexao->prepare($sql);
     $stmt->bind_param('iss', $usuarioId, $nomeRestaurante, $categoria);
     $stmt->execute();

@@ -106,7 +106,7 @@ if (!empty($_FILES['logo']['name']) && $_FILES['logo']['error'] === UPLOAD_ERR_O
 // ── Salva no banco ──────────────────────────────────────────────────────────
 $stmtUpdate = $conexao->prepare(
     'UPDATE cardapios
-     SET cor_primaria = ?, cor_texto = ?, cor_fundo_cardapio = ?, cor_fundo_item = ?, logo = ?
+     SET cor_primaria = ?, cor_texto = ?, cor_fundo_cardapio = ?, cor_fundo_item = ?, logo = ?, atualizado_em = NOW()
      WHERE id = ? AND usuario_id = ?'
 );
 $stmtUpdate->bind_param('sssssii', $corPrimaria, $corTexto, $corFundoCardapio, $corFundoItem, $logoFinal, $idCardapio, $usuarioId);
