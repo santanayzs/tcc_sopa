@@ -1,100 +1,145 @@
 .cardapios-lista {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 22px;
             margin-top: 32px;
         }
 
+        @media (max-width: 1100px) {
+            .cardapios-lista {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 700px) {
+            .cardapios-lista {
+                grid-template-columns: 1fr;
+            }
+        }
+
         .cardapio-bloco {
-            background: var(--card-bg);
+            display: flex;
+            flex-direction: column;
+            min-height: 100%;
+            background: rgba(20, 30, 25, 0.82);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.18);
+        }
+
+        .cardapio-preview {
+            padding: 18px;
+            background: linear-gradient(135deg, rgba(122, 164, 142, 0.22), rgba(255, 255, 255, 0.03));
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            min-height: 180px;
+        }
+
+        .cardapio-preview-lista {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .preview-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 10px;
+            background: rgba(255, 255, 255, 0.06);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: var(--radius-md);
-            padding: 26px 28px;
+            border-radius: 12px;
+        }
+
+        .preview-item img,
+        .preview-item-icone {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            object-fit: cover;
+            background: rgba(255, 255, 255, 0.08);
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .preview-item-texto {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .preview-item-texto strong {
+            font-size: 0.8rem;
+            color: var(--cream-1);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .preview-item-texto span {
+            font-size: 0.72rem;
+            color: var(--cream-2);
+        }
+
+        .preview-indisponivel {
+            opacity: 0.55;
+        }
+
+        .cardapio-preview-vazio {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 143px;
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 14px;
+            color: var(--cream-2);
+            font-size: 0.9rem;
+            text-align: center;
+            padding: 16px;
+        }
+
+        .cardapio-info {
+            padding: 18px 18px 10px;
         }
 
         .cardapio-bloco-topo {
             display: flex;
             flex-wrap: wrap;
-            align-items: baseline;
+            align-items: center;
             justify-content: space-between;
-            gap: 10px;
-            margin-bottom: 4px;
+            gap: 8px;
+            margin-bottom: 8px;
         }
 
         .cardapio-bloco h2 {
             margin: 0;
             font-family: var(--font-display);
-            font-size: 1.3rem;
+            font-size: 1.35rem;
             color: var(--cream-1);
+            line-height: 1.2;
         }
 
         .cardapio-categoria {
-            font-size: 0.82rem;
-            font-weight: 600;
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 0.72rem;
+            font-weight: 700;
             letter-spacing: 0.04em;
             text-transform: uppercase;
+            background: rgba(120, 177, 149, 0.14);
             color: var(--sage);
+            margin-bottom: 8px;
         }
 
         .cardapio-data {
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             color: var(--cream-2);
-            margin: 4px 0 18px;
-        }
-
-        .cardapio-itens {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .cardapio-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 14px;
-            background: rgb(255, 252, 252);
-            border-radius: 10px;
-        }
-
-        .cardapio-item-esquerda {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .cardapio-item-thumb {
-            width: 40px;
-            height: 40px;
-            object-fit: cover;
-            border-radius: 8px;
-            flex-shrink: 0;
-        }
-
-        .cardapio-item-nome {
-            font-weight: 500;
-        }
-
-        .cardapio-item-preco {
-            font-family: var(--font-display);
-            font-weight: 700;
-            color: var(--cream-1);
-            white-space: nowrap;
-            color: #243935;
-        }
-
-        .cardapio-item.indisponivel {
-            opacity: 0.5;
-        }
-
-        .cardapio-item-badge {
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            color: #ff9b9b;
-            margin-left: 8px;
+            margin: 0;
         }
 
         .cardapio-vazio {
@@ -124,26 +169,29 @@
 
         .cardapio-acoes {
             display: flex;
-            gap: 10px;
-            margin-top: 18px;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 0 18px 18px;
+            margin-top: auto;
         }
 
         .btn-mini {
             font-family: var(--font-body);
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 600;
-            padding: 8px 16px;
+            padding: 8px 12px;
             border-radius: 999px;
             border: 1px solid rgba(255, 255, 255, 0.18);
             background: transparent;
             color: var(--cream-1);
             cursor: pointer;
             text-decoration: none;
-            transition: background 0.15s ease;
+            transition: background 0.15s ease, transform 0.15s ease;
         }
 
         .btn-mini:hover {
             background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-1px);
         }
 
         .btn-mini.excluir {

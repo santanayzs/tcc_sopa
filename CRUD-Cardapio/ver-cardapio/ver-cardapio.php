@@ -122,46 +122,46 @@ $stmt->close();
             <?php else: ?>
                 <div class="cardapios-lista">
                     <?php foreach ($cardapios as $cardapio): ?>
-                        <section class="cardapio-bloco">
-                            <div class="cardapio-bloco-topo">
-                                <h2><?php echo htmlspecialchars($cardapio['nome_restaurante'], ENT_QUOTES, 'UTF-8'); ?></h2>
+                        <article class="cardapio-bloco">
+                            <div class="cardapio-preview">
+                                <?php if (empty($cardapio['itens'])): ?>
+                                    <div class="cardapio-preview-vazio">Sem itens cadastrados</div>
+                                <?php else: ?>
+                                    <div class="cardapio-preview-lista">
+                                        <?php foreach (array_slice($cardapio['itens'], 0, 4) as $item): ?>
+                                            <div class="preview-item <?php echo $item['disponivel'] ? '' : 'preview-indisponivel'; ?>">
+                                                <?php if (!empty($item['imagem'])): ?>
+                                                    <img src="../../uploads/itens/<?php echo htmlspecialchars($item['imagem'], ENT_QUOTES, 'UTF-8'); ?>"
+                                                         alt="<?php echo htmlspecialchars($item['nome'], ENT_QUOTES, 'UTF-8'); ?>">
+                                                <?php else: ?>
+                                                    <span class="preview-item-icone">🍽️</span>
+                                                <?php endif; ?>
+
+                                                <div class="preview-item-texto">
+                                                    <strong><?php echo htmlspecialchars($item['nome'], ENT_QUOTES, 'UTF-8'); ?></strong>
+                                                    <span>R$ <?php echo number_format((float) $item['preco'], 2, ',', '.'); ?></span>
+                                                </div>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+
+                            <div class="cardapio-info">
+                                <div class="cardapio-bloco-topo">
+                                    <h2><?php echo htmlspecialchars($cardapio['nome_restaurante'], ENT_QUOTES, 'UTF-8'); ?></h2>
+                                </div>
+
                                 <?php if (!empty($cardapio['categoria'])): ?>
                                     <span class="cardapio-categoria">
                                         <?php echo htmlspecialchars($cardapio['categoria'], ENT_QUOTES, 'UTF-8'); ?>
                                     </span>
                                 <?php endif; ?>
+
+                                <p class="cardapio-data">
+                                    Criado em <?php echo date('d/m/Y \à\s H:i', strtotime($cardapio['data_criacao'])); ?>
+                                </p>
                             </div>
-
-                            <p class="cardapio-data">
-                                Criado em <?php echo date('d/m/Y \à\s H:i', strtotime($cardapio['data_criacao'])); ?>
-                            </p>
-
-                            <?php if (empty($cardapio['itens'])): ?>
-                                <p class="cardapio-vazio">Nenhum item cadastrado neste cardápio.</p>
-                            <?php else: ?>
-                                <div class="cardapio-itens">
-                                    <?php foreach ($cardapio['itens'] as $item): ?>
-                                        <div class="cardapio-item <?php echo $item['disponivel'] ? '' : 'indisponivel'; ?>">
-                                            <div class="cardapio-item-esquerda">
-                                                <?php if (!empty($item['imagem'])): ?>
-                                                    <img class="cardapio-item-thumb"
-                                                         src="../../uploads/itens/<?php echo htmlspecialchars($item['imagem'], ENT_QUOTES, 'UTF-8'); ?>"
-                                                         alt="">
-                                                <?php endif; ?>
-                                                <span class="cardapio-item-nome">
-                                                    <?php echo htmlspecialchars($item['nome'], ENT_QUOTES, 'UTF-8'); ?>
-                                                    <?php if (!$item['disponivel']): ?>
-                                                        <span class="cardapio-item-badge">Indisponível</span>
-                                                    <?php endif; ?>
-                                                </span>
-                                            </div>
-                                            <span class="cardapio-item-preco">
-                                                R$ <?php echo number_format((float) $item['preco'], 2, ',', '.'); ?>
-                                            </span>
-                                        </div>
-                                    <?php endforeach; ?>
-                                </div>
-                            <?php endif; ?>
 
                             <div class="cardapio-acoes">
                                 <a class="btn-mini"
@@ -187,7 +187,7 @@ $stmt->close();
                                     <button type="submit" class="btn-mini excluir">Excluir</button>
                                 </form>
                             </div>
-                        </section>
+                        </article>
                     <?php endforeach; ?>
                 </div>
             <?php endif; ?>
