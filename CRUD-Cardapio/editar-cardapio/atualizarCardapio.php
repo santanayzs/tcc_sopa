@@ -108,7 +108,7 @@ $conexao->begin_transaction();
 try {
     // ── Atualiza os dados do cardápio ──────────────────────────────────────────
     $sql = 'UPDATE cardapios
-            SET nome_restaurante = ?, categoria = ?
+            SET nome_restaurante = ?, categoria = ?, atualizado_em = NOW()
             WHERE id = ? AND usuario_id = ?';
     $stmt = $conexao->prepare($sql);
     $stmt->bind_param('ssii', $nomeRestaurante, $categoria, $idCardapio, $usuarioId);

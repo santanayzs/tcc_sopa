@@ -35,6 +35,14 @@ function garantirColunasPersonalizacaoCardapio(mysqli $conexao): void
              ADD COLUMN cor_fundo_item VARCHAR(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '#ffffff' AFTER cor_fundo_cardapio"
         );
     }
+
+    $colunaAtualizacao = $conexao->query("SHOW COLUMNS FROM cardapios LIKE 'atualizado_em'");
+    if ($colunaAtualizacao && $colunaAtualizacao->num_rows === 0) {
+        $conexao->query(
+            "ALTER TABLE cardapios
+             ADD COLUMN atualizado_em DATETIME NULL DEFAULT NULL AFTER data_criacao"
+        );
+    }
 }
 
 garantirColunasPersonalizacaoCardapio($conexao);
