@@ -112,7 +112,7 @@ if ($aviso === 'historico_limpo') {
         <nav class="main-nav">
             <a href="../../index.html">Início</a>
             <a href="../../dashboard/index.php">Painel</a>
-            <a href="../teste_comandas.php">Gerenciar comandas</a>
+            <a href="../comandas.php">Gerenciar comandas</a>
             <a href="../../auth/logout.php">Sair</a>
         </nav>
     </header>
@@ -198,7 +198,7 @@ if ($aviso === 'historico_limpo') {
             <?php endif; ?>
 
             <div class="dashboard-actions">
-                <a class="btn-pill" href="../teste_comandas.php<?php echo $cardapioId ? '?cardapio_id=' . $cardapioId : ''; ?>">Voltar</a>
+                <a class="btn-pill" href="../comandas.php<?php echo $cardapioId ? '?cardapio_id=' . $cardapioId : ''; ?>">Voltar</a>
             </div>
         </div>
     </main>

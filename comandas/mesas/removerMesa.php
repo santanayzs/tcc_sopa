@@ -14,7 +14,7 @@ include '../../configs/conexao.php';
 $usuarioId = (int) ($_SESSION['id'] ?? 0);
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: ../teste_comandas.php');
+    header('Location: ../comandas.php');
     exit;
 }
 
@@ -22,7 +22,7 @@ $mesaId = isset($_POST['mesa_id']) ? (int) $_POST['mesa_id'] : 0;
 $cardapioId = isset($_POST['cardapio_id']) ? (int) $_POST['cardapio_id'] : 0;
 
 if ($mesaId <= 0 || $cardapioId <= 0) {
-    header('Location: ../teste_comandas.php?cardapio_id=' . $cardapioId . '&aviso=campos');
+    header('Location: ../comandas.php?cardapio_id=' . $cardapioId . '&aviso=campos');
     exit;
 }
 
@@ -39,7 +39,7 @@ $mesa = $stmtMesa->get_result()->fetch_assoc();
 $stmtMesa->close();
 
 if (!$mesa) {
-    header('Location: ../teste_comandas.php?cardapio_id=' . $cardapioId . '&aviso=naoencontrado');
+    header('Location: ../comandas.php?cardapio_id=' . $cardapioId . '&aviso=naoencontrado');
     exit;
 }
 
@@ -52,7 +52,7 @@ $stmtComandaAberta->store_result();
 
 if ($stmtComandaAberta->num_rows > 0) {
     $stmtComandaAberta->close();
-    header('Location: ../teste_comandas.php?cardapio_id=' . $cardapioId . '&aviso=mesa_ativa');
+    header('Location: ../comandas.php?cardapio_id=' . $cardapioId . '&aviso=mesa_ativa');
     exit;
 }
 
@@ -77,7 +77,7 @@ if (!empty($historico)) {
         if (!$stmtPagamentos->execute()) {
             $stmtPagamentos->close();
             $conn->rollback();
-            header('Location: ../teste_comandas.php?cardapio_id=' . $cardapioId . '&aviso=mesa_ativa');
+            header('Location: ../comandas.php?cardapio_id=' . $cardapioId . '&aviso=mesa_ativa');
             exit;
         }
         $stmtPagamentos->close();
@@ -87,7 +87,7 @@ if (!empty($historico)) {
         if (!$stmtItens->execute()) {
             $stmtItens->close();
             $conn->rollback();
-            header('Location: ../teste_comandas.php?cardapio_id=' . $cardapioId . '&aviso=mesa_ativa');
+            header('Location: ../comandas.php?cardapio_id=' . $cardapioId . '&aviso=mesa_ativa');
             exit;
         }
         $stmtItens->close();
@@ -100,7 +100,7 @@ if (!empty($historico)) {
     if (!$stmtDeleteComandas->execute()) {
         $stmtDeleteComandas->close();
         $conn->rollback();
-        header('Location: ../teste_comandas.php?cardapio_id=' . $cardapioId . '&aviso=mesa_ativa');
+        header('Location: ../comandas.php?cardapio_id=' . $cardapioId . '&aviso=mesa_ativa');
         exit;
     }
     $stmtDeleteComandas->close();
@@ -114,19 +114,19 @@ $stmtDelete->bind_param('ii', $mesaId, $cardapioId);
 if (!$stmtDelete->execute()) {
     $stmtDelete->close();
     $conn->rollback();
-    header('Location: ../teste_comandas.php?cardapio_id=' . $cardapioId . '&aviso=mesa_ativa');
+    header('Location: ../comandas.php?cardapio_id=' . $cardapioId . '&aviso=mesa_ativa');
     exit;
 }
 
 if ($stmtDelete->affected_rows <= 0) {
     $stmtDelete->close();
     $conn->rollback();
-    header('Location: ../teste_comandas.php?cardapio_id=' . $cardapioId . '&aviso=naoencontrado');
+    header('Location: ../comandas.php?cardapio_id=' . $cardapioId . '&aviso=naoencontrado');
     exit;
 }
 
 $stmtDelete->close();
 $conn->commit();
 
-header('Location: ../teste_comandas.php?cardapio_id=' . $cardapioId . '&aviso=mesa_removida');
+header('Location: ../comandas.php?cardapio_id=' . $cardapioId . '&aviso=mesa_removida');
 exit;

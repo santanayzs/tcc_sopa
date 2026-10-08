@@ -14,7 +14,7 @@ include '../../configs/conexao.php';
 $usuarioId = (int) ($_SESSION['id'] ?? 0);
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: ../teste_comandas.php');
+    header('Location: ../comandas.php');
     exit;
 }
 
@@ -23,7 +23,7 @@ $numero = isset($_POST['numero']) ? (int) $_POST['numero'] : 0;
 $capacidade = isset($_POST['capacidade']) ? (int) $_POST['capacidade'] : 0;
 
 if ($cardapioId <= 0 || $numero <= 0 || $capacidade <= 0) {
-    header('Location: ../teste_comandas.php?cardapio_id=' . $cardapioId . '&aviso=campos');
+    header('Location: ../comandas.php?cardapio_id=' . $cardapioId . '&aviso=campos');
     exit;
 }
 
@@ -36,7 +36,7 @@ $result = $stmtValidar->get_result();
 
 if ($result->num_rows === 0) {
     $stmtValidar->close();
-    header('Location: ../teste_comandas.php?aviso=naoencontrado');
+    header('Location: ../comandas.php?aviso=naoencontrado');
     exit;
 }
 
@@ -52,7 +52,7 @@ $stmtExiste->close();
 
 if ($mesaExistente) {
     if ((int) $mesaExistente['ativo'] === 1) {
-        header('Location: ../teste_comandas.php?cardapio_id=' . $cardapioId . '&aviso=numero_duplicado');
+        header('Location: ../comandas.php?cardapio_id=' . $cardapioId . '&aviso=numero_duplicado');
         exit;
     }
 
@@ -66,12 +66,12 @@ if ($mesaExistente) {
 
     if ($stmtReativar->execute()) {
         $stmtReativar->close();
-        header('Location: ../teste_comandas.php?cardapio_id=' . $cardapioId . '&aviso=mesa_criada');
+        header('Location: ../comandas.php?cardapio_id=' . $cardapioId . '&aviso=mesa_criada');
         exit;
     }
 
     $stmtReativar->close();
-    header('Location: ../teste_comandas.php?cardapio_id=' . $cardapioId . '&aviso=campos');
+    header('Location: ../comandas.php?cardapio_id=' . $cardapioId . '&aviso=campos');
     exit;
 }
 
@@ -82,16 +82,16 @@ $stmt->bind_param('iii', $cardapioId, $numero, $capacidade);
 
 if ($stmt->execute()) {
     $stmt->close();
-    header('Location: ../teste_comandas.php?cardapio_id=' . $cardapioId . '&aviso=mesa_criada');
+    header('Location: ../comandas.php?cardapio_id=' . $cardapioId . '&aviso=mesa_criada');
     exit;
 }
 
 if ($conn->errno === 1062) {
     $stmt->close();
-    header('Location: ../teste_comandas.php?cardapio_id=' . $cardapioId . '&aviso=numero_duplicado');
+    header('Location: ../comandas.php?cardapio_id=' . $cardapioId . '&aviso=numero_duplicado');
     exit;
 }
 
 $stmt->close();
-header('Location: ../teste_comandas.php?cardapio_id=' . $cardapioId . '&aviso=campos');
+header('Location: ../comandas.php?cardapio_id=' . $cardapioId . '&aviso=campos');
 exit;

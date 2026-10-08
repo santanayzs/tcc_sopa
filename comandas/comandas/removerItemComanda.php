@@ -14,7 +14,7 @@ include '../../configs/conexao.php';
 $usuarioId = (int) ($_SESSION['id'] ?? 0);
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: ../teste_comandas.php');
+    header('Location: ../comandas.php');
     exit;
 }
 

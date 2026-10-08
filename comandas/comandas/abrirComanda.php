@@ -14,7 +14,7 @@ include '../../configs/conexao.php';
 $usuarioId = (int) ($_SESSION['id'] ?? 0);
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: ../teste_comandas.php');
+    header('Location: ../comandas.php');
     exit;
 }
 
@@ -22,7 +22,7 @@ $mesaId = isset($_POST['mesa_id']) ? (int) $_POST['mesa_id'] : 0;
 $cardapioId = isset($_POST['cardapio_id']) ? (int) $_POST['cardapio_id'] : 0;
 
 if ($mesaId <= 0 || $cardapioId <= 0) {
-    header('Location: ../teste_comandas.php?cardapio_id=' . $cardapioId . '&aviso=campos');
+    header('Location: ../comandas.php?cardapio_id=' . $cardapioId . '&aviso=campos');
     exit;
 }
 
@@ -38,12 +38,12 @@ $mesa = $stmtMesa->get_result()->fetch_assoc();
 $stmtMesa->close();
 
 if (!$mesa) {
-    header('Location: ../teste_comandas.php?cardapio_id=' . $cardapioId . '&aviso=naoencontrado');
+    header('Location: ../comandas.php?cardapio_id=' . $cardapioId . '&aviso=naoencontrado');
     exit;
 }
 
 if ((int) $mesa['cardapio_id'] !== $cardapioId) {
-    header('Location: ../teste_comandas.php?cardapio_id=' . $cardapioId . '&aviso=naoencontrado');
+    header('Location: ../comandas.php?cardapio_id=' . $cardapioId . '&aviso=naoencontrado');
     exit;
 }
 
@@ -56,7 +56,7 @@ $stmtComandaAberta->store_result();
 
 if ($stmtComandaAberta->num_rows > 0) {
     $stmtComandaAberta->close();
-    header('Location: ../teste_comandas.php?cardapio_id=' . $cardapioId . '&aviso=mesa_ocupada');
+    header('Location: ../comandas.php?cardapio_id=' . $cardapioId . '&aviso=mesa_ocupada');
     exit;
 }
 
@@ -72,7 +72,7 @@ $stmtInsert->bind_param('iii', $cardapioId, $mesaId, $usuarioId);
 if (!$stmtInsert->execute()) {
     $stmtInsert->close();
     $conn->rollback();
-    header('Location: ../teste_comandas.php?cardapio_id=' . $cardapioId . '&aviso=campos');
+    header('Location: ../comandas.php?cardapio_id=' . $cardapioId . '&aviso=campos');
     exit;
 }
 
@@ -86,7 +86,7 @@ $stmtUpdateMesa->bind_param('i', $mesaId);
 if (!$stmtUpdateMesa->execute()) {
     $stmtUpdateMesa->close();
     $conn->rollback();
-    header('Location: ../teste_comandas.php?cardapio_id=' . $cardapioId . '&aviso=campos');
+    header('Location: ../comandas.php?cardapio_id=' . $cardapioId . '&aviso=campos');
     exit;
 }
 
@@ -94,5 +94,5 @@ $stmtUpdateMesa->close();
 
 $conn->commit();
 
-header('Location: ../teste_comandas.php?cardapio_id=' . $cardapioId);
+header('Location: ../comandas.php?cardapio_id=' . $cardapioId);
 exit;

@@ -14,7 +14,7 @@ include '../../configs/conexao.php';
 $usuarioId = (int) ($_SESSION['id'] ?? 0);
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: ../teste_comandas.php');
+    header('Location: ../comandas.php');
     exit;
 }
 
@@ -41,7 +41,7 @@ $comanda = $stmtComanda->get_result()->fetch_assoc();
 $stmtComanda->close();
 
 if (!$comanda || (int) $comanda['cardapio_id'] !== $cardapioId) {
-    header('Location: ../teste_comandas.php?aviso=naoencontrado');
+    header('Location: ../comandas.php?aviso=naoencontrado');
     exit;
 }
 
@@ -98,5 +98,5 @@ if (!$stmtMesa->execute()) {
 $stmtMesa->close();
 $conn->commit();
 
-header('Location: ../teste_comandas.php?cardapio_id=' . $cardapioId . '&aviso=comanda_fechada');
+header('Location: ../comandas.php?cardapio_id=' . $cardapioId . '&aviso=comanda_fechada');
 exit;

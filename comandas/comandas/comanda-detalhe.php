@@ -23,7 +23,7 @@ $mensagens = [
 $aviso = $_GET['aviso'] ?? '';
 
 if ($comandaId <= 0) {
-    header('Location: ../teste_comandas.php');
+    header('Location: ../comandas.php');
     exit;
 }
 
@@ -43,7 +43,7 @@ $comanda = $stmtComanda->get_result()->fetch_assoc();
 $stmtComanda->close();
 
 if (!$comanda) {
-    header('Location: ../teste_comandas.php?aviso=naoencontrado');
+    header('Location: ../comandas.php?aviso=naoencontrado');
     exit;
 }
 
@@ -96,7 +96,7 @@ $stmtMenu->close();
         <nav class="main-nav">
             <a href="../../index.html">Início</a>
             <a href="../../dashboard/index.php">Painel</a>
-            <a href="../teste_comandas.php?cardapio_id=<?php echo (int) $comanda['cardapio_id']; ?>">Voltar</a>
+            <a href="../comandas.php?cardapio_id=<?php echo (int) $comanda['cardapio_id']; ?>">Voltar</a>
             <a href="../../auth/logout.php">Sair</a>
         </nav>
     </header>
@@ -222,7 +222,7 @@ $stmtMenu->close();
 
                     <div class="dashboard-actions" style="justify-content: flex-start; margin-top: 1.25rem;">
                         <button type="submit" class="btn-mini">Fechar comanda</button>
-                        <a class="btn-pill" href="../teste_comandas.php?cardapio_id=<?php echo (int) $comanda['cardapio_id']; ?>">Voltar</a>
+                        <a class="btn-pill" href="../comandas.php?cardapio_id=<?php echo (int) $comanda['cardapio_id']; ?>">Voltar</a>
                     </div>
                 </form>
             </section>

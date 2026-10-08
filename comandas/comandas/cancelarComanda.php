@@ -14,7 +14,7 @@ include '../../configs/conexao.php';
 $usuarioId = (int) ($_SESSION['id'] ?? 0);
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: ../teste_comandas.php');
+    header('Location: ../comandas.php');
     exit;
 }
 
@@ -22,7 +22,7 @@ $comandaId = isset($_POST['comanda_id']) ? (int) $_POST['comanda_id'] : 0;
 $cardapioId = isset($_POST['cardapio_id']) ? (int) $_POST['cardapio_id'] : 0;
 
 if ($comandaId <= 0 || $cardapioId <= 0) {
-    header('Location: ../teste_comandas.php?cardapio_id=' . $cardapioId . '&aviso=naoencontrado');
+    header('Location: ../comandas.php?cardapio_id=' . $cardapioId . '&aviso=naoencontrado');
     exit;
 }
 
@@ -38,7 +38,7 @@ $comanda = $stmtValidar->get_result()->fetch_assoc();
 $stmtValidar->close();
 
 if (!$comanda) {
-    header('Location: ../teste_comandas.php?cardapio_id=' . $cardapioId . '&aviso=naoencontrado');
+    header('Location: ../comandas.php?cardapio_id=' . $cardapioId . '&aviso=naoencontrado');
     exit;
 }
 
@@ -78,5 +78,5 @@ $stmtMesa->close();
 
 $conn->commit();
 
-header('Location: ../teste_comandas.php?cardapio_id=' . $cardapioId . '&aviso=comanda_cancelada');
+header('Location: ../comandas.php?cardapio_id=' . $cardapioId . '&aviso=comanda_cancelada');
 exit;
