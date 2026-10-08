@@ -1,0 +1,218 @@
+.delivery-cta {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 22px;
+  padding: 0 17px;
+  color: var(--green-950);
+  background: var(--sage-light);
+  border-radius: 3px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  transition: background-color 160ms ease;
+}
+
+.delivery-cta:hover {
+  background: var(--white);
+}
+
+.delivery-visual {
+  position: relative;
+  min-height: 220px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: rgba(227, 235, 226, 0.08);
+  border: 1px solid rgba(227, 235, 226, 0.2);
+  border-radius: 5px;
+}
+
+.visual-ring {
+  position: absolute;
+  display: block;
+  aspect-ratio: 1;
+  border: 1px solid rgba(227, 235, 226, 0.38);
+  border-radius: 50%;
+}
+
+.visual-ring-large {
+  width: 190px;
+}
+
+.visual-ring-small {
+  width: 125px;
+  border-color: rgba(227, 235, 226, 0.7);
+}
+
+.visual-label {
+  z-index: 1;
+  color: var(--white);
+  font-family: "Poppins", sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.estabelecimento-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  padding-bottom: 64px;
+}
+
+.estabelecimento-card {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  color: var(--ink);
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  transition: border-color 160ms ease, transform 160ms ease;
+}
+
+.estabelecimento-card:hover {
+  border-color: var(--green-700);
+  transform: translateY(-2px);
+}
+
+.estabelecimento-identidade {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.estabelecimento-logo {
+  width: 58px;
+  height: 58px;
+  flex: 0 0 58px;
+  object-fit: cover;
+  background: var(--sage-light);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+
+.estabelecimento-logo-placeholder {
+  display: grid;
+  place-items: center;
+  color: var(--green-800);
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+}
+
+.estabelecimento-titulo {
+  min-width: 0;
+}
+
+.estabelecimento-sobretitulo {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.estabelecimento-titulo h3 {
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: var(--green-950);
+  font-size: 1rem;
+}
+
+.estabelecimento-detalhes {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.estabelecimento-categoria {
+  overflow: hidden;
+  color: var(--green-800);
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.estabelecimento-localizacao {
+  margin-top: 11px;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.estabelecimento-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 18px;
+  padding-top: 13px;
+  color: var(--green-800);
+  border-top: 1px solid var(--line);
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.estabelecimento-link span {
+  font-size: 1.1rem;
+}
+
+.delivery-empty-state {
+  padding: 46px 22px;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.58);
+  border: 1px solid var(--line);
+  text-align: center;
+}
+
+.empty-mark {
+  width: 42px;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 15px;
+  color: var(--green-800);
+  border: 1px solid var(--green-700);
+  border-radius: 50%;
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+}
+
+.delivery-empty-state h3 {
+  margin-bottom: 8px;
+  color: var(--green-950);
+  font-size: 1rem;
+}
+
+.delivery-empty-state p {
+  margin-bottom: 0;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+@media (max-width: 760px) {
+  .delivery-visual {
+    min-height: 170px;
+  }
+
+  .estabelecimento-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .estabelecimento-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .estabelecimento-card {
+    padding: 17px;
+  }
+}

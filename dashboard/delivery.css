@@ -1,0 +1,226 @@
+.dashboard-delivery {
+  margin-top: 36px;
+  padding-top: 28px;
+  border-top: 1px solid rgba(36, 57, 53, 0.16);
+}
+
+.dashboard-delivery h2 {
+  margin: 0;
+  color: var(--green-900);
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+}
+
+.dashboard-delivery .dashboard-text {
+  margin-top: 8px;
+}
+
+.delivery-message {
+  margin: 18px 0 0;
+  padding: 11px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.delivery-message-success {
+  color: #24553b;
+  background: #e1efe3;
+}
+
+.delivery-message-error {
+  color: #842d2d;
+  background: #f5e4e2;
+}
+
+.delivery-options {
+  display: grid;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.delivery-option {
+  min-height: 68px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 15px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(36, 57, 53, 0.14);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.delivery-option:has(input:checked) {
+  border-color: var(--green-700);
+  background: #f4f8f2;
+}
+
+.delivery-option input {
+  width: 19px;
+  height: 19px;
+  flex: 0 0 auto;
+  accent-color: var(--green-800);
+}
+
+.delivery-option-copy {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.delivery-option-copy strong {
+  overflow-wrap: anywhere;
+  color: var(--green-900);
+}
+
+.delivery-option-copy span,
+.delivery-option-status,
+.delivery-settings-actions > span {
+  color: var(--green-700);
+  font-size: 0.82rem;
+}
+
+.delivery-option-status {
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.delivery-settings-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.delivery-settings-actions .btn-pill {
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.delivery-empty {
+  margin-top: 18px;
+}
+
+.delivery-location-settings,
+.delivery-menu-settings {
+  margin-top: 28px;
+  padding-top: 22px;
+  border-top: 1px solid rgba(36, 57, 53, 0.16);
+}
+
+.delivery-location-settings > p {
+  margin: 8px 0 16px;
+  color: var(--green-800);
+  line-height: 1.55;
+}
+
+.delivery-location-methods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.delivery-method-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 8px 12px;
+  color: var(--green-900);
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(36, 57, 53, 0.16);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.delivery-method-option:has(input:checked) {
+  background: #e7efe6;
+  border-color: var(--green-700);
+}
+
+.delivery-method-option input {
+  accent-color: var(--green-800);
+}
+
+.delivery-gps-control {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.delivery-gps-control button {
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.delivery-gps-control span {
+  color: var(--green-700);
+  font-size: 0.82rem;
+}
+
+.delivery-address-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 18px 0 0;
+  padding: 16px;
+  border: 1px solid rgba(36, 57, 53, 0.18);
+  border-radius: 8px;
+}
+
+.delivery-address-fields legend {
+  padding: 0 7px;
+  color: var(--green-900);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.delivery-address-fields label {
+  display: grid;
+  gap: 6px;
+  color: var(--green-800);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.delivery-address-fields input {
+  width: 100%;
+  min-width: 0;
+  height: 42px;
+  padding: 0 10px;
+  color: var(--ink);
+  background: var(--white);
+  border: 1px solid rgba(36, 57, 53, 0.2);
+  border-radius: 4px;
+}
+
+.delivery-address-fields[hidden],
+.delivery-gps-control[hidden] {
+  display: none;
+}
+
+@media (max-width: 560px) {
+  .dashboard-delivery .dashboard-recentes-header {
+    align-items: flex-start;
+  }
+
+  .delivery-option {
+    gap: 10px;
+    padding: 11px;
+  }
+
+  .delivery-option-status {
+    font-size: 0.72rem;
+  }
+
+  .delivery-address-fields {
+    grid-template-columns: 1fr;
+  }
+}

@@ -43,8 +43,34 @@ function garantirColunasPersonalizacaoCardapio(mysqli $conexao): void
              ADD COLUMN atualizado_em DATETIME NULL DEFAULT NULL AFTER data_criacao"
         );
     }
+
+    $colunaDelivery = $conexao->query("SHOW COLUMNS FROM cardapios LIKE 'delivery_ativo'");
+    if ($colunaDelivery && $colunaDelivery->num_rows === 0) {
+        $conexao->query(
+            "ALTER TABLE cardapios
+             ADD COLUMN delivery_ativo TINYINT(1) NOT NULL DEFAULT 0 AFTER categoria"
+        );
+    }
+}
+
+function garantirColunasLocalizacaoEstabelecimento(mysqli $conexao): void
+{
+    $colunaLatitude = $conexao->query("SHOW COLUMNS FROM estabelecimentos LIKE 'latitude'");
+    if ($colunaLatitude && $colunaLatitude->num_rows === 0) {
+        $conexao->query(
+            'ALTER TABLE estabelecimentos ADD COLUMN latitude DECIMAL(10,7) NULL DEFAULT NULL AFTER estado'
+        );
+    }
+
+    $colunaLongitude = $conexao->query("SHOW COLUMNS FROM estabelecimentos LIKE 'longitude'");
+    if ($colunaLongitude && $colunaLongitude->num_rows === 0) {
+        $conexao->query(
+            'ALTER TABLE estabelecimentos ADD COLUMN longitude DECIMAL(10,7) NULL DEFAULT NULL AFTER latitude'
+        );
+    }
 }
 
 garantirColunasPersonalizacaoCardapio($conexao);
+garantirColunasLocalizacaoEstabelecimento($conexao);
 
 ?>

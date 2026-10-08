@@ -64,6 +64,7 @@ $stmt->close();
 
     <nav class="main-nav">
       <a href="../index.html">Home</a>
+      <a href="../Delivery/index.php">Delivery</a>
       <a href="../auth/logout.php">Sair</a>
     </nav>
   </header>
@@ -93,6 +94,17 @@ $stmt->close();
             <circle cx="12" cy="12" r="3"></circle>
           </svg>
           <h3>Ver Cardápio</h3>
+        </a>
+
+        <a class="feature-card" href="gerenciar-delivery.php" style="text-decoration:none; color:inherit;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 10h18"></path>
+            <path d="M5 10V6l2-2h10l2 2v4"></path>
+            <path d="M5 10v10h14V10"></path>
+            <path d="M9 20v-6h6v6"></path>
+            <path d="M3 10a2 2 0 0 0 4 0 2 2 0 0 0 4 0 2 2 0 0 0 4 0 2 2 0 0 0 4 0"></path>
+          </svg>
+          <h3>Gerenciar Delivery</h3>
         </a>
 
         <!-- Próximas funcionalidades entram aqui, seguindo o mesmo padrão de .feature-card -->
