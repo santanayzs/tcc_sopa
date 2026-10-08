@@ -38,23 +38,32 @@
   transform: translateY(-7px) rotate(-45deg);
 }
 
-  .dashboard-shell {
-    min-height: calc(100vh - 140px);
-    display: grid;
-    place-items: center;
-    padding: 48px 18px;
-    text-align: center;
-  }
-  
-  .dashboard-card {
-    max-width: 920px;
-    width: 100%;
-    background: linear-gradient(180deg, #f7f8f4 0%, #eef1ea 100%);
-    border-radius: var(--radius-lg);
-    padding: 56px 40px;
-    box-shadow: 0 28px 60px -22px rgba(0, 0, 0, 0.45);
-    border: 1px solid rgba(36, 57, 53, 0.08);
-  }
+.dashboard-shell {
+  min-height: calc(100vh - 140px);
+  padding: 48px 0;
+  text-align: center;
+}
+
+.dashboard-welcome {
+  width: min(100% - 36px, 1180px);
+  margin: 40px auto 50px;
+}
+
+.center-line {
+  width: 100%;
+  height: 2px;
+  background-color: black;
+  display: block;
+  margin: 0;
+}
+
+.dashboard-card {
+  width: min(100% - 36px);
+  margin: 50px auto;
+  box-sizing: border-box;
+  background: linear-gradient(180deg, #f7f8f4 0%, #eef1ea 100%);
+  padding: 56px 40px;
+}
     
   .dashboard-card h1 {
     margin: 0 auto;
@@ -66,14 +75,19 @@
   .dashboard-eyebrow {
     margin: 0 0 10px;
     font-family: var(--font-accent);
-    font-size: 1rem;
+    font-size: 20px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--green-800);
   }
-  .dashboard-text {
+  .dashboard-text h1{
+    font-size:60px;
+    font-family: var(--font-accent);    /*tem que ver uma fonte parecida aqui*/
+    margin:0 auto;
+  }
+  .dashboard-text p{
     margin: 16px 0 0;
-    font-size: 1rem;
+    font-size: 20px;
     line-height: 1.7;
     color: var(--green-800);
   }

@@ -1,5 +1,5 @@
 <?php
-/*
+
 session_start();
 
 if (!isset($_SESSION['id'])) {
@@ -8,7 +8,7 @@ if (!isset($_SESSION['id'])) {
 }
 
 $nomeUsuario = isset($_SESSION['nome']) ? $_SESSION['nome'] : 'Usuário';
-*/
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -50,11 +50,17 @@ $nomeUsuario = isset($_SESSION['nome']) ? $_SESSION['nome'] : 'Usuário';
     </header>
 
     <main class="dashboard-shell">
-      <section class="dashboard-card">
+      <div class="dashboard-welcome">
         <p class="dashboard-eyebrow">Painel do estabelecimento</p>
-        <h1>Bem-vindo(a), <?php /*echo htmlspecialchars($nomeUsuario);*/ ?>!</h1>
-        <p class="dashboard-text">Aqui você pode organizar seu cardápio, acompanhar pedidos e manter tudo em ordem.</p>
+        <div class="dashboard-text">
+          <h1>Bem-vindo(a), <?php echo htmlspecialchars($nomeUsuario); ?>!</h1>
+          <p>Aqui você pode organizar seu cardápio, acompanhar pedidos e manter tudo em ordem.</p>
+        </div> 
+      </div>
 
+      <span class="center-line"></span>
+
+      <section class="dashboard-card">
         <div class="card-grid" style="margin-top: 32px;">
           <a class="feature-card" href="../criar-cardapio/criar-cardapio.php" style="text-decoration:none; color:inherit;">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
@@ -73,11 +79,9 @@ $nomeUsuario = isset($_SESSION['nome']) ? $_SESSION['nome'] : 'Usuário';
             </svg>
             <h3>Ver Cardápio</h3>
           </a>
-
-          <!-- Próximas funcionalidades entram aqui, seguindo o mesmo padrão de .feature-card -->
         </div>
-
       </section>
+     
     </main>
 
     <footer class="site-footer">
