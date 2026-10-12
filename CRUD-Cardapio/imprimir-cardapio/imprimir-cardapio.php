@@ -17,7 +17,7 @@ $idCardapio = (int) ($_GET['id'] ?? 0);
 
 // ── Confirma que o cardápio existe e pertence ao usuário logado ──────────
 $stmt = $conexao->prepare(
-    'SELECT nome_restaurante, categoria, cor_primaria, cor_texto, logo
+    'SELECT nome_restaurante, categoria, cor_primaria, cor_texto, cor_fundo_cardapio, cor_fundo_item, logo
      FROM cardapios
      WHERE id = ? AND usuario_id = ?'
 );
@@ -33,9 +33,11 @@ if (!$cardapio) {
 
 $corPrimaria = $cardapio['cor_primaria'] ?: '#2f6b4f';
 $corTexto    = $cardapio['cor_texto'] ?: '#1c1c1c';
+$corFundoCardapio = $cardapio['cor_fundo_cardapio'] ?: '#f7f5f0';
+$corFundoItem = $cardapio['cor_fundo_item'] ?: '#ffffff';
 
 $stmtItens = $conexao->prepare(
-    'SELECT nome, preco, disponivel
+    'SELECT nome, preco, disponivel, imagem
      FROM itens_cardapio
      WHERE cardapio_id = ?
      ORDER BY id'
@@ -59,157 +61,8 @@ $stmtItens->close();
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&family=Cormorant+Garamond:wght@500;600&display=swap"
         rel="stylesheet" />
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+    <link rel="stylesheet" href="style-imprimir.css" />
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #d9d9d6;
-            margin: 0;
-            padding: 30px 0 60px;
-        }
-
-        .barra-acoes {
-            max-width: 210mm;
-            margin: 0 auto 20px;
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-        }
-
-        .barra-acoes button,
-        .barra-acoes a {
-            font-family: 'Inter', sans-serif;
-            font-weight: 600;
-            font-size: 0.9rem;
-            padding: 10px 22px;
-            border-radius: 999px;
-            border: none;
-            cursor: pointer;
-            text-decoration: none;
-            background: #2f6b4f;
-            color: #fff;
-        }
-
-        .barra-acoes a.secundario {
-            background: transparent;
-            border: 1px solid #555;
-            color: #333;
-        }
-
-        /* ── Folha A4 ─────────────────────────────────────────────────────────── */
-        .folha-a4 {
-            width: 210mm;
-            min-height: 297mm;
-            margin: 0 auto;
-            background: #ffffff;
-            box-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
-            padding: 20mm 18mm;
-            color: <?php echo htmlspecialchars($corTexto, ENT_QUOTES, 'UTF-8'); ?>;
-        }
-
-        .folha-cabecalho {
-            text-align: center;
-            margin-bottom: 14mm;
-        }
-
-        .folha-cabecalho img {
-            width: 26mm;
-            height: 26mm;
-            object-fit: contain;
-            margin: 0 auto 6mm;
-            display: block;
-        }
-
-        .folha-cabecalho h1 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 30pt;
-            font-weight: 600;
-            margin: 0 0 4mm;
-            color: <?php echo htmlspecialchars($corPrimaria, ENT_QUOTES, 'UTF-8'); ?>;
-        }
-
-        .folha-cabecalho p {
-            font-size: 10pt;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            margin: 0;
-            opacity: 0.7;
-        }
-
-        .folha-item {
-            display: flex;
-            align-items: baseline;
-            gap: 8px;
-            margin-bottom: 7mm;
-            page-break-inside: avoid;
-        }
-
-        .folha-item-nome {
-            font-size: 12pt;
-            font-weight: 500;
-            white-space: nowrap;
-        }
-
-        .folha-item-linha {
-            flex: 1;
-            border-bottom: 1px dotted #999;
-            transform: translateY(-3px);
-        }
-
-        .folha-item-preco {
-            font-family: 'Cormorant Garamond', serif;
-            font-weight: 700;
-            font-size: 13pt;
-            white-space: nowrap;
-            color: <?php echo htmlspecialchars($corPrimaria, ENT_QUOTES, 'UTF-8'); ?>;
-        }
-
-        .folha-item.indisponivel {
-            opacity: 0.4;
-        }
-
-        .folha-item-badge {
-            font-size: 8pt;
-            font-weight: 700;
-            text-transform: uppercase;
-            color: #c0392b;
-            margin-left: 4px;
-        }
-
-        .folha-rodape {
-            text-align: center;
-            margin-top: 16mm;
-            font-size: 8pt;
-            opacity: 0.5;
-        }
-
-        /* ── Impressão: some tudo, exceto a folha ──────────────────────────────── */
-        @media print {
-            body {
-                background: #fff;
-                padding: 0;
-            }
-
-            .barra-acoes {
-                display: none;
-            }
-
-            .folha-a4 {
-                box-shadow: none;
-                margin: 0;
-                width: auto;
-                min-height: auto;
-            }
-
-            @page {
-                size: A4;
-                margin: 0;
-            }
-        }
-    </style>
 </head>
 
 <body>
@@ -219,10 +72,17 @@ $stmtItens->close();
         <a class="secundario" href="../ver-cardapio/ver-cardapio.php">Voltar</a>
     </div>
 
-    <div class="folha-a4">
+    <div class="folha-a4"
+        style="
+            --cor-primaria: <?php echo htmlspecialchars($corPrimaria, ENT_QUOTES, 'UTF-8'); ?>;
+            --cor-texto: <?php echo htmlspecialchars($corTexto, ENT_QUOTES, 'UTF-8'); ?>;
+            --cor-fundo-cardapio: <?php echo htmlspecialchars($corFundoCardapio, ENT_QUOTES, 'UTF-8'); ?>;
+            --cor-fundo-item: <?php echo htmlspecialchars($corFundoItem, ENT_QUOTES, 'UTF-8'); ?>;
+        "
+    >
         <div class="folha-cabecalho">
             <?php if (!empty($cardapio['logo'])): ?>
-                <img src="../uploads/logos/<?php echo htmlspecialchars($cardapio['logo'], ENT_QUOTES, 'UTF-8'); ?>" alt="Logo">
+                <img src="../../uploads/logos/<?php echo htmlspecialchars($cardapio['logo'], ENT_QUOTES, 'UTF-8'); ?>" alt="Logo">
             <?php endif; ?>
             <h1><?php echo htmlspecialchars($cardapio['nome_restaurante'], ENT_QUOTES, 'UTF-8'); ?></h1>
             <?php if (!empty($cardapio['categoria'])): ?>
@@ -235,6 +95,11 @@ $stmtItens->close();
         <?php else: ?>
             <?php foreach ($itens as $item): ?>
                 <div class="folha-item <?php echo $item['disponivel'] ? '' : 'indisponivel'; ?>">
+                    <?php if (!empty($item['imagem'])): ?>
+                        <img class="folha-item-thumb"
+                             src="../../uploads/itens/<?php echo htmlspecialchars($item['imagem'], ENT_QUOTES, 'UTF-8'); ?>"
+                             alt="">
+                    <?php endif; ?>
                     <span class="folha-item-nome">
                         <?php echo htmlspecialchars($item['nome'], ENT_QUOTES, 'UTF-8'); ?>
                         <?php if (!$item['disponivel']): ?>

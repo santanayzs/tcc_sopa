@@ -1,0 +1,235 @@
+.cardapios-lista {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 22px;
+            margin-top: 32px;
+        }
+
+        @media (max-width: 1100px) {
+            .cardapios-lista {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 700px) {
+            .cardapios-lista {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .cardapio-bloco {
+            display: flex;
+            flex-direction: column;
+            min-height: 100%;
+            background: rgba(20, 30, 25, 0.82);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.18);
+        }
+
+        .cardapio-preview-link {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.15s ease, opacity 0.15s ease;
+        }
+
+        .cardapio-preview-link:hover {
+            transform: translateY(-1px);
+            opacity: 0.98;
+        }
+
+        .cardapio-preview {
+            padding: 18px;
+            background: linear-gradient(135deg, rgba(122, 164, 142, 0.22), rgba(255, 255, 255, 0.03));
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            min-height: 180px;
+        }
+
+        .cardapio-preview-personalizado {
+            width: 100%;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 14px 12px;
+            border-radius: 18px;
+            border: 1px solid rgba(17, 17, 17, 0.08);
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+        }
+
+        .cardapio-preview-cabecalho {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cardapio-preview-cabecalho img {
+            width: 42px;
+            height: 42px;
+            object-fit: cover;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.76);
+            flex-shrink: 0;
+        }
+
+        .cardapio-preview-titulo {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .cardapio-preview-titulo h3 {
+            margin: 0;
+            font-family: var(--font-display);
+            font-size: 1rem;
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .cardapio-preview-titulo span {
+            font-size: 0.56rem;
+            line-height: 1.2;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            opacity: 0.9;
+        }
+
+        .cardapio-preview-item-personalizado {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 8px 10px;
+            border-radius: 12px;
+            font-size: 0.74rem;
+            font-weight: 600;
+            border: 1px solid rgba(17, 17, 17, 0.06);
+        }
+
+        .cardapio-preview-item-personalizado span:first-child {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .cardapio-preview-vazio-personalizado {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            border: 1px dashed rgba(17, 17, 17, 0.18);
+            border-radius: 12px;
+            color: inherit;
+            font-size: 0.8rem;
+            text-align: center;
+            padding: 12px;
+            opacity: 0.75;
+        }
+
+        .cardapio-info {
+            padding: 18px 18px 10px;
+        }
+
+        .cardapio-bloco-topo {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .cardapio-bloco h2 {
+            margin: 0;
+            font-family: var(--font-display);
+            font-size: 1.35rem;
+            color: var(--cream-1);
+            line-height: 1.2;
+        }
+
+        .cardapio-categoria {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            background: rgba(120, 177, 149, 0.14);
+            color: var(--sage);
+            margin-bottom: 8px;
+        }
+
+        .cardapio-data {
+            font-size: 0.78rem;
+            color: var(--cream-2);
+            margin: 0;
+        }
+
+        .cardapio-vazio {
+            font-size: 0.9rem;
+            color: var(--cream-2);
+            font-style: italic;
+        }
+
+        .aviso-sucesso {
+            background: #e7f6ee;
+            color: #1f6d45;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .estado-vazio {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .estado-vazio p {
+            color: var(--green-800);
+            margin-bottom: 20px;
+        }
+
+        .cardapio-acoes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 0 18px 18px;
+            margin-top: auto;
+        }
+
+        .btn-mini {
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 8px 12px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: transparent;
+            color: var(--cream-1);
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.15s ease, transform 0.15s ease;
+        }
+
+        .btn-mini:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-1px);
+        }
+
+        .btn-mini.excluir {
+            border-color: rgba(255, 120, 120, 0.4);
+            color: #ff9b9b;
+        }
+
+        .btn-mini.excluir:hover {
+            background: rgba(255, 120, 120, 0.12);
+        }

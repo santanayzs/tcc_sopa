@@ -10,6 +10,7 @@ $nomeUsuario = $_SESSION['nome'] ?? 'Usuário';
 
 $mensagensErro = [
     'campos'   => 'Preencha o nome do restaurante e adicione pelo menos um item.',
+    'formato'  => 'Uma das imagens enviadas não é válida (use JPG, PNG ou WEBP, até 2MB).',
     'servidor' => 'Erro ao salvar o cardápio. Tente novamente em instantes.',
 ];
 $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
@@ -31,6 +32,11 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
 
     <!-- CSS -->
     <link rel="stylesheet" href="../../CSS/style.css" />
+    <link rel="stylesheet" href="style-criar.css" />
+
+    <style>
+        
+    </style>
 </head>
 
 <body class="dashboard-page">
@@ -57,7 +63,7 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
 
             <p class="dashboard-text">
                 Preencha as informações abaixo para montar o seu cardápio digital.
-                Você poderá adicionar itens, preços e descrições para seus clientes.
+                Você poderá adicionar itens, preços, e uma foto para cada prato.
             </p>
 
             <?php if ($erro): ?>
@@ -67,7 +73,7 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
             <?php endif; ?>
 
             <!-- FORMULÁRIO -->
-            <form class="cardapio-form" action="salvarCardapio.php" method="POST" onsubmit="return prepararEnvio()">
+            <form class="cardapio-form" action="salvarCardapio.php" method="POST" enctype="multipart/form-data" onsubmit="return prepararEnvio()">
                 <!-- Nome do restaurante -->
                 <div class="form-group">
                     <label>Nome do Restaurante</label>
@@ -90,10 +96,16 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
 
                         <input type="number" id="precoItem" placeholder="Preço" step="0.01">
 
+                        <input type="file" id="imagemItem" accept="image/png, image/jpeg, image/webp" title="Foto do item (opcional)">
+
                         <button type="button" class="btn-add" onclick="adicionarItem()">
                             Adicionar
                         </button>
                     </div>
+
+                    <p style="font-size:0.78rem; color:var(--cream-2); margin: 4px 0 14px;">
+                        A foto é opcional, até 2MB (JPG, PNG ou WEBP).
+                    </p>
 
                     <div id="listaItens"></div>
 
@@ -102,8 +114,6 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
                 <button type="submit">
                     Salvar Cardápio
                 </button>
-
-                <input type="hidden" id="itensJson" name="itens">
             </form>
         </div>
     </main>
@@ -118,74 +128,100 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
     </footer>
 
     <script>
-        let itens = [];
+        let contadorItem = 0;
+
+        function criarCampoHidden(name, value) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = name;
+            input.value = value;
+            return input;
+        }
+
+        // Monta o "esqueleto" comum de uma linha de item (nome, preço, miniatura, botão de remover)
+        function montarLinhaBase(idx, nome, preco) {
+            const linha = document.createElement('div');
+            linha.className = 'item-linha';
+
+            linha.appendChild(criarCampoHidden(`itens[${idx}][nome]`, nome));
+            linha.appendChild(criarCampoHidden(`itens[${idx}][preco]`, preco));
+
+            const thumb = document.createElement('img');
+            thumb.className = 'item-thumb';
+            thumb.style.display = 'none';
+            linha.appendChild(thumb);
+
+            const info = document.createElement('div');
+            info.className = 'item-linha-info';
+
+            const spanNome = document.createElement('span');
+            spanNome.className = 'item-linha-nome';
+            spanNome.textContent = nome;
+
+            const spanPreco = document.createElement('span');
+            spanPreco.className = 'item-linha-preco';
+            spanPreco.textContent = 'R$ ' + parseFloat(preco).toFixed(2);
+
+            info.appendChild(spanNome);
+            info.appendChild(spanPreco);
+            linha.appendChild(info);
+
+            const btnRemover = document.createElement('button');
+            btnRemover.type = 'button';
+            btnRemover.className = 'btn-remover-item';
+            btnRemover.textContent = '✕';
+            btnRemover.onclick = () => linha.remove();
+            linha.appendChild(btnRemover);
+
+            return { linha, thumb };
+        }
 
         function adicionarItem() {
-
             const nome = document.getElementById("nomeItem");
             const preco = document.getElementById("precoItem");
+            const imagemInput = document.getElementById("imagemItem");
 
             if (!nome.value || !preco.value) return;
 
-            itens.push({
-                nome: nome.value,
-                preco: preco.value
-            });
+            const idx = contadorItem++;
+            const { linha, thumb } = montarLinhaBase(idx, nome.value, preco.value);
 
-            atualizarLista();
+            if (imagemInput.files && imagemInput.files.length > 0) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    thumb.src = e.target.result;
+                    thumb.style.display = 'block';
+                };
+                reader.readAsDataURL(imagemInput.files[0]);
+
+                // Move o próprio input (com o arquivo já selecionado) pra dentro da linha do item
+                imagemInput.name = `itens[${idx}][imagem]`;
+                imagemInput.style.display = 'none';
+                linha.appendChild(imagemInput);
+
+                // Cria um novo input de arquivo "limpo" no lugar, pro próximo item
+                const container = document.querySelector('.item-inputs');
+                const novoInput = document.createElement('input');
+                novoInput.type = 'file';
+                novoInput.id = 'imagemItem';
+                novoInput.accept = 'image/png, image/jpeg, image/webp';
+                novoInput.title = 'Foto do item (opcional)';
+                container.insertBefore(novoInput, container.querySelector('.btn-add'));
+            }
+
+            document.getElementById('listaItens').appendChild(linha);
 
             nome.value = "";
             preco.value = "";
         }
 
-
-        function atualizarLista() {
-
-            const lista = document.getElementById("listaItens");
-
-            if (!lista) return;
-
-            lista.innerHTML = "";
-
-            itens.forEach((item, index) => {
-
-                lista.innerHTML += `
-            <div class="item-linha">
-
-                <span>${item.nome}</span>
-
-                <span>
-                    R$ ${parseFloat(item.preco).toFixed(2)}
-                </span>
-
-                <button type="button" onclick="remover(${index})">
-                    ✕
-                </button>
-
-            </div>
-        `;
-            });
-        }
-
         function prepararEnvio() {
-
-            if (itens.length === 0) {
+            const lista = document.getElementById('listaItens');
+            if (lista.children.length === 0) {
                 alert("Adicione pelo menos um item ao cardápio.");
                 return false;
             }
-
-            document.getElementById("itensJson").value =
-                JSON.stringify(itens);
-
             return true;
-        }
-
-        function remover(index) {
-
-            itens.splice(index, 1);
-
-            atualizarLista();
-
         }
     </script>
 

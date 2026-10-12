@@ -24,7 +24,7 @@ $mostrarErroNaoEncontrado = ($_GET['erro'] ?? '') === 'naoencontrado';
 $cardapios = [];
 
 $stmt = $conexao->prepare(
-    'SELECT id, nome_restaurante, categoria, data_criacao
+    'SELECT id, nome_restaurante, categoria, data_criacao, cor_primaria, cor_texto, cor_fundo_cardapio, cor_fundo_item, logo
      FROM cardapios
      WHERE usuario_id = ?
      ORDER BY data_criacao DESC'
@@ -36,7 +36,7 @@ $resultado = $stmt->get_result();
 while ($cardapio = $resultado->fetch_assoc()) {
     // ── Busca os itens de cada cardápio ───────────────────────────────────────
     $stmtItens = $conexao->prepare(
-        'SELECT nome, preco, disponivel
+        'SELECT nome, preco, disponivel, imagem
          FROM itens_cardapio
          WHERE cardapio_id = ?
          ORDER BY id'
@@ -65,151 +65,8 @@ $stmt->close();
         rel="stylesheet" />
 
     <link rel="stylesheet" href="../../CSS/style.css" />
+    <link rel="stylesheet" href="style-ver-cardapio.css" />
 
-    <style>
-        .cardapios-lista {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-            margin-top: 32px;
-        }
-
-        .cardapio-bloco {
-            background: var(--card-bg);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: var(--radius-md);
-            padding: 26px 28px;
-        }
-
-        .cardapio-bloco-topo {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: baseline;
-            justify-content: space-between;
-            gap: 10px;
-            margin-bottom: 4px;
-        }
-
-        .cardapio-bloco h2 {
-            margin: 0;
-            font-family: var(--font-display);
-            font-size: 1.3rem;
-            color: var(--cream-1);
-        }
-
-        .cardapio-categoria {
-            font-size: 0.82rem;
-            font-weight: 600;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-            color: var(--sage);
-        }
-
-        .cardapio-data {
-            font-size: 0.8rem;
-            color: var(--cream-2);
-            margin: 4px 0 18px;
-        }
-
-        .cardapio-itens {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .cardapio-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 14px;
-            background: rgb(255, 252, 252);
-            border-radius: 10px;
-        }
-
-        .cardapio-item-nome {
-            font-weight: 500;
-        }
-
-        .cardapio-item-preco {
-            font-family: var(--font-display);
-            font-weight: 700;
-            color: var(--cream-1);
-            white-space: nowrap;
-            color: #243935;
-        }
-
-        .cardapio-item.indisponivel {
-            opacity: 0.5;
-        }
-
-        .cardapio-item-badge {
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            color: #ff9b9b;
-            margin-left: 8px;
-        }
-
-        .cardapio-vazio {
-            font-size: 0.9rem;
-            color: var(--cream-2);
-            font-style: italic;
-        }
-
-        .aviso-sucesso {
-            background: #e7f6ee;
-            color: #1f6d45;
-            padding: 12px 16px;
-            border-radius: 10px;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-
-        .estado-vazio {
-            text-align: center;
-            padding: 40px 20px;
-        }
-
-        .estado-vazio p {
-            color: var(--green-800);
-            margin-bottom: 20px;
-        }
-
-        .cardapio-acoes {
-            display: flex;
-            gap: 10px;
-            margin-top: 18px;
-        }
-
-        .btn-mini {
-            font-family: var(--font-body);
-            font-size: 0.85rem;
-            font-weight: 600;
-            padding: 8px 16px;
-            border-radius: 999px;
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            background: transparent;
-            color: var(--cream-1);
-            cursor: pointer;
-            text-decoration: none;
-            transition: background 0.15s ease;
-        }
-
-        .btn-mini:hover {
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .btn-mini.excluir {
-            border-color: rgba(255, 120, 120, 0.4);
-            color: #ff9b9b;
-        }
-
-        .btn-mini.excluir:hover {
-            background: rgba(255, 120, 120, 0.12);
-        }
-    </style>
 </head>
 
 <body class="dashboard-page">
@@ -265,39 +122,65 @@ $stmt->close();
             <?php else: ?>
                 <div class="cardapios-lista">
                     <?php foreach ($cardapios as $cardapio): ?>
-                        <section class="cardapio-bloco">
-                            <div class="cardapio-bloco-topo">
-                                <h2><?php echo htmlspecialchars($cardapio['nome_restaurante'], ENT_QUOTES, 'UTF-8'); ?></h2>
+                        <article class="cardapio-bloco">
+                            <?php
+                            $corPrimariaPreview = $cardapio['cor_primaria'] ?: '#2f6b4f';
+                            $corTextoPreview = $cardapio['cor_texto'] ?: '#1c1c1c';
+                            $corFundoCardapioPreview = $cardapio['cor_fundo_cardapio'] ?: '#f7f5f0';
+                            $corFundoItemPreview = $cardapio['cor_fundo_item'] ?: '#ffffff';
+                            ?>
+                            <a class="cardapio-preview-link" href="cardapio-publico.php?id=<?php echo (int) $cardapio['id']; ?>" aria-label="Abrir cardápio público de <?php echo htmlspecialchars($cardapio['nome_restaurante'], ENT_QUOTES, 'UTF-8'); ?>">
+                                <div class="cardapio-preview">
+                                    <div class="cardapio-preview-personalizado"
+                                         style="background: <?php echo htmlspecialchars($corFundoCardapioPreview, ENT_QUOTES, 'UTF-8'); ?>; color: <?php echo htmlspecialchars($corTextoPreview, ENT_QUOTES, 'UTF-8'); ?>;">
+                                    <div class="cardapio-preview-cabecalho">
+                                        <?php if (!empty($cardapio['logo'])): ?>
+                                            <img src="../../uploads/logos/<?php echo htmlspecialchars($cardapio['logo'], ENT_QUOTES, 'UTF-8'); ?>"
+                                                 alt="Logo do restaurante">
+                                        <?php endif; ?>
+
+                                        <div class="cardapio-preview-titulo">
+                                            <h3 style="color: <?php echo htmlspecialchars($corPrimariaPreview, ENT_QUOTES, 'UTF-8'); ?>;">
+                                                <?php echo htmlspecialchars($cardapio['nome_restaurante'], ENT_QUOTES, 'UTF-8'); ?>
+                                            </h3>
+                                            <?php if (!empty($cardapio['categoria'])): ?>
+                                                <span style="color: <?php echo htmlspecialchars($corPrimariaPreview, ENT_QUOTES, 'UTF-8'); ?>;">
+                                                    <?php echo htmlspecialchars($cardapio['categoria'], ENT_QUOTES, 'UTF-8'); ?>
+                                                </span>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+
+                                        <?php if (empty($cardapio['itens'])): ?>
+                                            <div class="cardapio-preview-vazio-personalizado">Sem itens cadastrados</div>
+                                        <?php else: ?>
+                                            <?php foreach (array_slice($cardapio['itens'], 0, 2) as $item): ?>
+                                                <div class="cardapio-preview-item-personalizado"
+                                                     style="background: <?php echo htmlspecialchars($corFundoItemPreview, ENT_QUOTES, 'UTF-8'); ?>; color: <?php echo htmlspecialchars($corTextoPreview, ENT_QUOTES, 'UTF-8'); ?>;">
+                                                    <span><?php echo htmlspecialchars($item['nome'], ENT_QUOTES, 'UTF-8'); ?></span>
+                                                    <span>R$ <?php echo number_format((float) $item['preco'], 2, ',', '.'); ?></span>
+                                                </div>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            </a>
+
+                            <div class="cardapio-info">
+                                <div class="cardapio-bloco-topo">
+                                    <h2><?php echo htmlspecialchars($cardapio['nome_restaurante'], ENT_QUOTES, 'UTF-8'); ?></h2>
+                                </div>
+
                                 <?php if (!empty($cardapio['categoria'])): ?>
                                     <span class="cardapio-categoria">
                                         <?php echo htmlspecialchars($cardapio['categoria'], ENT_QUOTES, 'UTF-8'); ?>
                                     </span>
                                 <?php endif; ?>
+
+                                <p class="cardapio-data">
+                                    Criado em <?php echo date('d/m/Y \à\s H:i', strtotime($cardapio['data_criacao'])); ?>
+                                </p>
                             </div>
-
-                            <p class="cardapio-data">
-                                Criado em <?php echo date('d/m/Y \à\s H:i', strtotime($cardapio['data_criacao'])); ?>
-                            </p>
-
-                            <?php if (empty($cardapio['itens'])): ?>
-                                <p class="cardapio-vazio">Nenhum item cadastrado neste cardápio.</p>
-                            <?php else: ?>
-                                <div class="cardapio-itens">
-                                    <?php foreach ($cardapio['itens'] as $item): ?>
-                                        <div class="cardapio-item <?php echo $item['disponivel'] ? '' : 'indisponivel'; ?>">
-                                            <span class="cardapio-item-nome">
-                                                <?php echo htmlspecialchars($item['nome'], ENT_QUOTES, 'UTF-8'); ?>
-                                                <?php if (!$item['disponivel']): ?>
-                                                    <span class="cardapio-item-badge">Indisponível</span>
-                                                <?php endif; ?>
-                                            </span>
-                                            <span class="cardapio-item-preco">
-                                                R$ <?php echo number_format((float) $item['preco'], 2, ',', '.'); ?>
-                                            </span>
-                                        </div>
-                                    <?php endforeach; ?>
-                                </div>
-                            <?php endif; ?>
 
                             <div class="cardapio-acoes">
                                 <a class="btn-mini"
@@ -323,7 +206,7 @@ $stmt->close();
                                     <button type="submit" class="btn-mini excluir">Excluir</button>
                                 </form>
                             </div>
-                        </section>
+                        </article>
                     <?php endforeach; ?>
                 </div>
             <?php endif; ?>
