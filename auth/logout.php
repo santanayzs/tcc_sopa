@@ -11,6 +11,9 @@ session_start([
     'cookie_samesite' => 'Strict',
 ]);
 
+include('../configs/conexao.php');
+include('../configs/remember.php');
+
 // Limpa todos os dados da sessão
 $_SESSION = [];
 
@@ -29,6 +32,16 @@ if (ini_get('session.use_cookies')) {
 }
 
 session_destroy();
+
+// Remove cookie "remember" e token no banco, se existir
+if (!empty($_COOKIE['remember'])) {
+    $parts = explode(':', $_COOKIE['remember']);
+    if (count($parts) === 2) {
+        $selector = $parts[0];
+        delete_remember_token_by_selector($conn, $selector);
+    }
+    clear_remember_cookie();
+}
 
 header('Location: index.php?saiu=1');
 exit;
