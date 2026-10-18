@@ -33,6 +33,7 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
 
     <!-- CSS -->
     <link rel="stylesheet" href="../../CSS/style.css" />
+    <!--<link rel="stylesheet" href="../dashboard/dashboard.css" />  nao sei se vou usar o dashboard css ou esse de baixo, mas depois eu vejo-->
     <link rel="stylesheet" href="style-criar.css" />
 
     <style>
