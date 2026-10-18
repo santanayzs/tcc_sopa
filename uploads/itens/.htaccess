@@ -1,0 +1,6 @@
+# Garante que essa pasta só sirva imagens, nunca execute PHP
+php_flag engine off
+
+<IfModule mod_php.c>
+    php_flag engine off
+</IfModule>
