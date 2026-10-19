@@ -55,6 +55,7 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Editar Cardápio — S.O.P.A.</title>
+    <link href="../img/icon.svg" rel="icon" class="icon">
 
     <!-- FONTES -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
