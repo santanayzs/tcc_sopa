@@ -119,6 +119,7 @@ $stmtDelivery->close();
               <label>
                 CEP
                 <input name="cep" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="9" value="<?php echo htmlspecialchars((string) ($estabelecimento['cep'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>">
+                <span id="business-cep-status" role="status" aria-live="polite"></span>
               </label>
               <label>
                 Logradouro

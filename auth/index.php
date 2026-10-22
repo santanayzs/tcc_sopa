@@ -31,6 +31,7 @@ function csrfField(string $token): string {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>S.O.P.A. - Entrar ou Cadastrar</title>
+    <link href="../img/icon.svg" rel="icon" class="icon">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -80,10 +81,13 @@ function csrfField(string $token): string {
         gap: 18px;
       }
 
-      .auth-brand h1 { margin: 0; font-family: var(--font-display, 'Cormorant Garamond', serif); font-size: 2rem; letter-spacing: 0.04em; color: #fff; }
+      .auth-brand h1 { margin: 0 auto 30px; font-family: var(--font-display, 'Cormorant Garamond', serif); font-size: 2rem; letter-spacing: 0.04em; color: #fff;}
       .auth-brand p  { margin: 0; max-width: 32ch; color: rgba(255,255,255,0.7); line-height: 1.6; }
-      .auth-brand a  { display: inline-flex; align-items: center; width: fit-content; color: #fff; font-weight: 600; text-decoration: underline; text-underline-offset: 0.3em; }
+      .auth-brand a  { display: inline-flex; align-items: center; width: fit-content; color: #fff; font-weight: 600; text-decoration: none; text-underline-offset: 0.3em; }
+      .auth-brand .logoAuth { margin:0 auto -40px; padding:10px; width:330px; height:auto; }
 
+      .auth-brand a:hover{ text-decoration:underline; }
+      
       .auth-forms {
         background: var(--auth-panel-2);
         padding: 42px 36px;
@@ -291,7 +295,7 @@ function csrfField(string $token): string {
       <section class="auth-card">
 
         <div class="auth-brand">
-          <h1>S.O.P.A.</h1>
+          <img src="../img/logoAuth.svg" class="logoAuth">
           <p>Crie seu cardápio digital e organize pedidos com mais praticidade.</p>
           <a href="../index.html">← Voltar para a página inicial</a>
         </div>

@@ -22,7 +22,8 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Criar Cardápio — S.O.P.A.</title>
-
+    <link href="../img/icon.svg" rel="icon" class="icon">
+    
     <!-- FONTES -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -32,6 +33,7 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
 
     <!-- CSS -->
     <link rel="stylesheet" href="../../CSS/style.css" />
+    <!--<link rel="stylesheet" href="../dashboard/dashboard.css" />  nao sei se vou usar o dashboard css ou esse de baixo, mas depois eu vejo-->
     <link rel="stylesheet" href="style-criar.css" />
 
     <style>
@@ -42,17 +44,25 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
 <body class="dashboard-page">
     <!-- HEADER -->
     <header class="site-header">
-        <a href="../../index.html" class="logo">
-            <span class="logo-badge">S</span>
-            <span class="logo-word">S.O.P.A.</span>
+        <a href="../../dashboard/index.php" class="logo" aria-label="S.O.P.A. — voltar ao Painel">
+            <img src="../img/logotipoBranco.svg" alt="logotipo" class="logotipo" >    
         </a>
 
-        <nav class="main-nav">
-            <a href="../../index.html">Início</a>
-            <a href="../../dashboard/index.php">Painel</a>
-            <a href="../ver-cardapio/ver-cardapio.php">Ver Cardápio</a>
+        <nav class="main-nav" id="main-nav">
+            <a href="../../dashboard/index.php">Início</a>
+            <a href="../../ver-cardapio/ver-cardapio.php">Ver Cardápio</a>
             <a href="../../auth/logout.php">Sair</a>
         </nav>
+
+         <button
+        class="nav-toggle"
+        id="nav-toggle"
+        aria-label="Abrir menu"
+        aria-expanded="false"
+        aria-controls="main-nav"
+      >
+        <span></span><span></span><span></span>
+      </button>
     </header>
 
     <!-- CONTEÚDO -->
@@ -120,11 +130,11 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
 
     <!-- FOOTER -->
     <footer class="site-footer">
-        <div class="logo">
-            <span class="logo-badge">S</span>
-            <span class="logo-word">S.O.P.A.</span>
-        </div>
+        <img src="../../img/logotipoBranco.svg" alt="logotipoFooter" class="logotipoFooter" >
         <p>Sistema Online de Pedidos e Atendimentos</p>
+        <p class="footer-fine">
+        &copy; 2026 S.O.P.A. — Projeto de TCC, ETEC João Gomes de Araújo.
+      </p>
     </footer>
 
     <script>
@@ -225,6 +235,7 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
         }
     </script>
 
+<script src="../../JS/main-nav.js"></script>
 </body>
 
 </html>

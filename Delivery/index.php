@@ -48,11 +48,23 @@ $locationConfirmed = is_array($deliveryLocation)
 $locationSummary = $locationConfirmed
   ? (($deliveryLocation['type'] ?? '') === 'gps' ? 'GPS confirmado' : 'Endereço informado')
   : '';
+$clienteTemGps = $locationConfirmed && ($deliveryLocation['type'] ?? '') === 'gps';
+$clienteLatitude = $clienteTemGps ? (float) $deliveryLocation['latitude'] : null;
+$clienteLongitude = $clienteTemGps ? (float) $deliveryLocation['longitude'] : null;
+
+$ordem = $_GET['ordem'] ?? 'todos';
+$ordensDisponiveis = ['todos', 'proximidade', 'popular', 'abc', 'novo', 'antigo'];
+if (!is_string($ordem) || !in_array($ordem, $ordensDisponiveis, true)) {
+  $ordem = 'todos';
+}
+if ($ordem === 'proximidade' && !$clienteTemGps) {
+  $ordem = 'todos';
+}
 
 $cardapios = [];
 if ($locationConfirmed) {
   $resultado = $conexao->query(
-    "SELECT c.id, c.nome_restaurante, c.categoria, c.logo,
+    "SELECT c.id, c.nome_restaurante, c.categoria, c.logo, c.data_criacao,
         e.bairro, e.cidade, e.estado, e.latitude, e.longitude,
         (SELECT COUNT(*)
          FROM itens_cardapio AS i
@@ -75,6 +87,42 @@ if ($locationConfirmed) {
 
   if ($resultado) {
     $cardapios = $resultado->fetch_all(MYSQLI_ASSOC);
+
+    foreach ($cardapios as &$cardapio) {
+      $cardapio['distancia_km'] = null;
+      if ($clienteTemGps && $cardapio['latitude'] !== null && $cardapio['longitude'] !== null) {
+        $latitudeRad = deg2rad((float) $cardapio['latitude']);
+        $longitudeRad = deg2rad((float) $cardapio['longitude']);
+        $clienteLatitudeRad = deg2rad($clienteLatitude);
+        $clienteLongitudeRad = deg2rad($clienteLongitude);
+        $latitudeDiff = $latitudeRad - $clienteLatitudeRad;
+        $longitudeDiff = $longitudeRad - $clienteLongitudeRad;
+        $haversine = sin($latitudeDiff / 2) ** 2
+          + cos($clienteLatitudeRad) * cos($latitudeRad) * sin($longitudeDiff / 2) ** 2;
+        $cardapio['distancia_km'] = 6371 * 2 * atan2(sqrt($haversine), sqrt(1 - $haversine));
+      }
+    }
+    unset($cardapio);
+
+    if ($ordem !== 'todos') {
+      usort($cardapios, static function (array $a, array $b) use ($ordem): int {
+        if ($ordem === 'proximidade') {
+          $distanciaA = $a['distancia_km'] ?? INF;
+          $distanciaB = $b['distancia_km'] ?? INF;
+          $comparacao = $distanciaA <=> $distanciaB;
+        } elseif ($ordem === 'popular') {
+          $comparacao = (int) $b['itens_disponiveis'] <=> (int) $a['itens_disponiveis'];
+        } elseif ($ordem === 'novo' || $ordem === 'antigo') {
+          $dataA = strtotime((string) ($a['data_criacao'] ?? '')) ?: 0;
+          $dataB = strtotime((string) ($b['data_criacao'] ?? '')) ?: 0;
+          $comparacao = $ordem === 'novo' ? $dataB <=> $dataA : $dataA <=> $dataB;
+        } else {
+          $comparacao = 0;
+        }
+
+        return $comparacao !== 0 ? $comparacao : strcasecmp($a['nome_restaurante'], $b['nome_restaurante']);
+      });
+    }
   }
 }
 ?>
@@ -168,7 +216,21 @@ if ($locationConfirmed) {
             <p class="eyebrow">Disponíveis agora</p>
             <h2 id="estabelecimentos-title">Cardápios para pedir</h2>
           </div>
-          <span class="section-note"><?php echo count($cardapios); ?> estabelecimento<?php echo count($cardapios) === 1 ? '' : 's'; ?></span>
+          <div class="delivery-list-controls">
+            <form class="delivery-sort-form" method="get" action="index.php#estabelecimentos">
+              <label for="delivery-sort">Ordenar por</label>
+              <select id="delivery-sort" name="ordem">
+                <option value="todos" <?php echo $ordem === 'todos' ? 'selected' : ''; ?>>Todos</option>
+                <option value="proximidade" <?php echo $ordem === 'proximidade' ? 'selected' : ''; ?> <?php echo !$clienteTemGps ? 'disabled' : ''; ?>>Mais próximos (GPS)</option>
+                <option value="popular" <?php echo $ordem === 'popular' ? 'selected' : ''; ?>>Popular (mais itens)</option>
+                <option value="abc" <?php echo $ordem === 'abc' ? 'selected' : ''; ?>>A a Z</option>
+                <option value="novo" <?php echo $ordem === 'novo' ? 'selected' : ''; ?>>Mais novos</option>
+                <option value="antigo" <?php echo $ordem === 'antigo' ? 'selected' : ''; ?>>Mais antigos</option>
+              </select>
+              <button type="submit">Aplicar</button>
+            </form>
+            <span class="section-note"><?php echo count($cardapios); ?> estabelecimento<?php echo count($cardapios) === 1 ? '' : 's'; ?></span>
+          </div>
         </div>
 
         <?php if (empty($cardapios)): ?>
@@ -218,6 +280,9 @@ if ($locationConfirmed) {
                         'UTF-8'
                     );
                   ?>
+                  <?php if ($cardapio['distancia_km'] !== null): ?>
+                    · <?php echo number_format($cardapio['distancia_km'], 1, ',', '.'); ?> km
+                  <?php endif; ?>
                 </span>
                 <span class="estabelecimento-link">Abrir cardápio <span aria-hidden="true">&rarr;</span></span>
               </a>
