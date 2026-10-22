@@ -195,7 +195,9 @@
 
         .estado-vazio p {
             color: var(--green-800);
+            font-family: var(--font-display);
             margin-bottom: 20px;
+            font-size: 20px;
         }
 
         .cardapio-acoes {

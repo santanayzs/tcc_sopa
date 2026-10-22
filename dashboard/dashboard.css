@@ -101,6 +101,34 @@
      border-color:rgba(0,0,0);
   }
 
+  .dashboard-recentes{
+    position: relative;
+    border-bottom: 3px solid var(--green-800);
+    padding-bottom: 7px;
+  }
+
+  .link-ver-cardapio{
+    position: absolute;
+    margin-left:90%;
+    font-size: 20px;
+  }
+
+  .card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+  }
+  @media (max-width: 860px) {
+    .card-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 560px) {
+    .card-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
   .site-footer{
     background: var(--cream-1);
     border-top: 2px solid var(--green-800);
