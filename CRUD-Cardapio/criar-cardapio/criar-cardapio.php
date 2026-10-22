@@ -22,7 +22,7 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Criar Cardápio — S.O.P.A.</title>
-    <link href="../img/icon.svg" rel="icon" class="icon">
+    <link href="../../img/icon.svg" rel="icon" class="icon">
     
     <!-- FONTES -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -33,7 +33,7 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
 
     <!-- CSS -->
     <link rel="stylesheet" href="../../CSS/style.css" />
-    <!--<link rel="stylesheet" href="../dashboard/dashboard.css" />  nao sei se vou usar o dashboard css ou esse de baixo, mas depois eu vejo-->
+    <link rel="stylesheet" href="../../dashboard/dashboard.css" />
     <link rel="stylesheet" href="style-criar.css" />
 
     <style>
@@ -45,7 +45,7 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
     <!-- HEADER -->
     <header class="site-header">
         <a href="../../dashboard/index.php" class="logo" aria-label="S.O.P.A. — voltar ao Painel">
-            <img src="../img/logotipoBranco.svg" alt="logotipo" class="logotipo" >    
+            <img src="../../img/logotipoBranco.svg" alt="logotipo" class="logotipo" >    
         </a>
 
         <nav class="main-nav" id="main-nav">

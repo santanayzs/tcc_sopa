@@ -57,7 +57,7 @@ $stmt->close();
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Meus Cardápios — S.O.P.A.</title>
-    <link href="../img/icon.svg" rel="icon" class="icon">
+    <link href="../../img/icon.svg" rel="icon" class="icon">
     
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -66,15 +66,15 @@ $stmt->close();
         rel="stylesheet" />
 
     <link rel="stylesheet" href="../../CSS/style.css" />
-    <!-- <link rel="stylesheet" href="../dashboard/dashboard.css" /> mesma coisa -->
+    <link rel="stylesheet" href="../../dashboard/dashboard.css" />
     <link rel="stylesheet" href="style-ver-cardapio.css" />
 
 </head>
 
 <body class="dashboard-page">
     <header class="site-header">
-        <a href="../dashboard/index.php" class="logo" aria-label="S.O.P.A. — voltar ao Painel">
-            <img src="../img/logotipoBranco.svg" alt="logotipo" class="logotipo" >    
+        <a href="../../dashboard/index.php" class="logo" aria-label="S.O.P.A. — voltar ao Painel">
+            <img src="../../img/logotipoBranco.svg" alt="logotipo" class="logotipo" >    
         </a>
 
         <nav class="main-nav" id="main-nav">
@@ -228,14 +228,14 @@ $stmt->close();
     </main>
 
     <footer class="site-footer">
-            <img src="../img/logotipoBranco.svg" alt="logotipoFooter" class="logotipoFooter" >
+            <img src="../../img/logotipoBranco.svg" alt="logotipoFooter" class="logotipoFooter" >
         <p>Sistema Online de Pedidos e Atendimentos</p>
         <p class="footer-fine">
         &copy; 2026 S.O.P.A. — Projeto de TCC, ETEC João Gomes de Araújo.
       </p>
     </footer>
 
-    <script src="../JS/main-nav.js"></script>
+    <script src="../../JS/main-nav.js"></script>
 
 </body>
 

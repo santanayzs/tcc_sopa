@@ -42,6 +42,7 @@ $urlPublica = $scheme . '://' . $host . $pasta . '/cardapio-publico.php?id=' . $
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>QR Code do Cardápio — S.O.P.A.</title>
+    <link href="../../img/icon.svg" rel="icon" class="icon">
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -50,6 +51,7 @@ $urlPublica = $scheme . '://' . $host . $pasta . '/cardapio-publico.php?id=' . $
         rel="stylesheet" />
 
     <link rel="stylesheet" href="../../CSS/style.css" />
+    <link rel="stylesheet" href="../../dashboard/dashboard.css" />
     <link rel="stylesheet" href="style-qrcode.css" />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -58,18 +60,25 @@ $urlPublica = $scheme . '://' . $host . $pasta . '/cardapio-publico.php?id=' . $
 
 <body class="dashboard-page">
     <header class="site-header">
-        <a href="../../index.html" class="logo">
-            <span class="logo-badge">S</span>
-            <span class="logo-word">S.O.P.A.</span>
+        <a href="../../dashboard/index.php" class="logo" aria-label="S.O.P.A. — voltar ao Painel">
+            <img src="../../img/logotipoBranco.svg" alt="logotipo" class="logotipo" >    
         </a>
 
-        <nav class="main-nav">
-            <a href="../../index.html">Início</a>
-            <a href="../../dashboard/index.php">Painel</a>
-            <a href="ver-cardapio.php">Ver Cardápio</a>
+        <nav class="main-nav" id="main-nav">
+            <a href="../../dashboard/index.php">Início</a>
+            <a href="../../criar-cardapio/criar-cardapio.php">Criar Cardápio</a>
             <a href="../../auth/logout.php">Sair</a>
         </nav>
-    </header>
+
+         <button
+        class="nav-toggle"
+        id="nav-toggle"
+        aria-label="Abrir menu"
+        aria-expanded="false"
+        aria-controls="main-nav"
+      >
+        <span></span><span></span><span></span>
+      </button>
 
     <main class="dashboard-shell">
         <div class="dashboard-card qr-shell">
@@ -98,13 +107,13 @@ $urlPublica = $scheme . '://' . $host . $pasta . '/cardapio-publico.php?id=' . $
     </main>
 
     <footer class="site-footer">
-        <div class="logo">
-            <span class="logo-badge">S</span>
-            <span class="logo-word">S.O.P.A.</span>
-        </div>
+            <img src="../../img/logotipoBranco.svg" alt="logotipoFooter" class="logotipoFooter" >
         <p>Sistema Online de Pedidos e Atendimentos</p>
+        <p class="footer-fine">
+        &copy; 2026 S.O.P.A. — Projeto de TCC, ETEC João Gomes de Araújo.
+      </p>
     </footer>
-
+    
     <script>
         const urlPublica = <?php echo json_encode($urlPublica, JSON_UNESCAPED_SLASHES); ?>;
         const nomeArquivo = <?php echo json_encode('qrcode-' . preg_replace('/[^a-z0-9]+/i', '-', strtolower($cardapio['nome_restaurante']))); ?>;
@@ -141,6 +150,9 @@ $urlPublica = $scheme . '://' . $host . $pasta . '/cardapio-publico.php?id=' . $
             link.click();
         }
     </script>
+    
+    <script src="../../JS/main-nav.js"></script>
+
 </body>
 
 </html>

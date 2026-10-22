@@ -43,6 +43,7 @@ if ($cardapio) {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><?php echo $cardapio ? htmlspecialchars($cardapio['nome_restaurante'], ENT_QUOTES, 'UTF-8') . ' — Cardápio' : 'Cardápio não encontrado'; ?></title>
+    <link href="../../img/icon.svg" rel="icon" class="icon">
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
