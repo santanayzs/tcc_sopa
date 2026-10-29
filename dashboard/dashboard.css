@@ -92,42 +92,132 @@
     color: var(--green-800);
   }
 
-  .feature-card{
-    background-color: var(--green-800);
-    border:2px solid var(--green-900);
-    color:black;
-  }
-  .feature-card :hover{
-     border-color:rgba(0,0,0);
+/* Layout geral: criar à esquerda, cardápios à direita */
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: clamp(220px, 30vw, 450px) minmax(0, 1fr);
+  gap: clamp(16px, 2vw, 30px);
+  align-items: start;
+  width: 100%;
+}
+
+/* Botão Criar Cardápio */
+.feature-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  min-width: 0;
+  min-height: clamp(220px, 30vw, 386px);
+  box-sizing: border-box;
+
+  padding: clamp(12px, 2vw, 24px);
+  margin: 0;
+
+  background-color: var(--green-800);
+  border: 2px solid var(--green-900);
+  border-radius: 18px;
+  color: var(--cream-1);
+}
+
+.feature-card svg {
+  width: 90px;
+  height: 90px;
+  margin: 20px auto;
+}
+
+.feature-card h3 {
+  margin: 10px 0;
+  font-family: var(--font-body);
+  font-size: 25px;
+  font-weight: 500;
+  color: var(--cream-1);
+  text-align: center;
+}
+
+/* Área da direita */
+.dashboard-area-cardapios {
+  min-width: 0;
+  text-align: left;
+}
+
+/* Título e link ficam na mesma linha */
+.dashboard-cardapios-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--green-800);
+}
+
+.dashboard-cardapios-topo h2 {
+  margin: 0;
+  color: var(--green-900);
+  font-size: 24px;
+}
+
+/* Link Ver Cardápio */
+.link-ver-cardapio {
+  position: static;
+  flex-shrink: 0;
+  display: inline-block;
+  margin: 0;
+  padding: 10px 16px;
+  background-color: var(--green-800);
+  color: var(--cream-1);
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.link-ver-cardapio:hover {
+  background-color: var(--green-900);
+}
+
+/* Cardápios em grade */
+.dashboard-cardapios-lista {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 0;
+}
+
+.dashboard-cardapios-lista .cardapio-bloco {
+  min-width: 0;
+}
+
+/* Tablet */
+@media (max-width: 650px) {
+  .dashboard-layout {
+    grid-template-columns: 1fr;
   }
 
-  .dashboard-recentes{
-    position: relative;
-    border-bottom: 3px solid var(--green-800);
-    padding-bottom: 7px;
+  .feature-card {
+    width: 100%;
+    min-height: 200px;
   }
 
-  .link-ver-cardapio{
-    position: absolute;
-    margin-left:90%;
+  .feature-card svg {
+    width: 55px;
+    height: 55px;
+  }
+
+  .feature-card h3 {
     font-size: 20px;
   }
 
-  .card-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 22px;
+  .dashboard-cardapios-lista {
+    grid-template-columns: 1fr;
   }
-  @media (max-width: 860px) {
-    .card-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
+
+  .dashboard-cardapios-topo h2 {
+    font-size: 20px;
   }
-  @media (max-width: 560px) {
-    .card-grid {
-      grid-template-columns: 1fr;
-    }
-  }
+}
 
   .site-footer{
     background: var(--cream-1);
