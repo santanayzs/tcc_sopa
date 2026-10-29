@@ -25,12 +25,12 @@ $quantidade = isset($_POST['quantidade']) ? max(1, (int) $_POST['quantidade']) :
 $observacao = trim((string) ($_POST['observacao'] ?? ''));
 
 if ($comandaId <= 0 || $cardapioId <= 0 || $itemId <= 0 || $quantidade <= 0) {
-    header('Location: comanda-detalhe.php?id=' . $comandaId . '&aviso=erro_item');
+    header('Location: comanda-detalhe.php?id=' . $comandaId . '&cardapio_id=' . $cardapioId . '&aviso=erro_item');
     exit;
 }
 
 $stmtComanda = $conn->prepare(
-    'SELECT c.id, c.cardapio_id, c.usuario_id, c.total
+    'SELECT c.id, c.usuario_id, c.total
      FROM comandas c
      WHERE c.id = ? AND c.usuario_id = ? AND c.status = "ABERTA"
      LIMIT 1'
@@ -40,24 +40,25 @@ $stmtComanda->execute();
 $comanda = $stmtComanda->get_result()->fetch_assoc();
 $stmtComanda->close();
 
-if (!$comanda || (int) $comanda['cardapio_id'] !== $cardapioId) {
+if (!$comanda) {
     header('Location: ../comandas.php?aviso=naoencontrado');
     exit;
 }
 
 $stmtItem = $conn->prepare(
-    'SELECT id, preco, cardapio_id, nome
-     FROM itens_cardapio
-     WHERE id = ? AND cardapio_id = ? AND disponivel = 1
+    'SELECT ic.id, ic.preco, ic.cardapio_id, ic.nome
+     FROM itens_cardapio ic
+     INNER JOIN cardapios cp ON cp.id = ic.cardapio_id AND cp.usuario_id = ?
+     WHERE ic.id = ? AND ic.cardapio_id = ? AND ic.disponivel = 1
      LIMIT 1'
 );
-$stmtItem->bind_param('ii', $itemId, $cardapioId);
+$stmtItem->bind_param('iii', $usuarioId, $itemId, $cardapioId);
 $stmtItem->execute();
 $item = $stmtItem->get_result()->fetch_assoc();
 $stmtItem->close();
 
 if (!$item) {
-    header('Location: comanda-detalhe.php?id=' . $comandaId . '&aviso=erro_item');
+    header('Location: comanda-detalhe.php?id=' . $comandaId . '&cardapio_id=' . $cardapioId . '&aviso=erro_item');
     exit;
 }
 
@@ -72,7 +73,7 @@ $stmtInsert->bind_param('iiids', $comandaId, $itemId, $quantidade, $item['preco'
 if (!$stmtInsert->execute()) {
     $stmtInsert->close();
     $conn->rollback();
-    header('Location: comanda-detalhe.php?id=' . $comandaId . '&aviso=erro_item');
+    header('Location: comanda-detalhe.php?id=' . $comandaId . '&cardapio_id=' . $cardapioId . '&aviso=erro_item');
     exit;
 }
 
@@ -96,12 +97,12 @@ $stmtAtualiza->bind_param('di', $total, $comandaId);
 if (!$stmtAtualiza->execute()) {
     $stmtAtualiza->close();
     $conn->rollback();
-    header('Location: comanda-detalhe.php?id=' . $comandaId . '&aviso=erro_item');
+    header('Location: comanda-detalhe.php?id=' . $comandaId . '&cardapio_id=' . $cardapioId . '&aviso=erro_item');
     exit;
 }
 
 $stmtAtualiza->close();
 $conn->commit();
 
-header('Location: comanda-detalhe.php?id=' . $comandaId . '&aviso=item_adicionado');
+header('Location: comanda-detalhe.php?id=' . $comandaId . '&cardapio_id=' . $cardapioId . '&aviso=item_adicionado');
 exit;

@@ -10,6 +10,7 @@ if (!isset($_SESSION['id'])) {
 }
 
 include '../../configs/conexao.php';
+garantirMesasCompartilhadas($conn);
 
 $usuarioId = (int) ($_SESSION['id'] ?? 0);
 
@@ -19,18 +20,14 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $mesaId = isset($_POST['mesa_id']) ? (int) $_POST['mesa_id'] : 0;
-$cardapioId = isset($_POST['cardapio_id']) ? (int) $_POST['cardapio_id'] : 0;
 
-if ($mesaId <= 0 || $cardapioId <= 0) {
-    header('Location: ../comandas.php?cardapio_id=' . $cardapioId . '&aviso=campos');
+if ($mesaId <= 0) {
+    header('Location: ../comandas.php?aviso=campos');
     exit;
 }
 
 $stmtMesa = $conn->prepare(
-    'SELECT m.id, m.cardapio_id, m.status
-     FROM mesas m
-     INNER JOIN cardapios c ON c.id = m.cardapio_id
-     WHERE m.id = ? AND c.usuario_id = ? AND m.ativo = 1 LIMIT 1'
+    'SELECT id, status FROM mesas WHERE id = ? AND usuario_id = ? AND ativo = 1 LIMIT 1'
 );
 $stmtMesa->bind_param('ii', $mesaId, $usuarioId);
 $stmtMesa->execute();
@@ -38,12 +35,7 @@ $mesa = $stmtMesa->get_result()->fetch_assoc();
 $stmtMesa->close();
 
 if (!$mesa) {
-    header('Location: ../comandas.php?cardapio_id=' . $cardapioId . '&aviso=naoencontrado');
-    exit;
-}
-
-if ((int) $mesa['cardapio_id'] !== $cardapioId) {
-    header('Location: ../comandas.php?cardapio_id=' . $cardapioId . '&aviso=naoencontrado');
+    header('Location: ../comandas.php?aviso=naoencontrado');
     exit;
 }
 
@@ -56,7 +48,7 @@ $stmtComandaAberta->store_result();
 
 if ($stmtComandaAberta->num_rows > 0) {
     $stmtComandaAberta->close();
-    header('Location: ../comandas.php?cardapio_id=' . $cardapioId . '&aviso=mesa_ocupada');
+    header('Location: ../comandas.php?aviso=mesa_ocupada');
     exit;
 }
 
@@ -65,14 +57,14 @@ $stmtComandaAberta->close();
 $conn->begin_transaction();
 
 $stmtInsert = $conn->prepare(
-    'INSERT INTO comandas (cardapio_id, mesa_id, usuario_id, status, total, data_abertura) VALUES (?, ?, ?, "ABERTA", 0.00, NOW())'
+    'INSERT INTO comandas (cardapio_id, mesa_id, usuario_id, status, total, data_abertura) VALUES (NULL, ?, ?, "ABERTA", 0.00, NOW())'
 );
-$stmtInsert->bind_param('iii', $cardapioId, $mesaId, $usuarioId);
+$stmtInsert->bind_param('ii', $mesaId, $usuarioId);
 
 if (!$stmtInsert->execute()) {
     $stmtInsert->close();
     $conn->rollback();
-    header('Location: ../comandas.php?cardapio_id=' . $cardapioId . '&aviso=campos');
+    header('Location: ../comandas.php?aviso=campos');
     exit;
 }
 
@@ -86,7 +78,7 @@ $stmtUpdateMesa->bind_param('i', $mesaId);
 if (!$stmtUpdateMesa->execute()) {
     $stmtUpdateMesa->close();
     $conn->rollback();
-    header('Location: ../comandas.php?cardapio_id=' . $cardapioId . '&aviso=campos');
+    header('Location: ../comandas.php?aviso=campos');
     exit;
 }
 
@@ -94,5 +86,5 @@ $stmtUpdateMesa->close();
 
 $conn->commit();
 
-header('Location: ../comandas.php?cardapio_id=' . $cardapioId);
+header('Location: ../comandas.php');
 exit;

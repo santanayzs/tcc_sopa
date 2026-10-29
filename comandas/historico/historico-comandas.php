@@ -14,7 +14,7 @@ include '../../configs/conexao.php';
 $usuarioId = (int) ($_SESSION['id'] ?? 0);
 
 $stmtCardapios = $conn->prepare(
-    'SELECT id, nome_restaurante FROM cardapios WHERE usuario_id = ? ORDER BY nome_restaurante'
+    'SELECT id, nome_restaurante, categoria FROM cardapios WHERE usuario_id = ? ORDER BY nome_restaurante'
 );
 $stmtCardapios->bind_param('i', $usuarioId);
 $stmtCardapios->execute();
@@ -35,9 +35,15 @@ $params = [$usuarioId];
 $types = 'i';
 
 if ($cardapioId > 0) {
-    $condicaoCardapio = ' AND c.cardapio_id = ?';
+    $condicaoCardapio = ' AND (c.cardapio_id = ? OR EXISTS (
+        SELECT 1
+        FROM itens_comanda filtro_itc
+        INNER JOIN itens_cardapio filtro_ic ON filtro_ic.id = filtro_itc.item_cardapio_id
+        WHERE filtro_itc.comanda_id = c.id AND filtro_ic.cardapio_id = ?
+    ))';
     $params[] = $cardapioId;
-    $types .= 'i';
+    $params[] = $cardapioId;
+    $types .= 'ii';
 }
 
 if ($dataInicio) {
@@ -55,17 +61,24 @@ if ($dataFim) {
 $stmtHistorico = $conn->prepare(
     'SELECT c.id, c.status, c.total, c.data_abertura, c.data_fechamento,
             m.numero AS numero_mesa,
-            cp.nome_restaurante,
+            cp.nome_restaurante, cp.categoria,
+                (SELECT GROUP_CONCAT(DISTINCT CONCAT(origem.nome_restaurante,
+                          IF(origem.categoria IS NULL OR origem.categoria = "", "", CONCAT(" · ", origem.categoria)))
+                          ORDER BY origem.nome_restaurante SEPARATOR ", ")
+                 FROM itens_comanda origem_itc
+                 INNER JOIN itens_cardapio origem_ic ON origem_ic.id = origem_itc.item_cardapio_id
+                 INNER JOIN cardapios origem ON origem.id = origem_ic.cardapio_id
+                 WHERE origem_itc.comanda_id = c.id) AS cardapios_itens,
             GROUP_CONCAT(DISTINCT CASE
                 WHEN p.observacao IS NOT NULL AND TRIM(p.observacao) <> "" THEN CONCAT(p.forma_pagamento, " - ", p.observacao)
                 ELSE p.forma_pagamento
             END ORDER BY p.forma_pagamento SEPARATOR ", ") AS formas_pagamento
      FROM comandas c
      INNER JOIN mesas m ON m.id = c.mesa_id
-     INNER JOIN cardapios cp ON cp.id = c.cardapio_id
+    LEFT JOIN cardapios cp ON cp.id = c.cardapio_id
      LEFT JOIN pagamentos p ON p.comanda_id = c.id
      WHERE c.usuario_id = ?' . $condicaoCardapio . $condicaoData . '
-     GROUP BY c.id, c.status, c.total, c.data_abertura, c.data_fechamento, m.numero, cp.nome_restaurante
+        GROUP BY c.id, c.status, c.total, c.data_abertura, c.data_fechamento, m.numero, cp.nome_restaurante, cp.categoria
      ORDER BY c.data_fechamento DESC, c.data_abertura DESC, c.id DESC'
 );
 
@@ -130,7 +143,7 @@ if ($aviso === 'historico_limpo') {
                         <option value="">Todos os cardápios</option>
                         <?php foreach ($cardapios as $c): ?>
                             <option value="<?php echo (int) $c['id']; ?>" <?php echo ((int) $c['id'] === $cardapioId) ? 'selected' : ''; ?>>
-                                <?php echo htmlspecialchars($c['nome_restaurante'], ENT_QUOTES, 'UTF-8'); ?>
+                                <?php echo htmlspecialchars($c['nome_restaurante'] . (!empty($c['categoria']) ? ' · ' . $c['categoria'] : ''), ENT_QUOTES, 'UTF-8'); ?>
                             </option>
                         <?php endforeach; ?>
                     </select>
@@ -183,7 +196,9 @@ if ($aviso === 'historico_limpo') {
                         <div class="item-comanda-row">
                             <div>
                                 <strong>Comanda #<?php echo (int) $registro['id']; ?> · Mesa <?php echo (int) $registro['numero_mesa']; ?></strong>
-                                <span><?php echo htmlspecialchars($registro['nome_restaurante'], ENT_QUOTES, 'UTF-8'); ?></span>
+                                <?php $rotuloCardapios = $registro['cardapios_itens'] ?: (($registro['nome_restaurante'] ?? '') . (!empty($registro['categoria']) ? ' · ' . $registro['categoria'] : '')); ?>
+                                <?php if ($rotuloCardapios === '') $rotuloCardapios = 'Sem itens lançados'; ?>
+                                <span><?php echo htmlspecialchars($rotuloCardapios, ENT_QUOTES, 'UTF-8'); ?></span>
                                 <small>
                                     Estado: <?php echo htmlspecialchars($registro['status'], ENT_QUOTES, 'UTF-8'); ?>
                                     • Aberta: <?php echo !empty($registro['data_abertura']) ? date('d/m/Y H:i', strtotime($registro['data_abertura'])) : '-'; ?>

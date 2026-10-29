@@ -150,6 +150,7 @@ body.dashboard-page {
 }
 
 .form-nova-mesa,
+.form-abrir-comanda,
 .seletor-cardapio,
 .comanda-secao,
 .item-comanda-row,
@@ -195,6 +196,7 @@ body.dashboard-page {
 .form-nova-mesa input,
 .form-nova-mesa textarea,
 .form-nova-mesa select,
+.form-abrir-comanda select,
 .comanda-secao input,
 .comanda-secao textarea,
 .comanda-secao select {
@@ -212,6 +214,7 @@ body.dashboard-page {
 .form-nova-mesa input:focus,
 .form-nova-mesa textarea:focus,
 .form-nova-mesa select:focus,
+.form-abrir-comanda select:focus,
 .comanda-secao input:focus,
 .comanda-secao textarea:focus,
 .comanda-secao select:focus {
@@ -258,6 +261,22 @@ body.dashboard-page {
   min-height: 230px;
   box-shadow: 0 14px 24px rgba(22, 37, 32, 0.05);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-abrir-comanda {
+  display: grid;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.form-abrir-comanda label {
+  color: var(--comanda-green-dark);
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.form-abrir-comanda .btn-mini {
+  width: 100%;
 }
 
 .mesa-card:hover {

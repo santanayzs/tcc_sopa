@@ -20,9 +20,12 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $comandaId = isset($_POST['comanda_id']) ? (int) $_POST['comanda_id'] : 0;
 $linhaItemId = isset($_POST['linha_item_id']) ? (int) $_POST['linha_item_id'] : 0;
+$cardapioId = isset($_POST['cardapio_id']) ? (int) $_POST['cardapio_id'] : 0;
+
+$urlDetalhe = 'comanda-detalhe.php?id=' . $comandaId . ($cardapioId > 0 ? '&cardapio_id=' . $cardapioId : '');
 
 if ($comandaId <= 0 || $linhaItemId <= 0) {
-    header('Location: comanda-detalhe.php?id=' . $comandaId . '&aviso=erro_item');
+    header('Location: ' . $urlDetalhe . '&aviso=erro_item');
     exit;
 }
 
@@ -39,7 +42,7 @@ $result = $stmtValidar->get_result();
 
 if ($result->num_rows === 0) {
     $stmtValidar->close();
-    header('Location: comanda-detalhe.php?id=' . $comandaId . '&aviso=erro_item');
+    header('Location: ' . $urlDetalhe . '&aviso=erro_item');
     exit;
 }
 
@@ -53,7 +56,7 @@ $stmtDelete->bind_param('i', $linhaItemId);
 if (!$stmtDelete->execute()) {
     $stmtDelete->close();
     $conn->rollback();
-    header('Location: comanda-detalhe.php?id=' . $comandaId . '&aviso=erro_item');
+    header('Location: ' . $urlDetalhe . '&aviso=erro_item');
     exit;
 }
 
@@ -75,12 +78,12 @@ $stmtAtualiza->bind_param('di', $total, $comandaId);
 if (!$stmtAtualiza->execute()) {
     $stmtAtualiza->close();
     $conn->rollback();
-    header('Location: comanda-detalhe.php?id=' . $comandaId . '&aviso=erro_item');
+    header('Location: ' . $urlDetalhe . '&aviso=erro_item');
     exit;
 }
 
 $stmtAtualiza->close();
 $conn->commit();
 
-header('Location: comanda-detalhe.php?id=' . $comandaId . '&aviso=item_removido');
+header('Location: ' . $urlDetalhe . '&aviso=item_removido');
 exit;

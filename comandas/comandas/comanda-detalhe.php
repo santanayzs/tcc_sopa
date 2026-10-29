@@ -28,12 +28,10 @@ if ($comandaId <= 0) {
 }
 
 $stmtComanda = $conn->prepare(
-    'SELECT c.id, c.cardapio_id, c.total, c.status, c.data_abertura,
-            m.numero AS numero_mesa,
-            p.nome_restaurante
+    'SELECT c.id, c.total, c.status, c.data_abertura,
+            m.numero AS numero_mesa
      FROM comandas c
      INNER JOIN mesas m ON m.id = c.mesa_id
-     INNER JOIN cardapios p ON p.id = c.cardapio_id
      WHERE c.id = ? AND c.usuario_id = ? AND c.status = "ABERTA"
      LIMIT 1'
 );
@@ -47,14 +45,36 @@ if (!$comanda) {
     exit;
 }
 
+$stmtCardapios = $conn->prepare(
+    'SELECT id, nome_restaurante, categoria FROM cardapios WHERE usuario_id = ? ORDER BY nome_restaurante'
+);
+$stmtCardapios->bind_param('i', $usuarioId);
+$stmtCardapios->execute();
+$cardapios = $stmtCardapios->get_result()->fetch_all(MYSQLI_ASSOC);
+$stmtCardapios->close();
+
+$cardapioIdSelecionado = isset($_GET['cardapio_id']) ? (int) $_GET['cardapio_id'] : 0;
+$cardapioSelecionado = null;
+foreach ($cardapios as $cardapio) {
+    if ((int) $cardapio['id'] === $cardapioIdSelecionado) {
+        $cardapioSelecionado = $cardapio;
+        break;
+    }
+}
+if (!$cardapioSelecionado) {
+    $cardapioIdSelecionado = 0;
+}
+
 $stmtItensComanda = $conn->prepare(
     'SELECT ic.nome, ic.preco, ic.id AS item_id,
+            cp.nome_restaurante, cp.categoria,
             itc.id AS linha_item_id,
             itc.quantidade,
             itc.observacao,
             (itc.quantidade * itc.preco_unitario) AS subtotal
      FROM itens_comanda itc
      INNER JOIN itens_cardapio ic ON ic.id = itc.item_cardapio_id
+    INNER JOIN cardapios cp ON cp.id = ic.cardapio_id
      WHERE itc.comanda_id = ?
      ORDER BY ic.nome'
 );
@@ -63,16 +83,19 @@ $stmtItensComanda->execute();
 $itensComanda = $stmtItensComanda->get_result()->fetch_all(MYSQLI_ASSOC);
 $stmtItensComanda->close();
 
-$stmtMenu = $conn->prepare(
-    'SELECT id, nome, preco, descricao
-     FROM itens_cardapio
-     WHERE cardapio_id = ? AND disponivel = 1
-     ORDER BY nome'
-);
-$stmtMenu->bind_param('i', $comanda['cardapio_id']);
-$stmtMenu->execute();
-$menu = $stmtMenu->get_result()->fetch_all(MYSQLI_ASSOC);
-$stmtMenu->close();
+$menu = [];
+if ($cardapioIdSelecionado > 0) {
+    $stmtMenu = $conn->prepare(
+        'SELECT id, nome, preco, descricao
+         FROM itens_cardapio
+         WHERE cardapio_id = ? AND disponivel = 1
+         ORDER BY nome'
+    );
+    $stmtMenu->bind_param('i', $cardapioIdSelecionado);
+    $stmtMenu->execute();
+    $menu = $stmtMenu->get_result()->fetch_all(MYSQLI_ASSOC);
+    $stmtMenu->close();
+}
 ?>
 <!doctype html>
 <html lang="pt-br">
@@ -96,7 +119,7 @@ $stmtMenu->close();
         <nav class="main-nav">
             <a href="../../index.html">Início</a>
             <a href="../../dashboard/index.php">Painel</a>
-            <a href="../comandas.php?cardapio_id=<?php echo (int) $comanda['cardapio_id']; ?>">Voltar</a>
+            <a href="../comandas.php">Voltar</a>
             <a href="../../auth/logout.php">Sair</a>
         </nav>
     </header>
@@ -106,7 +129,7 @@ $stmtMenu->close();
             <p class="dashboard-eyebrow">Comanda em andamento</p>
             <h1>Comanda da Mesa <?php echo (int) $comanda['numero_mesa']; ?></h1>
             <p class="dashboard-text">
-                Cardápio: <strong><?php echo htmlspecialchars($comanda['nome_restaurante'], ENT_QUOTES, 'UTF-8'); ?></strong>
+                Os itens desta comanda podem vir de qualquer cardápio cadastrado.
             </p>
 
             <?php if ($aviso && isset($mensagens[$aviso])): ?>
@@ -132,6 +155,7 @@ $stmtMenu->close();
                                 <div>
                                     <strong><?php echo htmlspecialchars($item['nome'], ENT_QUOTES, 'UTF-8'); ?></strong>
                                     <span><?php echo (int) $item['quantidade']; ?>× R$ <?php echo number_format((float) $item['preco'], 2, ',', '.'); ?></span>
+                                    <small><?php echo htmlspecialchars($item['nome_restaurante'] . (!empty($item['categoria']) ? ' · ' . $item['categoria'] : ''), ENT_QUOTES, 'UTF-8'); ?></small>
                                     <?php if (!empty($item['observacao'])): ?>
                                         <small>Obs: <?php echo htmlspecialchars($item['observacao'], ENT_QUOTES, 'UTF-8'); ?></small>
                                     <?php endif; ?>
@@ -141,6 +165,7 @@ $stmtMenu->close();
                                     <form action="removerItemComanda.php" method="POST" style="margin:0;">
                                         <input type="hidden" name="comanda_id" value="<?php echo (int) $comanda['id']; ?>">
                                         <input type="hidden" name="linha_item_id" value="<?php echo (int) $item['linha_item_id']; ?>">
+                                        <input type="hidden" name="cardapio_id" value="<?php echo (int) $cardapioIdSelecionado; ?>">
                                         <button type="submit" class="btn-mini" style="background:#c0392b;">Remover</button>
                                     </form>
                                 </div>
@@ -153,12 +178,32 @@ $stmtMenu->close();
             <section class="comanda-secao">
                 <h2>Adicionar item</h2>
 
-                <?php if (empty($menu)): ?>
-                    <p class="cardapio-vazio">Este cardápio ainda não tem itens cadastrados.</p>
+                <?php if (empty($cardapios)): ?>
+                    <p class="cardapio-vazio">Ainda não há cardápios para selecionar.</p>
+                <?php else: ?>
+                    <form method="GET" class="seletor-cardapio">
+                        <input type="hidden" name="id" value="<?php echo (int) $comanda['id']; ?>">
+                        <label for="cardapio_id">Estabelecimento e categoria</label>
+                        <select name="cardapio_id" id="cardapio_id" onchange="this.form.submit()" required>
+                            <option value="" <?php echo $cardapioIdSelecionado <= 0 ? 'selected' : ''; ?> disabled>Selecione um cardápio</option>
+                            <?php foreach ($cardapios as $cardapio): ?>
+                                <?php $rotuloCardapio = $cardapio['nome_restaurante'] . (!empty($cardapio['categoria']) ? ' · ' . $cardapio['categoria'] : ''); ?>
+                                <option value="<?php echo (int) $cardapio['id']; ?>" <?php echo ((int) $cardapio['id'] === $cardapioIdSelecionado) ? 'selected' : ''; ?>>
+                                    <?php echo htmlspecialchars($rotuloCardapio, ENT_QUOTES, 'UTF-8'); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </form>
+                <?php endif; ?>
+
+                <?php if ($cardapioIdSelecionado <= 0): ?>
+                    <p class="cardapio-vazio">Selecione um cardápio para ver os itens disponíveis.</p>
+                <?php elseif (empty($menu)): ?>
+                    <p class="cardapio-vazio">Este cardápio ainda não tem itens disponíveis.</p>
                 <?php else: ?>
                     <form action="adicionarItemComanda.php" method="POST" class="form-nova-mesa">
                         <input type="hidden" name="comanda_id" value="<?php echo (int) $comanda['id']; ?>">
-                        <input type="hidden" name="cardapio_id" value="<?php echo (int) $comanda['cardapio_id']; ?>">
+                        <input type="hidden" name="cardapio_id" value="<?php echo (int) $cardapioIdSelecionado; ?>">
 
                         <div class="form-group-inline" style="align-items: end;">
                             <div>
@@ -195,7 +240,6 @@ $stmtMenu->close();
                 <h2>Fechar comanda</h2>
                 <form action="fecharComanda.php" method="POST" class="form-nova-mesa">
                     <input type="hidden" name="comanda_id" value="<?php echo (int) $comanda['id']; ?>">
-                    <input type="hidden" name="cardapio_id" value="<?php echo (int) $comanda['cardapio_id']; ?>">
 
                     <div class="form-group-inline" style="align-items: end;">
                         <div>
@@ -222,7 +266,7 @@ $stmtMenu->close();
 
                     <div class="dashboard-actions" style="justify-content: flex-start; margin-top: 1.25rem;">
                         <button type="submit" class="btn-mini">Fechar comanda</button>
-                        <a class="btn-pill" href="../comandas.php?cardapio_id=<?php echo (int) $comanda['cardapio_id']; ?>">Voltar</a>
+                        <a class="btn-pill" href="../comandas.php">Voltar</a>
                     </div>
                 </form>
             </section>
@@ -231,7 +275,6 @@ $stmtMenu->close();
                 <h2>Cancelar comanda</h2>
                 <form action="cancelarComanda.php" method="POST">
                     <input type="hidden" name="comanda_id" value="<?php echo (int) $comanda['id']; ?>">
-                    <input type="hidden" name="cardapio_id" value="<?php echo (int) $comanda['cardapio_id']; ?>">
                     <button type="submit" class="btn-mini" style="background:#8e44ad;">Cancelar comanda</button>
                 </form>
             </section>
