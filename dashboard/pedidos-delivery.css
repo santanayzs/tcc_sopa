@@ -1,0 +1,229 @@
+.pedidos-delivery-shell {
+  overflow: visible;
+}
+
+.pedidos-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.pedidos-heading h1 {
+  font-size: clamp(1.9rem, 3vw, 2.7rem);
+}
+
+.pedidos-heading .dashboard-text {
+  margin-bottom: 0;
+}
+
+.pedidos-heading > .btn-mini {
+  flex: 0 0 auto;
+  margin-top: 8px;
+}
+
+.pedidos-filtro {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0;
+  padding: 14px 0;
+  border-top: 1px solid rgba(36, 57, 53, 0.16);
+  border-bottom: 1px solid rgba(36, 57, 53, 0.16);
+}
+
+.pedidos-filtro label,
+.pedido-status-form label {
+  color: var(--green-900);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.pedidos-filtro select,
+.pedido-status-form select {
+  min-height: 42px;
+  padding: 8px 34px 8px 10px;
+  border: 1px solid rgba(36, 57, 53, 0.22);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--green-900);
+  font: inherit;
+}
+
+.pedidos-lista {
+  display: grid;
+  gap: 14px;
+}
+
+.pedido-admin {
+  padding: 20px;
+  border: 1px solid rgba(36, 57, 53, 0.18);
+  border-left: 4px solid var(--green-700);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.pedido-admin-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(36, 57, 53, 0.14);
+}
+
+.pedido-admin-numero {
+  margin: 0 0 4px;
+  color: var(--green-700);
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.pedido-admin-header h2 {
+  margin: 0;
+  color: var(--green-900);
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  overflow-wrap: anywhere;
+}
+
+.pedido-admin-header time {
+  display: block;
+  margin-top: 5px;
+  color: var(--green-700);
+  font-size: 0.82rem;
+}
+
+.pedido-status {
+  flex: 0 0 auto;
+  padding: 6px 9px;
+  border-radius: 4px;
+  background: #e8eee8;
+  color: #284a37;
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+.pedido-status-recebido { background: #e5eee7; color: #28523a; }
+.pedido-status-confirmado { background: #e6edf2; color: #31566d; }
+.pedido-status-em_preparo { background: #fff0d6; color: #775115; }
+.pedido-status-saiu_para_entrega { background: #e5f0f3; color: #2d5966; }
+.pedido-status-entregue { background: #e0efe4; color: #205837; }
+.pedido-status-cancelado { background: #f7e5e2; color: #82352f; }
+
+.pedido-admin-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 0.85fr);
+  gap: 24px;
+  padding: 18px 0;
+}
+
+.pedido-admin-content h3 {
+  margin: 0 0 10px;
+  color: var(--green-900);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+.pedido-admin-content p {
+  margin: 5px 0;
+  color: #30433b;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.pedido-admin-content a {
+  color: #315f48;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.pedido-observacao-admin {
+  padding-top: 8px;
+}
+
+.pedido-itens-admin {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pedido-itens-admin li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: #30433b;
+  font-size: 0.88rem;
+}
+
+.pedido-total-admin {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 14px !important;
+  padding-top: 10px;
+  border-top: 1px solid rgba(36, 57, 53, 0.14);
+}
+
+.pedido-status-form {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(36, 57, 53, 0.14);
+}
+
+.pedido-empty {
+  margin-top: 18px;
+}
+
+.pedidos-empty {
+  padding: 28px 0;
+  border-top: 1px solid rgba(36, 57, 53, 0.14);
+  color: var(--green-700);
+}
+
+.pedidos-empty h2 {
+  margin: 0;
+  color: var(--green-900);
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+}
+
+.pedidos-empty p {
+  max-width: 620px;
+  line-height: 1.6;
+}
+
+@media (max-width: 700px) {
+  .pedidos-heading {
+    flex-direction: column;
+  }
+
+  .pedidos-heading > .btn-mini {
+    margin-top: 0;
+  }
+
+  .pedido-admin-content {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pedido-admin {
+    padding: 15px;
+  }
+
+  .pedido-admin-header {
+    flex-direction: column;
+  }
+
+  .pedido-status-form {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}

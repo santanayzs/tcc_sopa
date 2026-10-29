@@ -244,7 +244,7 @@ if ($locationConfirmed) {
             <?php foreach ($cardapios as $cardapio): ?>
               <a
                 class="estabelecimento-card"
-                href="../CRUD-Cardapio/ver-cardapio/cardapio-publico.php?id=<?php echo (int) $cardapio['id']; ?>"
+                href="../CRUD-Cardapio/ver-cardapio/cardapio-delivery.php?id=<?php echo (int) $cardapio['id']; ?>"
               >
                 <div class="estabelecimento-identidade">
                   <?php if (!empty($cardapio['logo'])): ?>

@@ -63,6 +63,7 @@ $stmtDelivery->close();
     </a>
     <nav class="main-nav">
       <a href="index.php">Painel</a>
+      <a href="pedidos-delivery.php">Pedidos delivery</a>
       <a href="../Delivery/index.php">Ver delivery</a>
       <a href="../auth/logout.php">Sair</a>
     </nav>

@@ -151,6 +151,42 @@ LOCK TABLES `itens_cardapio` WRITE;
 /*!40000 ALTER TABLE `itens_cardapio` ENABLE KEYS */;
 UNLOCK TABLES;
 
+DROP TABLE IF EXISTS `itens_pedido_delivery`;
+DROP TABLE IF EXISTS `pedidos_delivery`;
+
+CREATE TABLE `pedidos_delivery` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `usuario_id` int(11) NOT NULL,
+  `cardapio_id` int(11) NOT NULL,
+  `nome_estabelecimento` varchar(150) COLLATE utf8mb4_general_ci NOT NULL,
+  `categoria` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `nome_cliente` varchar(150) COLLATE utf8mb4_general_ci NOT NULL,
+  `telefone_cliente` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
+  `endereco_entrega` varchar(500) COLLATE utf8mb4_general_ci NOT NULL,
+  `observacao` text COLLATE utf8mb4_general_ci,
+  `status` enum('RECEBIDO','CONFIRMADO','EM_PREPARO','SAIU_PARA_ENTREGA','ENTREGUE','CANCELADO') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'RECEBIDO',
+  `total` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `criado_em` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `atualizado_em` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_pedidos_delivery_usuario_status` (`usuario_id`,`status`,`criado_em`),
+  KEY `idx_pedidos_delivery_cardapio` (`cardapio_id`),
+  CONSTRAINT `fk_pedidos_delivery_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `itens_pedido_delivery` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `pedido_id` int(11) NOT NULL,
+  `item_cardapio_id` int(11) DEFAULT NULL,
+  `nome_item` varchar(150) COLLATE utf8mb4_general_ci NOT NULL,
+  `quantidade` int(11) NOT NULL,
+  `preco_unitario` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_itens_pedido_delivery_pedido` (`pedido_id`),
+  CONSTRAINT `fk_itens_pedido_delivery_pedido` FOREIGN KEY (`pedido_id`) REFERENCES `pedidos_delivery` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_itens_pedido_delivery_item` FOREIGN KEY (`item_cardapio_id`) REFERENCES `itens_cardapio` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 DROP TABLE IF EXISTS `itens_comanda`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
