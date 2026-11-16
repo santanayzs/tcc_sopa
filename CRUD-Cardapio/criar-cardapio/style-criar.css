@@ -1,442 +1,387 @@
+/* Base da página e identidade visual do cabeçalho */
 .dashboard-page {
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;
-    background: #f5f5f5;
-    color: #17211f;
-    zoom: 1.12;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  background: linear-gradient(155deg, #eef1ea 0%, #dde3d5 45%, #c9d1c4 100%);
+  color: var(--ink);
 }
 
-.site-header {
-    position: relative;
-    min-height: 60px;
-    padding: 6px clamp(20px, 4vw, 48px);
-    background: #f5f5f5;
-    border-bottom: 2px solid #9fb6ad;
-    color: #344e49;
-}
-
-.logotipo {
-    width: 190px;
-    height: 44px;
-    object-fit: cover;
-    object-position: center;
-}
-
-.main-nav a {
-    padding: 6px 9px;
-    color: #344e49;
-    font-family: var(--font-accent);
-    font-size: 1.25rem;
-    font-weight: 600;
-}
-
-.main-nav a:hover {
-    background: rgba(52, 78, 73, 0.08);
-}
-
+/* Área central e largura do conteúdo */
 .dashboard-shell {
-    flex: 1;
-    min-height: 0;
-    padding: 14px 0 18px;
-    text-align: left;
+  flex: 1;
+  min-height: 0;
+  margin: 14px 0;
+  padding: 14px 0 18px;
+  background: var(--white);
+  text-align: left;
 }
 
 .dashboard-card {
-    width: min(100% - 72px, 1024px);
-    margin: 0 auto;
-    padding: 0;
-    background: transparent;
+  width: min(100% - 72px, 1024px);
+  margin: 0 auto;
+  padding: 0;
+  background: transparent;
+  zoom: 1.12;
 }
 
 .btn-voltar {
-    display: inline-flex;
-    min-width: 116px;
-    min-height: 42px;
-    align-items: center;
-    justify-content: center;
-    margin: 0 0 27px 28px;
-    padding: 8px 22px;
-    border-radius: 16px;
-    background: #344e49;
-    color: #fff;
-    font-family: var(--font-accent);
-    font-size: 1.1rem;
-    font-weight: 600;
+  display: inline-flex;
+  min-width: 116px;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0 27px 28px;
+  padding: 8px 22px;
+  border-radius: 16px;
+  background: var(--green-800);
+  color: var(--white);
+  font-family: var(--font-accent);
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
 .btn-voltar:hover,
 .btn-add:hover {
-    background: #243935;
+  background: var(--green-900);
 }
 
+/* Título e texto de apresentação do formulário */
 .menu-page-heading {
-    padding: 10px 12px 9px;
-    border-top: 2px solid #344e49;
-    border-bottom: 2px solid #344e49;
-    text-align: center;
+  padding: 10px 12px 9px;
+  border-top: 2px solid var(--green-800);
+  border-bottom: 2px solid var(--green-800);
+  text-align: center;
 }
 
 .menu-page-heading h1 {
-    margin: 0;
-    color: #111;
-    font-family: var(--font-accent);
-    font-size: clamp(2rem, 3.2vw, 2.45rem);
-    font-weight: 600;
-    line-height: 1.1;
-    text-transform: uppercase;
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-accent);
+  font-size: clamp(2rem, 3.2vw, 2.45rem);
+  font-weight: 600;
+  line-height: 1.1;
+  text-transform: uppercase;
 }
 
 .menu-page-heading p {
-    margin: 1px 0 0;
-    color: #111;
-    font-family: var(--font-accent);
-    font-size: 1.2rem;
-    font-weight: 600;
-    line-height: 1.2;
+  margin: 1px 0 0;
+  color: var(--ink);
+  font-family: var(--font-accent);
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1.2;
 }
 
+/* Formulário dividido entre dados do restaurante e cadastro de itens */
 .cardapio-form {
-    display: grid;
-    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.25fr);
-    column-gap: 18px;
-    row-gap: 12px;
-    align-items: start;
-    margin-top: 14px;
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.25fr);
+  column-gap: 18px;
+  row-gap: 12px;
+  align-items: start;
+  margin-top: 14px;
 }
 
 .form-group-area {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 12px;
-    padding-right: 18px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+  padding-right: 18px;
 }
 
 .form-group-area h2,
 .itens-box h2 {
-    margin: 0 0 2px;
-    color: #111;
-    font-family: var(--font-accent);
-    font-size: 1.65rem;
-    font-weight: 600;
-    line-height: 1.2;
-    text-align: center;
-    text-transform: uppercase;
+  margin: 0 0 2px;
+  color: var(--ink);
+  font-family: var(--font-accent);
+  font-size: 1.65rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  text-transform: uppercase;
 }
 
 .form-group {
-    margin: 0;
+  margin: 0;
 }
 
 .form-group label {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    clip-path: inset(50%);
+  /* Mantém os rótulos acessíveis para leitores de tela sem exibi-los visualmente */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
 }
 
 .form-group input,
 .item-inputs > input[type="text"],
 .item-inputs > input[type="number"] {
-    width: 100%;
-    min-width: 0;
-    min-height: 43px;
-    padding: 7px 14px;
-    border: 1px solid #344e49;
-    border-radius: 7px;
-    background: #e2e2e2;
-    color: #344e49;
-    font-family: var(--font-accent);
-    font-size: 1.25rem;
-    font-weight: 600;
+  width: 100%;
+  min-width: 0;
+  min-height: 43px;
+  padding: 7px 14px;
+  border: 1px solid var(--green-800);
+  border-radius: 7px;
+  background: #e2e2e2;
+  color: var(--green-800);
+  font-family: var(--font-accent);
+  font-size: 1.25rem;
+  font-weight: 600;
 }
 
 .form-group input::placeholder,
 .item-inputs > input::placeholder {
-    color: #344e49;
-    opacity: 1;
+  color: var(--green-800);
+  opacity: 1;
 }
 
 .itens-box {
-    min-width: 0;
-    padding-left: 16px;
-    border-left: 2px solid #344e49;
+  min-width: 0;
+  padding-left: 16px;
+  border-left: 2px solid var(--green-800);
 }
 
 .itens-box h2 {
-    margin-bottom: 14px;
+  margin-bottom: 14px;
 }
 
+/* Campos e ações para adicionar cada item ao cardápio */
 .item-inputs {
-    display: grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-    gap: 10px 8px;
-    align-items: center;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px 8px;
+  align-items: center;
 }
 
 #nomeItem,
 #precoItem {
-    grid-column: span 3;
+  grid-column: span 3;
 }
 
 .file-input-hidden {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    clip-path: inset(50%);
-    border: 0;
+  /* O seletor nativo fica oculto; o label associado funciona como botão visível */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+  border: 0;
 }
 
 .file-input-hidden:focus-visible + .btn-upload {
-    outline: 2px solid #243935;
-    outline-offset: 3px;
+  outline: 2px solid var(--green-900);
+  outline-offset: 3px;
 }
 
 .btn-upload,
 .btn-add,
 .btn-save {
-    display: inline-flex;
-    min-height: 46px;
-    align-items: center;
-    justify-content: center;
-    padding: 8px 12px;
-    border: 0;
-    border-radius: 17px;
-    color: #fff;
-    cursor: pointer;
-    font-family: var(--font-accent);
-    font-size: 1rem;
-    font-weight: 600;
-    line-height: 1.15;
-    text-align: center;
-    white-space: nowrap;
+  display: inline-flex;
+  min-height: 46px;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 17px;
+  color: var(--white);
+  cursor: pointer;
+  font-family: var(--font-accent);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.15;
+  text-align: center;
+  white-space: nowrap;
 }
 
 .btn-upload,
 .btn-add {
-    grid-column: span 2;
-    background: #344e49;
+  grid-column: span 2;
+  background: var(--green-800);
 }
 
 .btn-save {
-    grid-column: span 2;
-    background: linear-gradient(120deg, #cfded7, #8fad9f);
-    color: #344e49;
+  grid-column: span 2;
+  background: linear-gradient(120deg, #cfded7, #8fad9f);
+  color: var(--green-800);
 }
 
 .btn-save:hover {
-    background: #8fad9f;
+  background: #8fad9f;
 }
 
 .upload-help {
-    margin: 6px 0 0;
-    color: #344e49;
-    font-family: var(--font-accent);
-    font-size: 0.95rem;
-    text-align: center;
+  margin: 6px 0 0;
+  color: var(--green-800);
+  font-family: var(--font-accent);
+  font-size: 0.95rem;
+  text-align: center;
 }
 
+/* Lista dinâmica de itens; a rolagem fica limitada à lista */
 .lista-itens-box {
-    grid-column: 1 / -1;
-    width: min(100% - 24px, 900px);
-    min-height: 170px;
-    justify-self: center;
-    overflow: hidden;
-    border-radius: 22px;
-    background: #344e49;
-    color: #fff;
+  grid-column: 1 / -1;
+  width: min(100% - 24px, 900px);
+  min-height: 170px;
+  justify-self: center;
+  overflow: hidden;
+  border-radius: 22px;
+  background: var(--green-800);
+  color: var(--white);
 }
 
 .lista-itens-box h2 {
-    margin: 0;
-    padding: 2px 12px 3px;
-    border-bottom: 2px solid #f5f5f5;
-    font-family: var(--font-accent);
-    font-size: 1.9rem;
-    font-weight: 600;
-    line-height: 1.1;
-    text-align: center;
+  margin: 0;
+  padding: 2px 12px 3px;
+  border-bottom: 2px solid var(--cream-1);
+  font-family: var(--font-accent);
+  font-size: 1.9rem;
+  font-weight: 600;
+  line-height: 1.1;
+  text-align: center;
 }
 
 #listaItens {
-    max-height: max(128px, calc(100vh - 530px));
-    overflow-y: auto;
-    padding: 8px 10%;
-    scrollbar-color: #9fb6ad #f5f5f5;
-    scrollbar-width: thin;
+  /* Cresce com os itens até o limite calculado para a altura da janela */
+  max-height: max(128px, calc(100vh - 530px));
+  overflow-y: auto;
+  padding: 8px 10%;
+  scrollbar-color: var(--sage) var(--cream-1);
+  scrollbar-width: thin;
 }
 
 .item-linha {
-    display: flex;
-    min-height: 48px;
-    align-items: center;
-    gap: 8px;
-    margin: 0;
-    padding: 5px 0;
-    border-radius: 0;
-    border-bottom: 1px solid rgba(245, 245, 245, 0.8);
-    background: transparent;
-    color: #fff;
-    font-family: var(--font-accent);
-    font-size: 1.25rem;
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 5px 0;
+  border-radius: 0;
+  border-bottom: 1px solid rgba(245, 245, 245, 0.8);
+  background: transparent;
+  color: var(--white);
+  font-family: var(--font-accent);
+  font-size: 1.25rem;
 }
 
 .item-thumb {
-    width: 34px;
-    height: 34px;
-    border-radius: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 0;
 }
 
 .item-linha-info {
-    align-items: center;
+  align-items: center;
 }
 
 .item-linha-nome,
 .item-linha-preco {
-    font-weight: 600;
+  font-weight: 600;
 }
 
 .item-trocar-imagem,
 .item-remover-imagem {
-    color: #f5f5f5;
+  color: var(--cream-1);
 }
 
 .item-trocar-imagem input[type="file"] {
-    max-width: 110px;
-    font-size: 0.72rem;
+  max-width: 110px;
+  font-size: 0.72rem;
 }
 
 .btn-remover-item {
-    background: none;
-    border: none;
-    color: #ffb0b0;
-    font-size: 1rem;
-    cursor: pointer;
-    flex-shrink: 0;
+  background: none;
+  border: none;
+  color: #ffb0b0;
+  font-size: 1rem;
+  cursor: pointer;
+  flex-shrink: 0;
 }
 
-.site-footer {
-    display: flex;
-    min-height: 54px;
-    align-items: center;
-    justify-content: center;
-    padding: 3px 12px;
-    border-top: 2px solid #9fb6ad;
-    background: #f5f5f5;
-}
-
-.logotipoFooter {
-    width: 190px;
-    height: 44px;
-    margin: 0;
-    object-fit: cover;
-    object-position: center;
-}
-
-.site-footer p {
-    display: none;
-}
-
+/* Em telas menores, as colunas passam a ocupar linhas separadas */
 @media (max-width: 780px) {
-    .site-header {
-        padding: 6px 18px;
-    }
+  .dashboard-card {
+    width: min(100% - 32px, 600px);
+  }
 
-    .nav-toggle span {
-        background: #344e49;
-    }
+  .cardapio-form {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 18px;
+  }
 
-    .main-nav {
-        background: #f5f5f5;
-        border-bottom-color: #344e49;
-    }
+  .form-group-area {
+    padding-right: 0;
+  }
 
-    .main-nav a {
-        padding: 16px 24px;
-    }
+  .itens-box {
+    padding: 14px 0 0;
+    border-top: 2px solid var(--green-800);
+    border-left: 0;
+  }
 
-    .dashboard-card {
-        width: min(100% - 32px, 600px);
-    }
+  .lista-itens-box {
+    width: 100%;
+  }
 
-    .cardapio-form {
-        grid-template-columns: minmax(0, 1fr);
-        row-gap: 18px;
-    }
-
-    .form-group-area {
-        padding-right: 0;
-    }
-
-    .itens-box {
-        padding: 14px 0 0;
-        border-top: 2px solid #344e49;
-        border-left: 0;
-    }
-
-    .lista-itens-box {
-        width: 100%;
-    }
-
-    #listaItens {
-        max-height: max(80px, calc(100vh - 660px));
-    }
-
+  #listaItens {
+    max-height: max(80px, calc(100vh - 660px));
+  }
 }
 
+/* Ajustes específicos para celulares */
 @media (max-width: 480px) {
-    .dashboard-shell {
-        padding-top: 10px;
-    }
+  .dashboard-shell {
+    padding-top: 10px;
+  }
 
-    .btn-voltar {
-        margin: 0 0 18px 4px;
-    }
+  .btn-voltar {
+    margin: 0 0 18px 4px;
+  }
 
-    .menu-page-heading {
-        padding: 9px 5px;
-    }
+  .menu-page-heading {
+    padding: 9px 5px;
+  }
 
-    .menu-page-heading h1 {
-        font-size: 1.8rem;
-    }
+  .menu-page-heading h1 {
+    font-size: 1.8rem;
+  }
 
-    .menu-page-heading p {
-        font-size: 1rem;
-    }
+  .menu-page-heading p {
+    font-size: 1rem;
+  }
 
-    .form-group-area h2,
-    .itens-box h2 {
-        font-size: 1.45rem;
-    }
+  .form-group-area h2,
+  .itens-box h2 {
+    font-size: 1.45rem;
+  }
 
-    .item-inputs {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
+  .item-inputs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 
-    #nomeItem,
-    #precoItem {
-        grid-column: span 1;
-    }
+  #nomeItem,
+  #precoItem {
+    grid-column: span 1;
+  }
 
-    .btn-upload,
-    .btn-add,
-    .btn-save {
-        grid-column: span 1;
-        padding-inline: 8px;
-        font-size: 0.9rem;
-        white-space: normal;
-    }
+  .btn-upload,
+  .btn-add,
+  .btn-save {
+    grid-column: span 1;
+    padding-inline: 8px;
+    font-size: 0.9rem;
+    white-space: normal;
+  }
 
-    #listaItens {
-        padding-right: 6%;
-        padding-left: 6%;
-    }
+  #listaItens {
+    padding-right: 6%;
+    padding-left: 6%;
+  }
 }

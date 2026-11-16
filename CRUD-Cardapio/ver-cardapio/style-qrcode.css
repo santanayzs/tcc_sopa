@@ -43,6 +43,7 @@
     flex: 1;
     min-height: 0;
     align-items: center;
+    margin: 14px 0;
     padding: 28px 0;
     background: #fff;
 }
@@ -206,29 +207,6 @@
     stroke-linecap: round;
     stroke-linejoin: round;
     stroke-width: 1.7;
-}
-
-.site-footer {
-    display: flex;
-    min-height: 62px;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: center;
-    padding: 4px 12px;
-    border-top: 2px solid #344e49;
-    background: #eef1ea;
-}
-
-.logotipoFooter {
-    width: 190px;
-    height: 44px;
-    margin: 0;
-    object-fit: cover;
-    object-position: center;
-}
-
-.site-footer p {
-    display: none;
 }
 
 @media (max-width: 780px) {

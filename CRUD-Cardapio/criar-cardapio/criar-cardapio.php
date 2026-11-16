@@ -49,8 +49,7 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
         </a>
 
         <nav class="main-nav" id="main-nav">
-            <a href="../../index.html">Início</a>
-            <a href="../dashboard/index.php">Painel</a>
+            <a href="../../dashboard/index.php">Início</a>
             <a href="../ver-cardapio/ver-cardapio.php">Ver Cardápio</a>
             <a href="../../auth/logout.php">Sair</a>
         </nav>
