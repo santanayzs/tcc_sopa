@@ -23,10 +23,54 @@
 }
 
 .orders-refresh-note {
-  display: inline-block;
-  margin-top: 12px;
+  margin: 12px 0 0;
   color: var(--muted);
   font-size: 0.82rem;
+}
+
+.orders-notification-button {
+  min-height: 40px;
+  margin-top: 14px;
+  padding: 0 14px;
+  color: var(--green-800);
+  background: var(--white);
+  border: 1px solid var(--green-700);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.orders-notification-button:hover {
+  color: var(--white);
+  background: var(--green-800);
+}
+
+.order-alerts {
+  position: fixed;
+  z-index: 10;
+  right: 20px;
+  bottom: 20px;
+  display: grid;
+  gap: 10px;
+  width: min(390px, calc(100vw - 32px));
+}
+
+.order-alert {
+  padding: 14px 16px;
+  color: var(--green-950);
+  background: var(--white);
+  border: 1px solid var(--green-700);
+  border-left: 5px solid var(--green-700);
+  border-radius: 5px;
+  box-shadow: 0 8px 28px rgba(30, 48, 43, 0.18);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.order-alert strong {
+  display: block;
+  margin-bottom: 3px;
 }
 
 .orders-list {

@@ -63,22 +63,12 @@ if (is_string($clienteToken) && $clienteToken !== '') {
     }
 }
 
-$haPedidoEmAndamento = false;
-foreach ($pedidos as $pedido) {
-    if (!in_array($pedido['status'], ['ENTREGUE', 'CANCELADO'], true)) {
-        $haPedidoEmAndamento = true;
-        break;
-    }
-}
 ?>
 <!doctype html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <?php if ($haPedidoEmAndamento): ?>
-    <meta http-equiv="refresh" content="30" />
-  <?php endif; ?>
   <meta name="description" content="Acompanhe a situação dos seus pedidos de delivery no S.O.P.A." />
   <title>Meus pedidos | S.O.P.A.</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -105,9 +95,8 @@ foreach ($pedidos as $pedido) {
       <p class="eyebrow">Delivery S.O.P.A.</p>
       <h1 id="orders-title">Acompanhe seus pedidos</h1>
       <p>Veja as atualizações do estabelecimento e acompanhe cada etapa até a entrega.</p>
-      <?php if ($haPedidoEmAndamento): ?>
-        <span class="orders-refresh-note">Esta página atualiza a situação automaticamente a cada 30 segundos.</span>
-      <?php endif; ?>
+      <p class="orders-refresh-note">Avisaremos nesta página quando a situação mudar. Mantenha-a aberta para receber os avisos.</p>
+      <button class="orders-notification-button" id="enable-order-notifications" type="button" hidden>Ativar notificações do navegador</button>
     </section>
 
     <?php if (empty($pedidos)): ?>
@@ -125,7 +114,7 @@ foreach ($pedidos as $pedido) {
             $statusRotulo = $rotulosStatus[$status] ?? $status;
             $etapaAtual = array_search($status, array_keys($etapas), true);
           ?>
-          <article class="order-card">
+          <article class="order-card" data-order-id="<?php echo (int) $pedido['id']; ?>" data-order-status="<?php echo htmlspecialchars($status, ENT_QUOTES, 'UTF-8'); ?>">
             <header class="order-header">
               <div>
                 <p class="order-number">Pedido #<?php echo (int) $pedido['id']; ?></p>
@@ -179,6 +168,8 @@ foreach ($pedidos as $pedido) {
     <?php endif; ?>
   </main>
 
+  <div class="order-alerts" id="order-alerts" role="log" aria-live="polite" aria-relevant="additions"></div>
+
   <footer class="site-footer">
     <a class="brand" href="../index.html">
       <span class="brand-mark">S</span>
@@ -186,5 +177,6 @@ foreach ($pedidos as $pedido) {
     </a>
     <p>Comida que aproxima.</p>
   </footer>
+  <script src="meus-pedidos.js" defer></script>
 </body>
 </html>
