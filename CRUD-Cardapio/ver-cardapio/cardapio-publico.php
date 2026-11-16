@@ -95,7 +95,10 @@ if ($cardapio) {
                 <p style="text-align:center;">Nenhum item cadastrado neste cardápio ainda.</p>
             <?php else: ?>
                 <?php if ($modoDelivery && $pedidoResultado === 'ok'): ?>
-                    <p class="pedido-feedback pedido-feedback-ok" role="status">Pedido enviado. O estabelecimento já pode recebê-lo.</p>
+                    <p class="pedido-feedback pedido-feedback-ok" role="status">
+                        Pedido enviado. O estabelecimento já pode recebê-lo.
+                        <a href="../../Delivery/meus-pedidos.php">Acompanhe a situação do pedido</a>
+                    </p>
                 <?php elseif ($modoDelivery && $pedidoResultado === 'erro'): ?>
                     <p class="pedido-feedback pedido-feedback-erro" role="alert">Não foi possível enviar. Confira os dados e tente novamente.</p>
                 <?php endif; ?>

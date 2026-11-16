@@ -119,7 +119,8 @@ $stmtDelivery->close();
               <legend>Endereço do estabelecimento</legend>
               <label>
                 CEP
-                <input name="cep" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="9" value="<?php echo htmlspecialchars((string) ($estabelecimento['cep'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>">
+                <input name="cep" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="9" placeholder="00000-000" aria-describedby="business-cep-help business-cep-status" value="<?php echo htmlspecialchars((string) ($estabelecimento['cep'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>">
+                <small id="business-cep-help">Digite os 8 números para preencher o endereço automaticamente.</small>
                 <span id="business-cep-status" role="status" aria-live="polite"></span>
               </label>
               <label>

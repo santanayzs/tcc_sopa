@@ -14,20 +14,30 @@
   const cepStatus = document.getElementById("business-cep-status");
   let cepRequest;
   let cepLookupPromise = Promise.resolve();
+  let cepConsultado = "";
 
   async function fillAddressFromCep() {
     const cep = cepInput.value.replace(/\D/g, "");
-    cepRequest?.abort();
     if (cep.length !== 8) {
+      cepRequest?.abort();
+      cepConsultado = "";
       form.noValidate = false;
+      cepInput.setAttribute("aria-busy", "false");
       cepStatus.textContent = "";
       return;
     }
+    if (cep === cepConsultado) return cepLookupPromise;
 
+    cepRequest?.abort();
     const request = new AbortController();
     cepRequest = request;
+    cepConsultado = cep;
     form.noValidate = true;
+    cepInput.setAttribute("aria-busy", "true");
     cepStatus.textContent = "Buscando endereço...";
+    for (const field of ["logradouro", "bairro", "cidade", "estado"]) {
+      addressFields.querySelector(`[name="${field}"]`).value = "";
+    }
 
     try {
       const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`, {
@@ -36,6 +46,7 @@
       if (!response.ok) throw new Error("Falha na consulta");
 
       const address = await response.json();
+      if (cepRequest !== request) return;
       if (address.erro) {
         cepStatus.textContent = "CEP não encontrado.";
         return;
@@ -46,19 +57,27 @@
         const responseField = { cidade: "localidade", estado: "uf" }[field] || field;
         input.value = address[responseField] || "";
       }
-      cepStatus.textContent = "Endereço preenchido. Informe o número.";
+      cepStatus.textContent = "Endereço preenchido. Confira os campos e informe o número.";
     } catch (error) {
       if (error.name !== "AbortError") {
+        if (cepRequest === request) cepConsultado = "";
         cepStatus.textContent = "Não foi possível consultar o CEP. Preencha o endereço manualmente.";
       }
     } finally {
-      if (cepRequest === request) form.noValidate = false;
+      if (cepRequest === request) {
+        form.noValidate = false;
+        cepInput.setAttribute("aria-busy", "false");
+      }
     }
   }
 
-  cepInput.addEventListener("input", () => {
+  function consultarCep() {
     cepLookupPromise = fillAddressFromCep();
-  });
+  }
+
+  cepInput.addEventListener("input", consultarCep);
+  cepInput.addEventListener("change", consultarCep);
+  cepInput.addEventListener("blur", consultarCep);
 
   form.addEventListener("submit", async (event) => {
     if (cepStatus.textContent !== "Buscando endereço...") return;

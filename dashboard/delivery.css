@@ -201,6 +201,14 @@
   border-radius: 4px;
 }
 
+.delivery-address-fields small,
+.delivery-address-fields label > span {
+  color: var(--green-700);
+  font-size: 0.76rem;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
 .delivery-address-fields[hidden],
 .delivery-gps-control[hidden] {
   display: none;

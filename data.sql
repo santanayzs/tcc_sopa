@@ -164,12 +164,14 @@ CREATE TABLE `pedidos_delivery` (
   `telefone_cliente` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
   `endereco_entrega` varchar(500) COLLATE utf8mb4_general_ci NOT NULL,
   `observacao` text COLLATE utf8mb4_general_ci,
+  `cliente_token_hash` char(64) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `status` enum('RECEBIDO','CONFIRMADO','EM_PREPARO','SAIU_PARA_ENTREGA','ENTREGUE','CANCELADO') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'RECEBIDO',
   `total` decimal(10,2) NOT NULL DEFAULT '0.00',
   `criado_em` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `atualizado_em` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `idx_pedidos_delivery_usuario_status` (`usuario_id`,`status`,`criado_em`),
+  KEY `idx_pedidos_delivery_cliente_token` (`cliente_token_hash`),
   KEY `idx_pedidos_delivery_cardapio` (`cardapio_id`),
   CONSTRAINT `fk_pedidos_delivery_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

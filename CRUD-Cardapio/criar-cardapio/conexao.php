@@ -83,16 +83,38 @@ function garantirTabelasPedidosDelivery(mysqli $conexao): void
             telefone_cliente VARCHAR(30) NOT NULL,
             endereco_entrega VARCHAR(500) NOT NULL,
             observacao TEXT NULL,
+            cliente_token_hash CHAR(64) NULL,
             status ENUM("RECEBIDO", "CONFIRMADO", "EM_PREPARO", "SAIU_PARA_ENTREGA", "ENTREGUE", "CANCELADO") NOT NULL DEFAULT "RECEBIDO",
             total DECIMAL(10,2) NOT NULL DEFAULT 0.00,
             criado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
             atualizado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             PRIMARY KEY (id),
             KEY idx_pedidos_delivery_usuario_status (usuario_id, status, criado_em),
+            KEY idx_pedidos_delivery_cliente_token (cliente_token_hash),
             KEY idx_pedidos_delivery_cardapio (cardapio_id),
             CONSTRAINT fk_pedidos_delivery_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios (id) ON DELETE CASCADE
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci'
     );
+
+    $colunaTokenCliente = $conexao->query("SHOW COLUMNS FROM pedidos_delivery LIKE 'cliente_token_hash'");
+    if (!$colunaTokenCliente) {
+        throw new RuntimeException('Não foi possível verificar a coluna de acompanhamento dos pedidos.');
+    }
+    if ($colunaTokenCliente->num_rows === 0 && !$conexao->query(
+        'ALTER TABLE pedidos_delivery ADD COLUMN cliente_token_hash CHAR(64) NULL AFTER observacao'
+    )) {
+        throw new RuntimeException('Não foi possível preparar o acompanhamento dos pedidos existentes.');
+    }
+
+    $indiceTokenCliente = $conexao->query("SHOW INDEX FROM pedidos_delivery WHERE Key_name = 'idx_pedidos_delivery_cliente_token'");
+    if (!$indiceTokenCliente) {
+        throw new RuntimeException('Não foi possível verificar o índice de acompanhamento dos pedidos.');
+    }
+    if ($indiceTokenCliente->num_rows === 0 && !$conexao->query(
+        'ALTER TABLE pedidos_delivery ADD INDEX idx_pedidos_delivery_cliente_token (cliente_token_hash)'
+    )) {
+        throw new RuntimeException('Não foi possível preparar a busca dos pedidos do cliente.');
+    }
 
     $conexao->query(
         'CREATE TABLE IF NOT EXISTS itens_pedido_delivery (

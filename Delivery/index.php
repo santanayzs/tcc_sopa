@@ -150,6 +150,7 @@ if ($locationConfirmed) {
       </a>
       <nav class="main-nav" aria-label="Navegação principal">
         <a href="#estabelecimentos">Cardápios</a>
+        <a href="meus-pedidos.php">Meus pedidos</a>
       </nav>
       <a class="account-link" href="../auth/index.php">Área do estabelecimento</a>
     </header>
