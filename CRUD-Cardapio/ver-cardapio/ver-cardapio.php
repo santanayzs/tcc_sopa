@@ -79,7 +79,7 @@ $stmt->close();
 
         <nav class="main-nav" id="main-nav">
             <a href="../../dashboard/index.php">Início</a>
-            <a href="../../criar-cardapio/criar-cardapio.php">Criar Cardápio</a>
+            <a href="../criar-cardapio/criar-cardapio.php">Criar Cardápio</a>
             <a href="../../auth/logout.php">Sair</a>
         </nav>
 
