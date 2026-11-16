@@ -92,6 +92,7 @@ $stmt->close();
       >
         <span></span><span></span><span></span>
       </button>
+    </header>
 
     <main class="dashboard-shell">
         <div class="dashboard-card">
