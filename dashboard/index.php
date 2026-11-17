@@ -14,7 +14,7 @@ $usuarioId = (int) $_SESSION['id'];
 $recentCardapios = [];
 
 $stmt = $conexao->prepare(
-    'SELECT id, nome_restaurante, categoria, data_criacao, atualizado_em, cor_primaria, cor_texto, cor_fundo_cardapio, cor_fundo_item, logo
+    'SELECT id, nome_restaurante, categoria, data_criacao, atualizado_em, cor_primaria, cor_texto, cor_fundo_cardapio, cor_fundo_item, logo, delivery_ativo
      FROM cardapios
      WHERE usuario_id = ?
      ORDER BY GREATEST(data_criacao, COALESCE(atualizado_em, data_criacao)) DESC
@@ -39,6 +39,43 @@ while ($cardapio = $resultado->fetch_assoc()) {
     $recentCardapios[] = $cardapio;
 }
 $stmt->close();
+
+$stmtComandas = $conexao->prepare(
+    'SELECT c.id, c.total, c.data_abertura, m.numero AS numero_mesa,
+            cp.nome_restaurante
+     FROM comandas c
+     INNER JOIN mesas m ON m.id = c.mesa_id
+     LEFT JOIN cardapios cp ON cp.id = c.cardapio_id
+     WHERE c.usuario_id = ? AND c.status = "ABERTA"
+     ORDER BY c.data_abertura DESC, c.id DESC
+     LIMIT 4'
+);
+$stmtComandas->bind_param('i', $usuarioId);
+$stmtComandas->execute();
+$comandasAbertas = $stmtComandas->get_result()->fetch_all(MYSQLI_ASSOC);
+$stmtComandas->close();
+
+garantirTabelasPedidosDelivery($conexao);
+$stmtPedidos = $conexao->prepare(
+    'SELECT id, nome_estabelecimento, nome_cliente, status, total, criado_em
+     FROM pedidos_delivery
+     WHERE usuario_id = ?
+     ORDER BY criado_em DESC, id DESC
+     LIMIT 4'
+);
+$stmtPedidos->bind_param('i', $usuarioId);
+$stmtPedidos->execute();
+$pedidosRecentes = $stmtPedidos->get_result()->fetch_all(MYSQLI_ASSOC);
+$stmtPedidos->close();
+
+$statusPedidos = [
+    'RECEBIDO' => 'Recebido',
+    'CONFIRMADO' => 'Confirmado',
+    'EM_PREPARO' => 'Em preparo',
+    'SAIU_PARA_ENTREGA' => 'Saiu para entrega',
+    'ENTREGUE' => 'Entregue',
+    'CANCELADO' => 'Cancelado',
+];
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -190,7 +227,120 @@ $stmt->close();
           </div>
         </div>
 
-        
+        <section class="dashboard-modulo" aria-labelledby="garcom-title">
+          <div class="dashboard-layout">
+            <a class="feature-card" href="../comandas/comandas.php" aria-label="Acessar área do garçom">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M4 4h16v16H4z"></path>
+                <path d="M8 8h8M8 12h8M8 16h4"></path>
+                <path d="m16 16 1.5 1.5L20 15"></path>
+              </svg>
+              <h3>Área do Garçom</h3>
+            </a>
+
+            <div class="dashboard-area-cardapios dashboard-resumo">
+              <div class="dashboard-cardapios-topo">
+                <h2 id="garcom-title">Comandas abertas</h2>
+                <a class="link-ver-cardapio" href="../comandas/comandas.php">Gerenciar comandas</a>
+              </div>
+
+              <?php if (empty($comandasAbertas)): ?>
+                <p class="dashboard-resumo-vazio">Você não tem comandas abertas no momento.</p>
+              <?php else: ?>
+                <div class="dashboard-resumo-lista">
+                  <?php foreach ($comandasAbertas as $comanda): ?>
+                    <a class="dashboard-resumo-item" href="../comandas/comandas/comanda-detalhe.php?id=<?php echo (int) $comanda['id']; ?>">
+                      <span>
+                        <strong>Mesa <?php echo (int) $comanda['numero_mesa']; ?></strong>
+                        <small><?php echo htmlspecialchars($comanda['nome_restaurante'] ?: 'Cardápio não selecionado', ENT_QUOTES, 'UTF-8'); ?> · aberta às <?php echo date('H:i', strtotime($comanda['data_abertura'])); ?></small>
+                      </span>
+                      <strong>R$ <?php echo number_format((float) $comanda['total'], 2, ',', '.'); ?></strong>
+                    </a>
+                  <?php endforeach; ?>
+                </div>
+              <?php endif; ?>
+            </div>
+          </div>
+        </section>
+
+        <section class="dashboard-modulo" aria-labelledby="delivery-title">
+          <div class="dashboard-layout">
+            <a class="feature-card" href="gerenciar-delivery.php" aria-label="Gerenciar delivery">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 8h12v10H3z"></path>
+                <path d="M15 11h4l3 3v4h-7z"></path>
+                <circle cx="7.5" cy="19" r="1.5"></circle>
+                <circle cx="18.5" cy="19" r="1.5"></circle>
+                <path d="M6 11h6M6 14h4"></path>
+              </svg>
+              <h3>Gerenciar Delivery</h3>
+            </a>
+
+            <div class="dashboard-area-cardapios dashboard-resumo">
+              <div class="dashboard-cardapios-topo">
+                <h2 id="delivery-title">Cardápios disponíveis</h2>
+                <a class="link-ver-cardapio" href="gerenciar-delivery.php">Configurar delivery</a>
+              </div>
+
+              <?php if (empty($recentCardapios)): ?>
+                <p class="dashboard-resumo-vazio">Cadastre um cardápio para configurar a disponibilidade no delivery.</p>
+              <?php else: ?>
+                <div class="dashboard-resumo-lista">
+                  <?php foreach ($recentCardapios as $cardapio): ?>
+                    <a class="dashboard-resumo-item" href="gerenciar-delivery.php">
+                      <span>
+                        <strong><?php echo htmlspecialchars($cardapio['nome_restaurante'], ENT_QUOTES, 'UTF-8'); ?></strong>
+                        <small><?php echo htmlspecialchars($cardapio['categoria'] ?: 'Sem categoria', ENT_QUOTES, 'UTF-8'); ?></small>
+                      </span>
+                      <span class="dashboard-resumo-status <?php echo !empty($cardapio['delivery_ativo']) ? 'ativo' : ''; ?>">
+                        <?php echo !empty($cardapio['delivery_ativo']) ? 'Publicado' : 'Oculto'; ?>
+                      </span>
+                    </a>
+                  <?php endforeach; ?>
+                </div>
+              <?php endif; ?>
+            </div>
+          </div>
+        </section>
+
+        <section class="dashboard-modulo" aria-labelledby="pedidos-title">
+          <div class="dashboard-layout">
+            <a class="feature-card" href="pedidos-delivery.php" aria-label="Acessar pedidos de delivery">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 3h14v18H5z"></path>
+                <path d="M8 7h8M8 11h8M8 15h5"></path>
+                <path d="m14 18 2 2 4-4"></path>
+              </svg>
+              <h3>Pedidos Delivery</h3>
+            </a>
+
+            <div class="dashboard-area-cardapios dashboard-resumo">
+              <div class="dashboard-cardapios-topo">
+                <h2 id="pedidos-title">Pedidos recentes</h2>
+                <a class="link-ver-cardapio" href="pedidos-delivery.php">Ver pedidos</a>
+              </div>
+
+              <?php if (empty($pedidosRecentes)): ?>
+                <p class="dashboard-resumo-vazio">Os pedidos recebidos pelos seus cardápios aparecerão aqui.</p>
+              <?php else: ?>
+                <div class="dashboard-resumo-lista">
+                  <?php foreach ($pedidosRecentes as $pedido): ?>
+                    <a class="dashboard-resumo-item" href="pedidos-delivery.php?status=<?php echo rawurlencode((string) $pedido['status']); ?>">
+                      <span>
+                        <strong>#<?php echo (int) $pedido['id']; ?> · <?php echo htmlspecialchars($pedido['nome_cliente'], ENT_QUOTES, 'UTF-8'); ?></strong>
+                        <small><?php echo htmlspecialchars($pedido['nome_estabelecimento'], ENT_QUOTES, 'UTF-8'); ?> · <?php echo date('d/m/Y H:i', strtotime($pedido['criado_em'])); ?></small>
+                      </span>
+                      <span class="dashboard-resumo-pedido">
+                        <strong>R$ <?php echo number_format((float) $pedido['total'], 2, ',', '.'); ?></strong>
+                        <small><?php echo htmlspecialchars($statusPedidos[$pedido['status']] ?? $pedido['status'], ENT_QUOTES, 'UTF-8'); ?></small>
+                      </span>
+                    </a>
+                  <?php endforeach; ?>
+                </div>
+              <?php endif; ?>
+            </div>
+          </div>
+        </section>
 
       </div>
 

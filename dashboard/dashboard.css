@@ -196,6 +196,10 @@
     grid-template-columns: 1fr;
   }
 
+  .dashboard-modulo .dashboard-layout {
+    grid-template-columns: 1fr;
+  }
+
   .feature-card {
     width: 100%;
     min-height: 200px;
@@ -226,6 +230,116 @@
   .site-footer p {
   color: var(--green-900);
   }
+
+.dashboard-modulo {
+  margin-top: 40px;
+}
+
+.dashboard-modulo .dashboard-layout {
+  grid-template-columns: clamp(220px, 30vw, 450px) minmax(0, 1fr);
+}
+
+.dashboard-modulo .feature-card {
+  text-decoration: none;
+}
+
+.dashboard-resumo {
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid rgba(36, 57, 53, 0.14);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.62);
+}
+
+.dashboard-resumo .dashboard-cardapios-topo {
+  margin-bottom: 12px;
+}
+
+.dashboard-resumo .dashboard-cardapios-topo h2 {
+  font-size: 1.15rem;
+}
+
+.dashboard-resumo-lista {
+  display: grid;
+  gap: 8px;
+}
+
+.dashboard-resumo-item {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 12px;
+  border: 1px solid rgba(36, 57, 53, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--green-900);
+  text-align: left;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.dashboard-resumo-item:hover {
+  border-color: var(--green-700);
+  background: var(--white);
+}
+
+.dashboard-resumo-item > span:first-child,
+.dashboard-resumo-pedido {
+  display: grid;
+  min-width: 0;
+  gap: 4px;
+}
+
+.dashboard-resumo-item strong {
+  overflow: hidden;
+  font-size: 0.88rem;
+  text-overflow: ellipsis;
+}
+
+.dashboard-resumo-item small {
+  color: var(--green-700);
+  font-size: 0.76rem;
+  line-height: 1.4;
+}
+
+.dashboard-resumo-pedido {
+  flex: 0 0 auto;
+  text-align: right;
+}
+
+.dashboard-resumo-status {
+  flex: 0 0 auto;
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: #f0e9dc;
+  color: #705529;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.dashboard-resumo-status.ativo {
+  background: #e1efe3;
+  color: #24553b;
+}
+
+.dashboard-resumo-vazio {
+  margin: 0;
+  padding: 16px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--green-700);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 650px) {
+  .dashboard-modulo .dashboard-layout {
+    grid-template-columns: 1fr;
+  }
+}
 
 /* ============================================================
    Menu lateral do painel S.O.P.A.
