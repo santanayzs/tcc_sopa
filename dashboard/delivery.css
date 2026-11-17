@@ -442,10 +442,11 @@
   text-align: center;
 }
 
-.delivery-settings-page .site-footer .logo {
-  justify-content: center;
-  margin-bottom: 8px;
-  color: var(--green-900);
+.delivery-settings-page .site-footer .logotipoFooter {
+  display: block;
+  width: 190px;
+  height: auto;
+  margin: 0 auto 2px;
 }
 
 .delivery-settings-page .site-footer p {
