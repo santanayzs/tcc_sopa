@@ -19,18 +19,17 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $comandaId = isset($_POST['comanda_id']) ? (int) $_POST['comanda_id'] : 0;
-$cardapioId = isset($_POST['cardapio_id']) ? (int) $_POST['cardapio_id'] : 0;
 $formaPagamento = $_POST['forma_pagamento'] ?? '';
 $valorPago = isset($_POST['valor_pago']) ? (float) $_POST['valor_pago'] : 0.0;
 $observacao = trim((string) ($_POST['observacao_pagamento'] ?? ''));
 
-if ($comandaId <= 0 || $cardapioId <= 0 || !in_array($formaPagamento, ['DINHEIRO', 'PIX', 'DEBITO', 'CREDITO', 'OUTRO'], true) || $valorPago <= 0) {
+if ($comandaId <= 0 || !in_array($formaPagamento, ['DINHEIRO', 'PIX', 'DEBITO', 'CREDITO', 'OUTRO'], true) || $valorPago <= 0) {
     header('Location: comanda-detalhe.php?id=' . $comandaId . '&aviso=erro_item');
     exit;
 }
 
 $stmtComanda = $conn->prepare(
-    'SELECT c.id, c.cardapio_id, c.usuario_id, c.total, c.mesa_id
+    'SELECT c.id, c.usuario_id, c.total, c.mesa_id
      FROM comandas c
      WHERE c.id = ? AND c.usuario_id = ? AND c.status = "ABERTA"
      LIMIT 1'
@@ -40,7 +39,7 @@ $stmtComanda->execute();
 $comanda = $stmtComanda->get_result()->fetch_assoc();
 $stmtComanda->close();
 
-if (!$comanda || (int) $comanda['cardapio_id'] !== $cardapioId) {
+if (!$comanda) {
     header('Location: ../comandas.php?aviso=naoencontrado');
     exit;
 }
@@ -98,5 +97,5 @@ if (!$stmtMesa->execute()) {
 $stmtMesa->close();
 $conn->commit();
 
-header('Location: ../comandas.php?cardapio_id=' . $cardapioId . '&aviso=comanda_fechada');
+header('Location: ../comandas.php?aviso=comanda_fechada');
 exit;

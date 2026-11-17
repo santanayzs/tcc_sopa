@@ -44,9 +44,15 @@ $params = [$usuarioId];
 $types = 'i';
 
 if ($cardapioId > 0) {
-    $query .= ' AND cardapio_id = ?';
+    $query .= ' AND (cardapio_id = ? OR EXISTS (
+        SELECT 1
+        FROM itens_comanda filtro_itc
+        INNER JOIN itens_cardapio filtro_ic ON filtro_ic.id = filtro_itc.item_cardapio_id
+        WHERE filtro_itc.comanda_id = comandas.id AND filtro_ic.cardapio_id = ?
+    ))';
     $params[] = $cardapioId;
-    $types .= 'i';
+    $params[] = $cardapioId;
+    $types .= 'ii';
 }
 
 if ($dataInicio) {
@@ -92,7 +98,7 @@ $stmtLog->close();
 
 foreach ($comandas as $comanda) {
     $comandaId = (int) $comanda['id'];
-    $cardapioComanda = isset($comanda['cardapio_id']) ? (int) $comanda['cardapio_id'] : 0;
+    $cardapioComanda = $comanda['cardapio_id'] !== null ? (int) $comanda['cardapio_id'] : null;
     $mesaId = isset($comanda['mesa_id']) ? (int) $comanda['mesa_id'] : 0;
     $status = (string) $comanda['status'];
     $valorTotal = (float) $comanda['total'];
@@ -147,12 +153,8 @@ foreach ($comandas as $comanda) {
 
 $conn->commit();
 
-$contador = $conn->prepare('SELECT COUNT(*) as total FROM comandas WHERE usuario_id = ?' . ($cardapioId > 0 ? ' AND cardapio_id = ?' : ''));
-if ($cardapioId > 0) {
-    $contador->bind_param('ii', $usuarioId, $cardapioId);
-} else {
-    $contador->bind_param('i', $usuarioId);
-}
+$contador = $conn->prepare('SELECT COUNT(*) as total FROM comandas WHERE usuario_id = ?');
+$contador->bind_param('i', $usuarioId);
 $contador->execute();
 $totalRestante = $contador->get_result()->fetch_assoc()['total'] ?? 0;
 $contador->close();

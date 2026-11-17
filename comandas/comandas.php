@@ -11,45 +11,34 @@ if (!isset($_SESSION['id'])) {
 }
  
 include '../configs/conexao.php';
+garantirMesasCompartilhadas($conn);
  
 $usuarioId   = (int) $_SESSION['id'];
 $nomeUsuario = $_SESSION['nome'] ?? 'Usuário';
  
-// ── Cardápios do usuário (uma comanda sempre pertence a um cardápio) ──────
+// ── Cardápios disponíveis para selecionar em cada nova comanda ────────────
 $stmtCardapios = $conn->prepare(
-    'SELECT id, nome_restaurante FROM cardapios WHERE usuario_id = ? ORDER BY nome_restaurante'
+    'SELECT id, nome_restaurante, categoria FROM cardapios WHERE usuario_id = ? ORDER BY nome_restaurante'
 );
 $stmtCardapios->bind_param('i', $usuarioId);
 $stmtCardapios->execute();
 $cardapios = $stmtCardapios->get_result()->fetch_all(MYSQLI_ASSOC);
 $stmtCardapios->close();
  
-$cardapioId = (int) ($_GET['cardapio_id'] ?? ($cardapios[0]['id'] ?? 0));
- 
-$cardapioAtual = null;
-foreach ($cardapios as $c) {
-    if ((int) $c['id'] === $cardapioId) {
-        $cardapioAtual = $c;
-        break;
-    }
-}
- 
-// ── Mesas do cardápio selecionado, com a comanda aberta (se houver) ───────
+// ── Mesas do usuário, com a comanda aberta (se houver) ────────────────────
 $mesas = [];
-if ($cardapioAtual) {
-    $stmtMesas = $conn->prepare(
-        'SELECT m.id, m.numero, m.capacidade, m.status,
-                c.id AS comanda_id, c.total, c.data_abertura
-         FROM mesas m
-         LEFT JOIN comandas c ON c.mesa_id = m.id AND c.status = "ABERTA"
-         WHERE m.cardapio_id = ? AND m.ativo = 1
-         ORDER BY m.numero'
-    );
-    $stmtMesas->bind_param('i', $cardapioId);
-    $stmtMesas->execute();
-    $mesas = $stmtMesas->get_result()->fetch_all(MYSQLI_ASSOC);
-    $stmtMesas->close();
-}
+$stmtMesas = $conn->prepare(
+    'SELECT m.id, m.numero, m.capacidade, m.status,
+            c.id AS comanda_id, c.total, c.data_abertura
+     FROM mesas m
+     LEFT JOIN comandas c ON c.mesa_id = m.id AND c.status = "ABERTA"
+     WHERE m.usuario_id = ? AND m.ativo = 1
+     ORDER BY m.numero, m.id'
+);
+$stmtMesas->bind_param('i', $usuarioId);
+$stmtMesas->execute();
+$mesas = $stmtMesas->get_result()->fetch_all(MYSQLI_ASSOC);
+$stmtMesas->close();
  
 $mensagens = [
     'mesa_criada'       => ['ok',   'Mesa criada com sucesso!'],
@@ -58,6 +47,7 @@ $mensagens = [
     'comanda_cancelada' => ['ok',   'Comanda cancelada com sucesso.'],
     'item_adicionado'   => ['ok',   'Item adicionado com sucesso!'],
     'item_removido'     => ['ok',   'Item removido da comanda.'],
+    'mesa_removida'     => ['ok',   'Mesa removida com sucesso.'],
     'mesa_ocupada'      => ['erro', 'Essa mesa já tem uma comanda aberta.'],
     'mesa_ativa'        => ['erro', 'Não foi possível remover a mesa porque ela está ativa.'],
     'naoencontrado'     => ['erro', 'Registro não encontrado ou sem permissão.'],
@@ -114,76 +104,58 @@ $aviso = $mensagens[$avisoChave] ?? null;
  
             <?php if (empty($cardapios)): ?>
                 <div class="estado-vazio">
-                    <p>Você ainda não criou nenhum cardápio. Crie um cardápio antes de gerenciar comandas.</p>
-                    <a class="btn-pill" href="../CRUD-Cardapio/criar-cardapio/criar-cardapio.php">Criar meu primeiro cardápio</a>
+                    <p>Você poderá selecionar o cardápio dentro da comanda. Cadastre um cardápio para lançar itens.</p>
+                    <a class="btn-pill" href="../CRUD-Cardapio/criar-cardapio/criar-cardapio.php">Criar cardápio</a>
                 </div>
-            <?php else: ?>
- 
-                <?php if (count($cardapios) > 1): ?>
-                    <form method="GET" class="seletor-cardapio" id="formCardapio">
-                        <label for="cardapio_id">Cardápio</label>
-                        <select name="cardapio_id" id="cardapio_id">
-                            <?php foreach ($cardapios as $c): ?>
-                                <option value="<?php echo (int) $c['id']; ?>" <?php echo ((int) $c['id'] === $cardapioId) ? 'selected' : ''; ?>>
-                                    <?php echo htmlspecialchars($c['nome_restaurante'], ENT_QUOTES, 'UTF-8'); ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </form>
-                <?php endif; ?>
- 
-                <form action="mesas/criarMesa.php" method="POST" class="form-nova-mesa">
-                    <input type="hidden" name="cardapio_id" value="<?php echo (int) $cardapioId; ?>">
-                    <div class="form-group-inline">
-                        <input type="number" name="numero" placeholder="Número da mesa" min="1" required>
-                        <input type="number" name="capacidade" placeholder="Capacidade" min="1" value="4">
-                        <button type="submit" class="btn-mini">+ Nova mesa</button>
-                    </div>
-                </form>
- 
-                <?php if (empty($mesas)): ?>
-                    <p class="cardapio-vazio">Nenhuma mesa cadastrada ainda para este cardápio. Crie a primeira mesa acima.</p>
-                <?php else: ?>
-                    <div class="mesas-grid">
-                        <?php foreach ($mesas as $mesa): ?>
-                            <?php $temComandaAberta = !empty($mesa['comanda_id']); ?>
-                            <article class="mesa-card <?php echo $temComandaAberta ? 'ocupada' : strtolower($mesa['status']); ?>">
-                                <div class="mesa-card-topo">
-                                    <span class="mesa-numero">Mesa <?php echo (int) $mesa['numero']; ?></span>
-                                    <span class="mesa-status-badge">
-                                        <?php echo $temComandaAberta ? 'Ocupada' : ucfirst(strtolower($mesa['status'])); ?>
-                                    </span>
-                                </div>
-                                <p class="mesa-capacidade"><?php echo (int) $mesa['capacidade']; ?> lugares</p>
- 
-                                <?php if ($temComandaAberta): ?>
-                                    <p class="mesa-comanda-info">
-                                        Aberta às <?php echo date('H:i', strtotime($mesa['data_abertura'])); ?><br>
-                                        Total: <strong>R$ <?php echo number_format((float) $mesa['total'], 2, ',', '.'); ?></strong>
-                                    </p>
-                                    <a class="btn-mini" href="comandas/comanda-detalhe.php?id=<?php echo (int) $mesa['comanda_id']; ?>">
-                                        Ver comanda
-                                    </a>
-                                <?php elseif (strtolower($mesa['status']) === 'livre'): ?>
-                                    <form action="comandas/abrirComanda.php" method="POST">
-                                        <input type="hidden" name="mesa_id" value="<?php echo (int) $mesa['id']; ?>">
-                                        <input type="hidden" name="cardapio_id" value="<?php echo (int) $cardapioId; ?>">
-                                        <button type="submit" class="btn-mini abrir">Abrir comanda</button>
-                                    </form>
+            <?php endif; ?>
 
-                                    <form action="mesas/removerMesa.php" method="POST" style="margin-top: 0.5rem;">
-                                        <input type="hidden" name="mesa_id" value="<?php echo (int) $mesa['id']; ?>">
-                                        <input type="hidden" name="cardapio_id" value="<?php echo (int) $cardapioId; ?>">
-                                        <button type="submit" class="btn-mini danger" onclick="return confirm('Deseja remover esta mesa?');">Remover mesa</button>
-                                    </form>
-                                <?php else: ?>
-                                    <p class="mesa-comanda-info">Mesa <?php echo htmlspecialchars(strtolower($mesa['status']), ENT_QUOTES, 'UTF-8'); ?>.</p>
-                                <?php endif; ?>
-                            </article>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
- 
+            <form action="mesas/criarMesa.php" method="POST" class="form-nova-mesa">
+                <div class="form-group-inline">
+                    <input type="number" name="numero" placeholder="Número da mesa" min="1" required>
+                    <input type="number" name="capacidade" placeholder="Capacidade" min="1" value="4" required>
+                    <button type="submit" class="btn-mini">+ Nova mesa</button>
+                </div>
+            </form>
+
+            <?php if (empty($mesas)): ?>
+                <p class="cardapio-vazio">Nenhuma mesa cadastrada. Crie a primeira mesa acima.</p>
+            <?php else: ?>
+                <div class="mesas-grid">
+                    <?php foreach ($mesas as $mesa): ?>
+                        <?php $temComandaAberta = !empty($mesa['comanda_id']); ?>
+                        <article class="mesa-card <?php echo $temComandaAberta ? 'ocupada' : strtolower($mesa['status']); ?>">
+                            <div class="mesa-card-topo">
+                                <span class="mesa-numero">Mesa <?php echo (int) $mesa['numero']; ?></span>
+                                <span class="mesa-status-badge">
+                                    <?php echo $temComandaAberta ? 'Ocupada' : ucfirst(strtolower($mesa['status'])); ?>
+                                </span>
+                            </div>
+                            <p class="mesa-capacidade"><?php echo (int) $mesa['capacidade']; ?> lugares</p>
+
+                            <?php if ($temComandaAberta): ?>
+                                <p class="mesa-comanda-info">
+                                    Aberta às <?php echo date('H:i', strtotime($mesa['data_abertura'])); ?><br>
+                                    Total: <strong>R$ <?php echo number_format((float) $mesa['total'], 2, ',', '.'); ?></strong>
+                                </p>
+                                <a class="btn-mini" href="comandas/comanda-detalhe.php?id=<?php echo (int) $mesa['comanda_id']; ?>">
+                                    Ver comanda
+                                </a>
+                            <?php elseif (strtolower($mesa['status']) === 'livre'): ?>
+                                <form action="comandas/abrirComanda.php" method="POST" class="form-abrir-comanda">
+                                    <input type="hidden" name="mesa_id" value="<?php echo (int) $mesa['id']; ?>">
+                                    <button type="submit" class="btn-mini abrir">Abrir comanda</button>
+                                </form>
+
+                                <form action="mesas/removerMesa.php" method="POST" style="margin-top: 0.5rem;">
+                                    <input type="hidden" name="mesa_id" value="<?php echo (int) $mesa['id']; ?>">
+                                    <button type="submit" class="btn-mini danger" onclick="return confirm('Deseja remover esta mesa?');">Remover mesa</button>
+                                </form>
+                            <?php else: ?>
+                                <p class="mesa-comanda-info">Mesa <?php echo htmlspecialchars(strtolower($mesa['status']), ENT_QUOTES, 'UTF-8'); ?>.</p>
+                            <?php endif; ?>
+                        </article>
+                    <?php endforeach; ?>
+                </div>
             <?php endif; ?>
  
             <div class="dashboard-actions">

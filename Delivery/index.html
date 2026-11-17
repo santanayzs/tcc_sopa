@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Peça pratos fresquinhos para receber onde estiver."
+    />
+    <title>Delivery | S.O.P.A.</title>
+    <meta http-equiv="refresh" content="0; url=index.php" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style-delivery.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#inicio" aria-label="S.O.P.A., início">
+        <span class="brand-mark">S</span>
+        <span>S.O.P.A.</span>
+      </a>
+      <nav class="main-nav" aria-label="Navegação principal">
+        <a href="#categorias">Categorias</a>
+        <a href="#mais-pedidos">Mais pedidos</a>
+      </nav>
+      <a class="account-link" href="../auth/login.php">Entrar</a>
+    </header>
+
+    <main id="inicio">
+      <section class="delivery-intro" aria-labelledby="intro-title">
+        <div class="intro-copy">
+          <p class="eyebrow">Comida boa, sem complicação</p>
+          <h1 id="intro-title">Seu próximo prato favorito está por aqui.</h1>
+          <p class="intro-description">
+            Escolha o que você gosta e receba no conforto de casa.
+          </p>
+        </div>
+        <form class="address-form" action="#mais-pedidos">
+          <label for="address">Onde vamos entregar?</label>
+          <div class="address-control">
+            <input
+              id="address"
+              name="address"
+              type="text"
+              placeholder="Digite seu endereço"
+              autocomplete="street-address"
+            />
+            <button type="submit">Buscar</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="content-section" id="categorias" aria-labelledby="category-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Explore o cardápio</p>
+            <h2 id="category-title">O que vai ser hoje?</h2>
+          </div>
+        </div>
+        <nav class="category-list" aria-label="Categorias do cardápio">
+          <a class="category-item" href="#mais-pedidos">
+            <span class="category-icon" aria-hidden="true">01</span>
+            <span>Pratos do dia</span>
+          </a>
+          <a class="category-item" href="#mais-pedidos">
+            <span class="category-icon" aria-hidden="true">02</span>
+            <span>Sopas</span>
+          </a>
+          <a class="category-item" href="#mais-pedidos">
+            <span class="category-icon" aria-hidden="true">03</span>
+            <span>Acompanhamentos</span>
+          </a>
+          <a class="category-item" href="#mais-pedidos">
+            <span class="category-icon" aria-hidden="true">04</span>
+            <span>Bebidas</span>
+          </a>
+        </nav>
+      </section>
+
+      <section class="content-section popular-section" id="mais-pedidos" aria-labelledby="popular-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Feitos com carinho</p>
+            <h2 id="popular-title">Sugestões para você</h2>
+          </div>
+          <span class="section-note">Cardápio demonstrativo</span>
+        </div>
+
+        <div class="dish-grid">
+          <article class="dish-card">
+            <img
+              src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=900&q=85"
+              alt="Tigela de sopa cremosa com vegetais"
+              loading="lazy"
+            />
+            <div class="dish-info">
+              <div class="dish-title-row">
+                <h3>Sopa da horta</h3>
+                <span class="dish-price">R$ 24,90</span>
+              </div>
+              <p>Legumes frescos, ervas e um toque de azeite.</p>
+              <span class="dish-tag">Leve e quentinha</span>
+            </div>
+          </article>
+
+          <article class="dish-card">
+            <img
+              src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=900&q=85"
+              alt="Salada colorida com folhas e vegetais frescos"
+              loading="lazy"
+            />
+            <div class="dish-info">
+              <div class="dish-title-row">
+                <h3>Prato colorido</h3>
+                <span class="dish-price">R$ 29,90</span>
+              </div>
+              <p>Uma combinação fresca para deixar o dia mais leve.</p>
+              <span class="dish-tag">Feito na hora</span>
+            </div>
+          </article>
+
+          <article class="dish-card">
+            <img
+              src="https://images.unsplash.com/photo-1547592180-86f2e965b2a0?auto=format&fit=crop&w=900&q=85"
+              alt="Prato servido com comida caseira"
+              loading="lazy"
+            />
+            <div class="dish-info">
+              <div class="dish-title-row">
+                <h3>Almoço da casa</h3>
+                <span class="dish-price">R$ 32,90</span>
+              </div>
+              <p>Receita caseira, preparada com ingredientes do dia.</p>
+              <span class="dish-tag">Favorito da casa</span>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <a class="brand" href="#inicio">
+        <span class="brand-mark">S</span>
+        <span>S.O.P.A.</span>
+      </a>
+      <p>Comida que aproxima.</p>
+    </footer>
+  </body>
+</html>

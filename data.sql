@@ -29,8 +29,11 @@ CREATE TABLE `cardapios` (
   `usuario_id` int(11) NOT NULL,
   `nome_restaurante` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `categoria` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `delivery_ativo` tinyint(1) NOT NULL DEFAULT '0',
   `cor_primaria` varchar(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '#2f6b4f',
   `cor_texto` varchar(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '#1c1c1c',
+  `cor_fundo_cardapio` varchar(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '#f7f5f0',
+  `cor_fundo_item` varchar(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '#ffffff',
   `logo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `data_criacao` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
@@ -48,16 +51,12 @@ LOCK TABLES `cardapios` WRITE;
 /*!40000 ALTER TABLE `cardapios` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `comandas`
---
-
 DROP TABLE IF EXISTS `comandas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `comandas` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `cardapio_id` int(11) NOT NULL,
+  `cardapio_id` int(11) DEFAULT NULL,
   `mesa_id` int(11) NOT NULL,
   `usuario_id` int(11) NOT NULL,
   `status` enum('ABERTA','FECHADA','CANCELADA') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'ABERTA',
@@ -85,6 +84,7 @@ LOCK TABLES `comandas` WRITE;
 /*!40000 ALTER TABLE `comandas` ENABLE KEYS */;
 UNLOCK TABLES;
 
+
 --
 -- Table structure for table `estabelecimentos`
 --
@@ -102,6 +102,8 @@ CREATE TABLE `estabelecimentos` (
   `bairro` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `cidade` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `estado` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `latitude` decimal(10,7) DEFAULT NULL,
+  `longitude` decimal(10,7) DEFAULT NULL,
   `pix` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `criado_em` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
@@ -133,6 +135,7 @@ CREATE TABLE `itens_cardapio` (
   `descricao` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `preco` decimal(10,2) NOT NULL,
   `disponivel` tinyint(1) DEFAULT '1',
+  `imagem` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `cardapio_id` (`cardapio_id`),
   CONSTRAINT `itens_cardapio_ibfk_1` FOREIGN KEY (`cardapio_id`) REFERENCES `cardapios` (`id`) ON DELETE CASCADE
@@ -148,9 +151,43 @@ LOCK TABLES `itens_cardapio` WRITE;
 /*!40000 ALTER TABLE `itens_cardapio` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `itens_comanda`
---
+DROP TABLE IF EXISTS `itens_pedido_delivery`;
+DROP TABLE IF EXISTS `pedidos_delivery`;
+
+CREATE TABLE `pedidos_delivery` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `usuario_id` int(11) NOT NULL,
+  `cardapio_id` int(11) NOT NULL,
+  `nome_estabelecimento` varchar(150) COLLATE utf8mb4_general_ci NOT NULL,
+  `categoria` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `nome_cliente` varchar(150) COLLATE utf8mb4_general_ci NOT NULL,
+  `telefone_cliente` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
+  `endereco_entrega` varchar(500) COLLATE utf8mb4_general_ci NOT NULL,
+  `observacao` text COLLATE utf8mb4_general_ci,
+  `cliente_token_hash` char(64) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `status` enum('RECEBIDO','CONFIRMADO','EM_PREPARO','SAIU_PARA_ENTREGA','ENTREGUE','CANCELADO') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'RECEBIDO',
+  `total` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `criado_em` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `atualizado_em` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_pedidos_delivery_usuario_status` (`usuario_id`,`status`,`criado_em`),
+  KEY `idx_pedidos_delivery_cliente_token` (`cliente_token_hash`),
+  KEY `idx_pedidos_delivery_cardapio` (`cardapio_id`),
+  CONSTRAINT `fk_pedidos_delivery_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `itens_pedido_delivery` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `pedido_id` int(11) NOT NULL,
+  `item_cardapio_id` int(11) DEFAULT NULL,
+  `nome_item` varchar(150) COLLATE utf8mb4_general_ci NOT NULL,
+  `quantidade` int(11) NOT NULL,
+  `preco_unitario` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_itens_pedido_delivery_pedido` (`pedido_id`),
+  CONSTRAINT `fk_itens_pedido_delivery_pedido` FOREIGN KEY (`pedido_id`) REFERENCES `pedidos_delivery` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_itens_pedido_delivery_item` FOREIGN KEY (`item_cardapio_id`) REFERENCES `itens_cardapio` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 DROP TABLE IF EXISTS `itens_comanda`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -190,7 +227,8 @@ DROP TABLE IF EXISTS `mesas`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `mesas` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `cardapio_id` int(11) NOT NULL,
+  `usuario_id` int(11) NOT NULL,
+  `cardapio_id` int(11) DEFAULT NULL,
   `numero` int(11) NOT NULL,
   `capacidade` int(11) NOT NULL DEFAULT '4',
   `status` enum('LIVRE','OCUPADA','RESERVADA') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'LIVRE',
@@ -199,7 +237,9 @@ CREATE TABLE `mesas` (
   `atualizado_em` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uq_mesa_cardapio` (`cardapio_id`,`numero`),
+  KEY `idx_mesas_usuario` (`usuario_id`),
   KEY `idx_mesas_cardapio` (`cardapio_id`),
+  CONSTRAINT `fk_mesas_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_mesas_cardapio` FOREIGN KEY (`cardapio_id`) REFERENCES `cardapios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -240,24 +280,29 @@ CREATE TABLE `pagamentos` (
 LOCK TABLES `pagamentos` WRITE;
 /*!40000 ALTER TABLE `pagamentos` DISABLE KEYS */;
 /*!40000 ALTER TABLE `pagamentos` ENABLE KEYS */;
-UNLOCK TABLES;
+UNLOCK TABLES;''
 
 --
 -- Table structure for table `tentativas_login`
 --
 
 DROP TABLE IF EXISTS `tentativas_login`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+
 CREATE TABLE `tentativas_login` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `ip` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `bem_sucedido` tinyint(1) NOT NULL DEFAULT '0',
-  `criado_em` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `idx_ip_email_data` (`ip`,`email`,`criado_em`)
-) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `ip` VARCHAR(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    `email` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    `bem_sucedido` TINYINT(1) NOT NULL DEFAULT 0,
+    `criado_em` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    PRIMARY KEY (`id`),
+    KEY `idx_ip_email_data` (`ip`, `email`, `criado_em`)
+
+) ENGINE=InnoDB
+  AUTO_INCREMENT=58
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
+
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -274,25 +319,34 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `tokens_recuperacao`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+
 CREATE TABLE `tokens_recuperacao` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `usuario_id` int(11) NOT NULL,
-  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `token_hash` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `metodo` enum('email','sms') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'email',
-  `usado` tinyint(1) NOT NULL DEFAULT '0',
-  `expira_em` datetime NOT NULL,
-  `criado_em` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `ip_solicitante` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`),
-  KEY `idx_email_ativo` (`email`,`usado`,`expira_em`),
-  KEY `idx_token_hash` (`token_hash`(64)),
-  KEY `fk_tokens_usuario` (`usuario_id`),
-  CONSTRAINT `fk_tokens_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+    `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `usuario_id` INT(11) NOT NULL,
+    `email` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `token_hash` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `metodo` ENUM('email','sms') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'email',
+    `usado` TINYINT(1) NOT NULL DEFAULT 0,
+    `expira_em` DATETIME NOT NULL,
+    `criado_em` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `ip_solicitante` VARCHAR(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
+
+    PRIMARY KEY (`id`),
+
+    KEY `idx_email_ativo` (`email`, `usado`, `expira_em`),
+    KEY `idx_token_hash` (`token_hash`(64)),
+    KEY `fk_tokens_usuario` (`usuario_id`),
+
+    CONSTRAINT `fk_tokens_usuario`
+        FOREIGN KEY (`usuario_id`)
+        REFERENCES `usuarios` (`id`)
+        ON DELETE CASCADE
+
+) ENGINE=InnoDB
+  AUTO_INCREMENT=23
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_general_ci;
+
 
 --
 -- Dumping data for table `tokens_recuperacao`
@@ -311,20 +365,25 @@ DROP TABLE IF EXISTS `usuarios`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `usuarios` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nome` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `email` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `telefone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `senha` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `tipo_usuario` enum('admin','empresa') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '1',
-  `ativo` tinyint(1) NOT NULL DEFAULT '1',
-  `ultimo_login` datetime DEFAULT NULL,
-  `criado_em` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `atualizado_em` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uq_email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `nome` VARCHAR(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `email` VARCHAR(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `telefone` VARCHAR(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+    `senha` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `tipo_usuario` ENUM('admin','empresa') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+    `status` TINYINT(1) NOT NULL DEFAULT 1,
+    `ativo` TINYINT(1) NOT NULL DEFAULT 1,
+    `ultimo_login` DATETIME DEFAULT NULL,
+    `criado_em` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `atualizado_em` DATETIME DEFAULT NULL,
+
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uq_email` (`email`)
+
+) ENGINE=InnoDB
+  AUTO_INCREMENT=5
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -349,4 +408,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-08-27 11:15:02
+-- Dump completed on 2026-08-27 10:28:48
