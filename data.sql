@@ -29,6 +29,7 @@ CREATE TABLE `cardapios` (
   `usuario_id` int(11) NOT NULL,
   `nome_restaurante` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `categoria` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `delivery_ativo` tinyint(1) NOT NULL DEFAULT '0',
   `cor_primaria` varchar(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '#2f6b4f',
   `cor_texto` varchar(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '#1c1c1c',
   `cor_fundo_cardapio` varchar(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '#f7f5f0',
@@ -50,6 +51,40 @@ LOCK TABLES `cardapios` WRITE;
 /*!40000 ALTER TABLE `cardapios` ENABLE KEYS */;
 UNLOCK TABLES;
 
+DROP TABLE IF EXISTS `comandas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `comandas` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `cardapio_id` int(11) DEFAULT NULL,
+  `mesa_id` int(11) NOT NULL,
+  `usuario_id` int(11) NOT NULL,
+  `status` enum('ABERTA','FECHADA','CANCELADA') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'ABERTA',
+  `data_abertura` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `data_fechamento` datetime DEFAULT NULL,
+  `total` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `observacao` varchar(500) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_comandas_cardapio` (`cardapio_id`),
+  KEY `idx_comandas_mesa` (`mesa_id`),
+  KEY `idx_comandas_usuario` (`usuario_id`),
+  KEY `idx_comandas_status` (`status`),
+  CONSTRAINT `fk_comandas_cardapio` FOREIGN KEY (`cardapio_id`) REFERENCES `cardapios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_comandas_mesa` FOREIGN KEY (`mesa_id`) REFERENCES `mesas` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `fk_comandas_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `comandas`
+--
+
+LOCK TABLES `comandas` WRITE;
+/*!40000 ALTER TABLE `comandas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `comandas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
 --
 -- Table structure for table `estabelecimentos`
 --
@@ -67,6 +102,8 @@ CREATE TABLE `estabelecimentos` (
   `bairro` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `cidade` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `estado` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `latitude` decimal(10,7) DEFAULT NULL,
+  `longitude` decimal(10,7) DEFAULT NULL,
   `pix` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `criado_em` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
@@ -113,6 +150,137 @@ LOCK TABLES `itens_cardapio` WRITE;
 /*!40000 ALTER TABLE `itens_cardapio` DISABLE KEYS */;
 /*!40000 ALTER TABLE `itens_cardapio` ENABLE KEYS */;
 UNLOCK TABLES;
+
+DROP TABLE IF EXISTS `itens_pedido_delivery`;
+DROP TABLE IF EXISTS `pedidos_delivery`;
+
+CREATE TABLE `pedidos_delivery` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `usuario_id` int(11) NOT NULL,
+  `cardapio_id` int(11) NOT NULL,
+  `nome_estabelecimento` varchar(150) COLLATE utf8mb4_general_ci NOT NULL,
+  `categoria` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `nome_cliente` varchar(150) COLLATE utf8mb4_general_ci NOT NULL,
+  `telefone_cliente` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
+  `endereco_entrega` varchar(500) COLLATE utf8mb4_general_ci NOT NULL,
+  `observacao` text COLLATE utf8mb4_general_ci,
+  `cliente_token_hash` char(64) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `status` enum('RECEBIDO','CONFIRMADO','EM_PREPARO','SAIU_PARA_ENTREGA','ENTREGUE','CANCELADO') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'RECEBIDO',
+  `total` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `criado_em` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `atualizado_em` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_pedidos_delivery_usuario_status` (`usuario_id`,`status`,`criado_em`),
+  KEY `idx_pedidos_delivery_cliente_token` (`cliente_token_hash`),
+  KEY `idx_pedidos_delivery_cardapio` (`cardapio_id`),
+  CONSTRAINT `fk_pedidos_delivery_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `itens_pedido_delivery` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `pedido_id` int(11) NOT NULL,
+  `item_cardapio_id` int(11) DEFAULT NULL,
+  `nome_item` varchar(150) COLLATE utf8mb4_general_ci NOT NULL,
+  `quantidade` int(11) NOT NULL,
+  `preco_unitario` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_itens_pedido_delivery_pedido` (`pedido_id`),
+  CONSTRAINT `fk_itens_pedido_delivery_pedido` FOREIGN KEY (`pedido_id`) REFERENCES `pedidos_delivery` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_itens_pedido_delivery_item` FOREIGN KEY (`item_cardapio_id`) REFERENCES `itens_cardapio` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+DROP TABLE IF EXISTS `itens_comanda`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `itens_comanda` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `comanda_id` int(11) NOT NULL,
+  `item_cardapio_id` int(11) NOT NULL,
+  `quantidade` int(11) NOT NULL DEFAULT '1',
+  `preco_unitario` decimal(10,2) NOT NULL,
+  `observacao` varchar(500) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `criado_em` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `atualizado_em` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_itens_comanda_comanda` (`comanda_id`),
+  KEY `idx_itens_comanda_cardapio` (`item_cardapio_id`),
+  CONSTRAINT `fk_itens_comanda_cardapio` FOREIGN KEY (`item_cardapio_id`) REFERENCES `itens_cardapio` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `fk_itens_comanda_comanda` FOREIGN KEY (`comanda_id`) REFERENCES `comandas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `itens_comanda`
+--
+
+LOCK TABLES `itens_comanda` WRITE;
+/*!40000 ALTER TABLE `itens_comanda` DISABLE KEYS */;
+/*!40000 ALTER TABLE `itens_comanda` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `mesas`
+--
+
+DROP TABLE IF EXISTS `mesas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `mesas` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `usuario_id` int(11) NOT NULL,
+  `cardapio_id` int(11) DEFAULT NULL,
+  `numero` int(11) NOT NULL,
+  `capacidade` int(11) NOT NULL DEFAULT '4',
+  `status` enum('LIVRE','OCUPADA','RESERVADA') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'LIVRE',
+  `ativo` tinyint(1) NOT NULL DEFAULT '1',
+  `criado_em` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `atualizado_em` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_mesa_cardapio` (`cardapio_id`,`numero`),
+  KEY `idx_mesas_usuario` (`usuario_id`),
+  KEY `idx_mesas_cardapio` (`cardapio_id`),
+  CONSTRAINT `fk_mesas_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_mesas_cardapio` FOREIGN KEY (`cardapio_id`) REFERENCES `cardapios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `mesas`
+--
+
+LOCK TABLES `mesas` WRITE;
+/*!40000 ALTER TABLE `mesas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `mesas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `pagamentos`
+--
+
+DROP TABLE IF EXISTS `pagamentos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `pagamentos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `comanda_id` int(11) NOT NULL,
+  `forma_pagamento` enum('DINHEIRO','PIX','DEBITO','CREDITO','OUTRO') COLLATE utf8mb4_general_ci NOT NULL,
+  `valor` decimal(10,2) NOT NULL,
+  `data_pagamento` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `observacao` varchar(500) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_pagamentos_comanda` (`comanda_id`),
+  CONSTRAINT `fk_pagamentos_comanda` FOREIGN KEY (`comanda_id`) REFERENCES `comandas` (`id`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `pagamentos`
+--
+
+LOCK TABLES `pagamentos` WRITE;
+/*!40000 ALTER TABLE `pagamentos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pagamentos` ENABLE KEYS */;
+UNLOCK TABLES;''
 
 --
 -- Table structure for table `tentativas_login`

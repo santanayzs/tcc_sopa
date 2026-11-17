@@ -107,6 +107,137 @@ body.cardapio-publico-body {
             white-space: nowrap;
         }
 
+        .pedido-delivery-form {
+            display: grid;
+            gap: 24px;
+        }
+
+        .delivery-cardapio-indicador {
+            margin: 14px 0 0;
+            color: #315f48;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .pedido-delivery-form .cardapio-item {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto auto;
+            gap: 16px;
+        }
+
+        .pedido-quantidade {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #344e49;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .pedido-quantidade input {
+            width: 68px;
+            min-height: 42px;
+            padding: 8px;
+            border: 1px solid #cfdad2;
+            border-radius: 6px;
+            background: #fff;
+            color: #17241f;
+            font: inherit;
+            text-align: center;
+        }
+
+        .pedido-checkout {
+            padding: 24px;
+            border: 1px solid #d5ded6;
+            border-top: 3px solid #3f7357;
+            background: rgba(255, 255, 255, 0.88);
+        }
+
+        .pedido-checkout-heading h2 {
+            margin: 4px 0 20px;
+            color: #243935;
+            font-family: var(--font-display);
+            font-size: 1.45rem;
+        }
+
+        .pedido-checkout-fields {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .pedido-checkout-fields label {
+            display: grid;
+            gap: 7px;
+            color: #344e49;
+            font-size: 0.82rem;
+            font-weight: 700;
+        }
+
+        .pedido-checkout-fields input,
+        .pedido-checkout-fields textarea {
+            width: 100%;
+            min-height: 44px;
+            padding: 10px 12px;
+            border: 1px solid #cfdad2;
+            border-radius: 6px;
+            background: #fff;
+            color: #17241f;
+            font: inherit;
+        }
+
+        .pedido-checkout-fields textarea {
+            resize: vertical;
+        }
+
+        .pedido-endereco,
+        .pedido-observacao {
+            grid-column: 1 / -1;
+        }
+
+        .pedido-checkout-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 20px;
+            color: #243935;
+        }
+
+        .pedido-enviar {
+            min-height: 44px;
+            padding: 10px 18px;
+            border: 0;
+            border-radius: 6px;
+            background: #315f48;
+            color: white;
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .pedido-enviar:disabled {
+            background: #a7b2aa;
+            cursor: not-allowed;
+        }
+
+        .pedido-feedback {
+            margin: 0 0 18px;
+            padding: 12px 14px;
+            font-weight: 700;
+        }
+
+        .pedido-feedback-ok {
+            background: #e6f1e8;
+            color: #24553b;
+        }
+
+        .pedido-feedback-erro {
+            background: #f5e4e2;
+            color: #842d2d;
+        }
+
         .cardapio-item.indisponivel {
             opacity: 0.45;
         }
@@ -177,6 +308,10 @@ body.cardapio-publico-body {
                 gap: 10px;
             }
 
+            .pedido-delivery-form .cardapio-item {
+                grid-template-columns: minmax(0, 1fr) auto;
+            }
+
             .cardapio-item-esquerda {
                 gap: 10px;
                 min-width: 0;
@@ -189,6 +324,31 @@ body.cardapio-publico-body {
 
             .cardapio-item-preco {
                 font-size: 0.98rem;
+            }
+
+            .pedido-quantidade {
+                grid-column: 2;
+                grid-row: 1 / span 2;
+                flex-direction: column;
+                align-items: flex-end;
+            }
+
+            .pedido-checkout {
+                padding: 18px 14px;
+            }
+
+            .pedido-checkout-fields {
+                grid-template-columns: 1fr;
+            }
+
+            .pedido-endereco,
+            .pedido-observacao {
+                grid-column: auto;
+            }
+
+            .pedido-checkout-footer {
+                align-items: stretch;
+                flex-direction: column;
             }
 
             .cardapio-item-thumb {
