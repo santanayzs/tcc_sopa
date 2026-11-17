@@ -73,17 +73,25 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
 <body class="dashboard-page">
     <!-- HEADER -->
     <header class="site-header">
-        <a href="../../index.html" class="logo">
-            <span class="logo-badge">S</span>
-            <span class="logo-word">S.O.P.A.</span>
+        <a href="../../dashboard/index.php" class="logo" aria-label="S.O.P.A. — voltar ao Painel">
+            <img src="../../img/logotipoBranco.svg" alt="Logotipo S.O.P.A." class="logotipo">
         </a>
 
-        <nav class="main-nav">
-            <a href="../../index.html">Início</a>
-            <a href="../../dashboard/index.php">Painel</a>
+        <nav class="main-nav" id="main-nav">
+            <a href="../../dashboard/index.php">Início</a>
+            <a href="../criar-cardapio/criar-cardapio.php">Criar Cardápio</a>
             <a href="../ver-cardapio/ver-cardapio.php">Ver Cardápio</a>
-            <a href="../../auth/logout.php">Sair</a>
+            <a class="btn-sair" href="../../auth/logout.php">Sair</a>
         </nav>
+
+        <button
+            class="nav-toggle"
+            id="nav-toggle"
+            aria-label="Abrir menu"
+            aria-expanded="false"
+            aria-controls="main-nav">
+            <span></span><span></span><span></span>
+        </button>
     </header>
 
     <!-- CONTEÚDO -->
@@ -318,6 +326,7 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
         // Mostra os itens já cadastrados assim que a página carrega
         carregarItensExistentes();
     </script>
+    <script src="../../JS/main-nav.js"></script>
 
 </body>
 

@@ -1,63 +1,386 @@
+.dashboard-page {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    background: #f5f5f5;
+    color: #17211f;
+}
+
+.site-header {
+    background: var(--cream-1);
+    border-bottom: 2px solid var(--green-800);
+    color: var(--green-900);
+}
+
+.main-nav a {
+    padding: 6px 9px;
+    font-weight: 600;
+}
+
+.main-nav a:hover {
+    background: rgba(36, 57, 53, 0.08);
+}
+
+.nav-toggle span {
+    background: var(--green-900);
+}
+
+.dashboard-shell {
+    flex: 1;
+    min-height: 0;
+    margin: 14px 0;
+    padding: 32px 0 42px;
+    background: var(--white);
+}
+
+.dashboard-card {
+    width: min(100% - 72px, 1024px);
+    margin: 0 auto;
+    padding: 0;
+    background: transparent;
+}
+
+.dashboard-eyebrow {
+    margin: 0 0 8px;
+    color: var(--green-800);
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.dashboard-card > h1 {
+    margin: 0;
+    padding: 10px 12px;
+    border-top: 2px solid var(--green-800);
+    border-bottom: 2px solid var(--green-800);
+    color: #111;
+    font-family: var(--font-accent);
+    font-size: clamp(2rem, 3.2vw, 2.45rem);
+    font-weight: 600;
+    line-height: 1.1;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.dashboard-text {
+    max-width: 760px;
+    margin: 14px auto 0;
+    color: #344e49;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.cardapio-form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    align-items: start;
+    margin-top: 30px;
+}
+
+.form-group {
+    min-width: 0;
+    margin: 0;
+}
+
+.form-group label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    clip-path: inset(50%);
+}
+
+.form-group input,
+.item-inputs > input[type="text"],
+.item-inputs > input[type="number"] {
+    width: 100%;
+    min-width: 0;
+    min-height: 43px;
+    padding: 7px 14px;
+    border: 1px solid var(--green-800);
+    border-radius: 7px;
+    background: #e2e2e2;
+    color: var(--green-800);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.form-group input::placeholder,
+.item-inputs > input::placeholder {
+    color: var(--green-800);
+    opacity: 1;
+}
+
+.itens-box {
+    grid-column: 1 / -1;
+    min-width: 0;
+    padding: 18px;
+    background: #f5f5f5;
+}
+
+.itens-box h3 {
+    margin: 0 0 14px;
+    color: #111;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.item-inputs {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 10px 8px;
+    align-items: center;
+}
+
+#nomeItem,
+#precoItem {
+    grid-column: span 3;
+}
+
+.item-inputs input[type="file"] {
+    grid-column: span 4;
+    max-width: 100%;
+    color: var(--green-800);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+}
+
+.btn-add,
+.cardapio-form > button[type="submit"] {
+    display: inline-flex;
+    min-height: 46px;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 14px;
+    border: 0;
+    border-radius: 16px;
+    background: var(--green-800);
+    color: var(--white);
+    cursor: pointer;
+    font-family: var(--font-accent);
+    font-size: 1.2rem;
+    font-weight: 600;
+    line-height: 1.15;
+    text-align: center;
+    transition: background-color 0.2s ease;
+}
+
+.btn-add {
+    grid-column: span 2;
+}
+
+.btn-add:hover,
+.cardapio-form > button[type="submit"]:hover {
+    background: var(--green-900);
+}
+
+.itens-box > p {
+    color: var(--green-800) !important;
+    font-family: var(--font-body);
+    font-size: 0.85rem !important;
+}
+
+#listaItens {
+    display: grid;
+    gap: 8px;
+    max-height: max(170px, calc(100vh - 530px));
+    overflow-y: auto;
+    padding: 12px;
+    border-radius: 16px;
+    background: var(--green-800);
+    color: var(--white);
+    scrollbar-color: var(--sage) var(--cream-1);
+    scrollbar-width: thin;
+}
+
 .item-linha {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            padding: 10px 14px;
-            margin-bottom: 8px;
-            flex-wrap: wrap;
-        }
+    display: flex;
+    min-width: 0;
+    min-height: 52px;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 10px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.05);
+}
 
-        .item-thumb {
-            width: 42px;
-            height: 42px;
-            object-fit: cover;
-            border-radius: 8px;
-            flex-shrink: 0;
-        }
+.item-thumb {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    object-fit: cover;
+}
 
-        .item-linha-info {
-            flex: 1;
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-            min-width: 140px;
-        }
+.item-linha-info {
+    display: flex;
+    min-width: 140px;
+    flex: 1;
+    justify-content: space-between;
+    gap: 10px;
+}
 
-        .item-linha-nome {
-            font-weight: 500;
-        }
+.item-linha-nome {
+    font-weight: 500;
+}
 
-        .item-linha-preco {
-            font-weight: 700;
-        }
+.item-linha-preco {
+    font-weight: 700;
+    white-space: nowrap;
+}
 
-        .item-trocar-imagem,
-        .item-remover-imagem {
-            font-size: 0.78rem;
-            color: var(--cream-2);
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            white-space: nowrap;
-            cursor: pointer;
-        }
+.item-trocar-imagem,
+.item-remover-imagem {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--cream-2);
+    cursor: pointer;
+    font-size: 0.78rem;
+    white-space: nowrap;
+}
 
-        .item-trocar-imagem input[type="file"] {
-            max-width: 110px;
-            font-size: 0.72rem;
-        }
+.item-trocar-imagem input[type="file"] {
+    max-width: 110px;
+    font-size: 0.72rem;
+}
 
-        .btn-remover-item {
-            background: none;
-            border: none;
-            color: #ff9b9b;
-            font-size: 1rem;
-            cursor: pointer;
-            flex-shrink: 0;
-        }
+.btn-remover-item {
+    flex-shrink: 0;
+    border: 0;
+    background: none;
+    color: #ffb0b0;
+    cursor: pointer;
+    font-size: 1rem;
+}
 
-        .item-inputs input[type="file"] {
-            max-width: 160px;
-        }
+.cardapio-form > button[type="submit"] {
+    grid-column: 1 / -1;
+    justify-self: center;
+    min-width: 220px;
+    background: linear-gradient(120deg, #cfded7, #8fad9f);
+    color: var(--green-800);
+}
+
+.cardapio-form > button[type="submit"]:hover {
+    background: #8fad9f;
+}
+
+.site-footer {
+    margin-top: auto;
+    padding: 20px 24px 12px;
+    border-top: 2px solid var(--sage);
+    background: var(--white);
+    color: var(--green-800);
+    text-align: center;
+}
+
+.site-footer .logo {
+    justify-content: center;
+    color: var(--green-800);
+}
+
+.site-footer .logo-badge {
+    border-color: var(--green-800);
+}
+
+.site-footer p {
+    margin: 4px 0;
+    color: var(--green-800);
+}
+
+@media (max-width: 780px) {
+    .dashboard-card {
+        width: min(100% - 32px, 600px);
+    }
+
+    .main-nav {
+        background: var(--green-800);
+        border-bottom-color: var(--green-900);
+    }
+
+    .main-nav a {
+        color: var(--cream-1);
+        border-bottom-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .cardapio-form {
+        gap: 14px;
+    }
+
+    #listaItens {
+        max-height: max(120px, calc(100vh - 660px));
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-shell {
+        padding: 20px 0 30px;
+    }
+
+    .dashboard-card > h1 {
+        font-size: 1.8rem;
+    }
+
+    .dashboard-text {
+        font-size: 0.95rem;
+    }
+
+    .cardapio-form {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+    }
+
+    .itens-box {
+        grid-column: 1;
+        padding: 14px 10px;
+        border-top: 2px solid var(--green-800);
+        border-left: 0;
+    }
+
+    .item-inputs {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #nomeItem,
+    #precoItem,
+    .item-inputs input[type="file"],
+    .btn-add {
+        grid-column: span 2;
+    }
+
+    .cardapio-form > button[type="submit"] {
+        grid-column: 1;
+        width: 100%;
+    }
+
+    #listaItens {
+        max-height: max(100px, calc(100vh - 600px));
+        padding: 8px;
+    }
+
+    .item-linha {
+        gap: 8px;
+        padding: 8px;
+    }
+
+    .item-linha-info {
+        min-width: calc(100% - 58px);
+    }
+}
