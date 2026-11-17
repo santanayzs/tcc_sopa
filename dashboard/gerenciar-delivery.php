@@ -55,18 +55,25 @@ $stmtDelivery->close();
   <link rel="stylesheet" href="../CSS/style.css" />
   <link rel="stylesheet" href="delivery.css" />
 </head>
-<body class="dashboard-page">
+<body class="dashboard-page delivery-settings-page">
   <header class="site-header">
-    <a href="../index.html" class="logo" aria-label="S.O.P.A. — voltar ao início">
-      <span class="logo-badge">S</span>
-      <span class="logo-word">S.O.P.A.</span>
+    <a href="index.php" class="logo" aria-label="S.O.P.A. — voltar ao Painel">
+      <img src="../img/logotipoBranco.svg" alt="Logotipo S.O.P.A." class="logotipo">
     </a>
-    <nav class="main-nav">
+    <nav class="main-nav" id="main-nav">
       <a href="index.php">Painel</a>
       <a href="pedidos-delivery.php">Pedidos delivery</a>
       <a href="../Delivery/index.php">Ver delivery</a>
       <a href="../auth/logout.php">Sair</a>
     </nav>
+    <button
+      class="nav-toggle"
+      id="nav-toggle"
+      aria-label="Abrir menu"
+      aria-expanded="false"
+      aria-controls="main-nav">
+      <span></span><span></span><span></span>
+    </button>
   </header>
 
   <main class="dashboard-shell">
@@ -190,12 +197,13 @@ $stmtDelivery->close();
   </main>
 
   <footer class="site-footer">
-    <div class="logo">
-      <span class="logo-badge">S</span>
-      <span class="logo-word">S.O.P.A.</span>
-    </div>
+    <img src="../img/logotipoBranco.svg" alt="Logotipo S.O.P.A." class="logotipoFooter">
     <p>Sistema Online de Pedidos e Atendimentos</p>
+    <p class="footer-fine">
+      &copy; 2026 S.O.P.A. — Projeto de TCC, ETEC João Gomes de Araújo.
+    </p>
   </footer>
   <script src="delivery-location.js"></script>
+  <script src="../JS/main-nav.js"></script>
 </body>
 </html>
