@@ -285,24 +285,25 @@
 .site-footer {
     margin-top: auto;
     padding: 20px 24px 12px;
-    border-top: 2px solid var(--sage);
-    background: var(--white);
-    color: var(--green-800);
+    border-top: 2px solid var(--green-800);
+    background: var(--cream-1);
     text-align: center;
 }
 
-.site-footer .logo {
-    justify-content: center;
-    color: var(--green-800);
-}
-
-.site-footer .logo-badge {
-    border-color: var(--green-800);
+.site-footer .logotipoFooter {
+    width: 190px;
+    height: auto;
+    margin: 0 auto 2px;
 }
 
 .site-footer p {
     margin: 4px 0;
-    color: var(--green-800);
+    color: var(--green-900);
+}
+
+.site-footer .footer-fine {
+    font-size: 0.78rem;
+    opacity: 0.6;
 }
 
 @media (max-width: 780px) {

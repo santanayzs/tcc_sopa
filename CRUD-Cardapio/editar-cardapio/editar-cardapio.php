@@ -162,11 +162,11 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
 
     <!-- FOOTER -->
     <footer class="site-footer">
-        <div class="logo">
-            <span class="logo-badge">S</span>
-            <span class="logo-word">S.O.P.A.</span>
-        </div>
+        <img src="../../img/logotipoBranco.svg" alt="Logotipo S.O.P.A." class="logotipoFooter">
         <p>Sistema Online de Pedidos e Atendimentos</p>
+        <p class="footer-fine">
+            &copy; 2026 S.O.P.A. — Projeto de TCC, ETEC João Gomes de Araújo.
+        </p>
     </footer>
 
     <script>
