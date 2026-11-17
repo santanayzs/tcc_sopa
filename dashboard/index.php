@@ -62,9 +62,10 @@ $stmt->close();
         </a>
 
         <nav class="main-nav" id="main-nav">
-            <a href="../../dashboard/index.php">Início</a>
-            <a href="../../ver-cardapio/ver-cardapio.php">Ver Cardápio</a>
-            <a href="../../auth/logout.php">Sair</a>
+            <a href="../dashboard/index.php">Início</a>
+            <a href="../CRUD-Cardapio/criar-cardapio/criar-cardapio.php">Criar Cardápio</a>
+            <a href="../CRUD-Cardapio/ver-cardapio/ver-cardapio.php">Ver Cardápio</a>
+            <a class="btn-sair" href="../../auth/logout.php">Sair</a>
         </nav>
 
          <button
@@ -193,10 +194,6 @@ $stmt->close();
 
       </div>
 
-      <div class="dashboard-actions">
-        <a class="btn-pill" href="../index.html">Voltar para a home</a>
-        <a class="btn-pill" href="../auth/logout.php">Sair</a>
-      </div>
     </section>
   </main>
 

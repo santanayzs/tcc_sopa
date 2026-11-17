@@ -1,10 +1,37 @@
 /* Base da página e identidade visual do cabeçalho */
 .dashboard-page {
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
-  background: linear-gradient(155deg, #eef1ea 0%, #dde3d5 45%, #c9d1c4 100%);
-  color: var(--ink);
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    background: #f5f5f5;
+    color: #17211f;
+    zoom: 1.12;
+}
+
+.site-header {
+    position: relative;
+    min-height: 60px;
+    padding: 6px clamp(20px, 4vw, 48px);
+    background: #f5f5f5;
+    border-bottom: 2px solid #9fb6ad;
+    color: #344e49;
+}
+
+.logotipo {
+    width: 190px;
+    height: 44px;
+    object-fit: cover;
+    object-position: center;
+}
+
+.main-nav a {
+    padding: 6px 9px;
+    color: #344e49;
+    font-weight: 600;
+}
+
+.main-nav a:hover {
+    background: rgba(52, 78, 73, 0.08);
 }
 
 /* Área central e largura do conteúdo */
@@ -18,27 +45,27 @@
 }
 
 .dashboard-card {
-  width: min(100% - 72px, 1024px);
-  margin: 0 auto;
-  padding: 0;
-  background: transparent;
-  zoom: 1.12;
+    width: min(100% - 72px, 1024px);
+    margin: 0 auto;
+    margin-top:40px;
+    padding: 0;
+    background: transparent;
 }
 
 .btn-voltar {
-  display: inline-flex;
-  min-width: 116px;
-  min-height: 42px;
-  align-items: center;
-  justify-content: center;
-  margin: 0 0 27px 28px;
-  padding: 8px 22px;
-  border-radius: 16px;
-  background: var(--green-800);
-  color: var(--white);
-  font-family: var(--font-accent);
-  font-size: 1.1rem;
-  font-weight: 600;
+    display: inline-flex;
+    min-width: 116px;
+    min-height: 52px;
+    align-items: center;
+    justify-content: center;
+    margin: 0 0 27px 28px;
+    padding: 8px 22px;
+    border-radius: 16px;
+    background: #344e49;
+    color: #fff;
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 600;
 }
 
 .btn-voltar:hover,
@@ -55,32 +82,32 @@
 }
 
 .menu-page-heading h1 {
-  margin: 0;
-  color: var(--ink);
-  font-family: var(--font-accent);
-  font-size: clamp(2rem, 3.2vw, 2.45rem);
-  font-weight: 600;
-  line-height: 1.1;
-  text-transform: uppercase;
+    margin: 0;
+    color: #111;
+    font-family: var(--font-accent);
+    font-size: clamp(2.5rem, 3.2vw, 2.45rem);
+    font-weight: 600;
+    line-height: 1.1;
+    text-transform: uppercase;
 }
 
 .menu-page-heading p {
-  margin: 1px 0 0;
-  color: var(--ink);
-  font-family: var(--font-accent);
-  font-size: 1.2rem;
-  font-weight: 600;
-  line-height: 1.2;
+    margin: 8px 0 5px;
+    color: #111;
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.2;
 }
 
 /* Formulário dividido entre dados do restaurante e cadastro de itens */
 .cardapio-form {
-  display: grid;
-  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.25fr);
-  column-gap: 18px;
-  row-gap: 12px;
-  align-items: start;
-  margin-top: 14px;
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.25fr);
+    column-gap: 18px;
+    row-gap: 12px;
+    align-items: start;
+    margin-top: 35px;
 }
 
 .form-group-area {
@@ -92,14 +119,14 @@
 
 .form-group-area h2,
 .itens-box h2 {
-  margin: 0 0 2px;
-  color: var(--ink);
-  font-family: var(--font-accent);
-  font-size: 1.65rem;
-  font-weight: 600;
-  line-height: 1.2;
-  text-align: center;
-  text-transform: uppercase;
+    margin: 0 0 2px;
+    color: #111;
+    font-family: var(--font-display);
+    font-size: 1.65rem;
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: center;
+    text-transform: uppercase;
 }
 
 .form-group {
@@ -120,17 +147,17 @@
 .form-group input,
 .item-inputs > input[type="text"],
 .item-inputs > input[type="number"] {
-  width: 100%;
-  min-width: 0;
-  min-height: 43px;
-  padding: 7px 14px;
-  border: 1px solid var(--green-800);
-  border-radius: 7px;
-  background: #e2e2e2;
-  color: var(--green-800);
-  font-family: var(--font-accent);
-  font-size: 1.25rem;
-  font-weight: 600;
+    width: 100%;
+    min-width: 0;
+    min-height: 43px;
+    padding: 7px 14px;
+    border: 1px solid #344e49;
+    border-radius: 7px;
+    background: #e2e2e2;
+    color: #344e49;
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 600;
 }
 
 .form-group input::placeholder,
@@ -183,21 +210,21 @@
 .btn-upload,
 .btn-add,
 .btn-save {
-  display: inline-flex;
-  min-height: 46px;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 12px;
-  border: 0;
-  border-radius: 17px;
-  color: var(--white);
-  cursor: pointer;
-  font-family: var(--font-accent);
-  font-size: 1rem;
-  font-weight: 600;
-  line-height: 1.15;
-  text-align: center;
-  white-space: nowrap;
+    display: inline-flex;
+    min-height: 46px;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    border: 0;
+    border-radius: 17px;
+    color: #fff;
+    cursor: pointer;
+    font-family: var(--font-accent);
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.15;
+    text-align: center;
+    white-space: nowrap;
 }
 
 .btn-upload,
@@ -226,25 +253,26 @@
 
 /* Lista dinâmica de itens; a rolagem fica limitada à lista */
 .lista-itens-box {
-  grid-column: 1 / -1;
-  width: min(100% - 24px, 900px);
-  min-height: 170px;
-  justify-self: center;
-  overflow: hidden;
-  border-radius: 22px;
-  background: var(--green-800);
-  color: var(--white);
+    grid-column: 1 / -1;
+    width: min(100% - 24px, 900px);
+    min-height: 170px;
+    justify-self: center;
+    overflow: hidden;
+    border-radius: 22px;
+    background: #344e49;
+    color: #fff;
+    margin-top:40px;
 }
 
 .lista-itens-box h2 {
-  margin: 0;
-  padding: 2px 12px 3px;
-  border-bottom: 2px solid var(--cream-1);
-  font-family: var(--font-accent);
-  font-size: 1.9rem;
-  font-weight: 600;
-  line-height: 1.1;
-  text-align: center;
+    margin: 0;
+    padding: 2px 12px 3px;
+    border-bottom: 2px solid #f5f5f5;
+    font-family: var(--font-accent);
+    font-size: 35px;
+    font-weight: 600;
+    line-height: 1.1;
+    text-align: center;
 }
 
 #listaItens {
