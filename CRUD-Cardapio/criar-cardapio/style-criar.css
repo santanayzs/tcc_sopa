@@ -26,8 +26,6 @@
 .main-nav a {
     padding: 6px 9px;
     color: #344e49;
-    font-family: var(--font-accent);
-    font-size: 1.25rem;
     font-weight: 600;
 }
 
@@ -45,6 +43,7 @@
 .dashboard-card {
     width: min(100% - 72px, 1024px);
     margin: 0 auto;
+    margin-top:40px;
     padding: 0;
     background: transparent;
 }
@@ -52,7 +51,7 @@
 .btn-voltar {
     display: inline-flex;
     min-width: 116px;
-    min-height: 42px;
+    min-height: 52px;
     align-items: center;
     justify-content: center;
     margin: 0 0 27px 28px;
@@ -60,7 +59,7 @@
     border-radius: 16px;
     background: #344e49;
     color: #fff;
-    font-family: var(--font-accent);
+    font-family: var(--font-display);
     font-size: 1.1rem;
     font-weight: 600;
 }
@@ -81,17 +80,17 @@
     margin: 0;
     color: #111;
     font-family: var(--font-accent);
-    font-size: clamp(2rem, 3.2vw, 2.45rem);
+    font-size: clamp(2.5rem, 3.2vw, 2.45rem);
     font-weight: 600;
     line-height: 1.1;
     text-transform: uppercase;
 }
 
 .menu-page-heading p {
-    margin: 1px 0 0;
+    margin: 8px 0 5px;
     color: #111;
-    font-family: var(--font-accent);
-    font-size: 1.2rem;
+    font-family: var(--font-body);
+    font-size: 15px;
     font-weight: 600;
     line-height: 1.2;
 }
@@ -102,7 +101,7 @@
     column-gap: 18px;
     row-gap: 12px;
     align-items: start;
-    margin-top: 14px;
+    margin-top: 35px;
 }
 
 .form-group-area {
@@ -116,7 +115,7 @@
 .itens-box h2 {
     margin: 0 0 2px;
     color: #111;
-    font-family: var(--font-accent);
+    font-family: var(--font-display);
     font-size: 1.65rem;
     font-weight: 600;
     line-height: 1.2;
@@ -149,8 +148,8 @@
     border-radius: 7px;
     background: #e2e2e2;
     color: #344e49;
-    font-family: var(--font-accent);
-    font-size: 1.25rem;
+    font-family: var(--font-body);
+    font-size: 15px;
     font-weight: 600;
 }
 
@@ -212,7 +211,7 @@
     color: #fff;
     cursor: pointer;
     font-family: var(--font-accent);
-    font-size: 1rem;
+    font-size: 20px;
     font-weight: 600;
     line-height: 1.15;
     text-align: center;
@@ -252,6 +251,7 @@
     border-radius: 22px;
     background: #344e49;
     color: #fff;
+    margin-top:40px;
 }
 
 .lista-itens-box h2 {
@@ -259,7 +259,7 @@
     padding: 2px 12px 3px;
     border-bottom: 2px solid #f5f5f5;
     font-family: var(--font-accent);
-    font-size: 1.9rem;
+    font-size: 35px;
     font-weight: 600;
     line-height: 1.1;
     text-align: center;

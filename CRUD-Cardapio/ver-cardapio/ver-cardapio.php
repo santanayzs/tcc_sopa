@@ -80,7 +80,8 @@ $stmt->close();
         <nav class="main-nav" id="main-nav">
             <a href="../../dashboard/index.php">Início</a>
             <a href="../criar-cardapio/criar-cardapio.php">Criar Cardápio</a>
-            <a href="../../auth/logout.php">Sair</a>
+            <a href="ver-cardapio.php">Ver Cardápio</a>
+            <a class="btn-sair" href="../../auth/logout.php">Sair</a>
         </nav>
 
          <button
@@ -98,9 +99,6 @@ $stmt->close();
         <div class="dashboard-card">
             <p class="dashboard-eyebrow">Área do Restaurante</p>
             <h1>Meus cardápios</h1>
-            <p class="dashboard-text">
-                Aqui estão os cardápios cadastrados por <?php echo htmlspecialchars($nomeUsuario, ENT_QUOTES, 'UTF-8'); ?>.
-            </p>
 
             <?php if ($mostrarAviso): ?>
                 <p class="aviso-sucesso">Cardápio salvo com sucesso!</p>
@@ -221,10 +219,6 @@ $stmt->close();
                 </div>
             <?php endif; ?>
 
-            <div class="dashboard-actions">
-                <a class="btn-pill" href="../criar-cardapio/criar-cardapio.php">+ Novo cardápio</a>
-                <a class="btn-pill" href="../../dashboard/index.php">Voltar ao painel</a>
-            </div>
         </div>
     </main>
 
