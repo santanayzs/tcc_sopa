@@ -50,8 +50,12 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
 
         <nav class="main-nav" id="main-nav">
             <a href="../../dashboard/index.php">Início</a>
+            <a href="criar-cardapio.php">Criar Cardápio</a>
             <a href="../ver-cardapio/ver-cardapio.php">Ver Cardápio</a>
-            <a href="../../auth/logout.php">Sair</a>
+            <a href="../../comandas/comandas.php">Comandas</a>
+            <a href="../../dashboard/gerenciar-delivery.php">Gerenciar Delivery</a>
+            <a href="../../dashboard/pedidos-delivery.php">Pedidos Delivery</a>
+            <a href="../../auth/logout.php" class="btn-sair">Sair</a>
         </nav>
 
          <button

@@ -405,8 +405,33 @@
     background: var(--cream-2);
 }
 
-.btn-sair a:hover {
-    background-color: red;
+.btn-sair {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    box-sizing: border-box;
+
+    margin-top: auto;
+    padding: 14px 16px;
+
+    background-color: #b83b3b;
+    color: #ffffff !important;
+
+    border: 1px solid #a52f2f;
+    border-radius: 10px;
+
+    text-align: center;
+    text-decoration: none;
+
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+}
+
+.btn-sair:hover {
+    background-color: #962d2d !important;
+    color: #ffffff !important;
 }
 
 @media (prefers-reduced-motion: reduce) {

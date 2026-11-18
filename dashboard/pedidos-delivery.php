@@ -88,6 +88,8 @@ $pedidoErro = ($_GET['resultado'] ?? '') === 'erro';
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pedidos de Delivery — S.O.P.A.</title>
+  <link href="../img/icon.svg" rel="icon" class="icon">
+  
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet" />
@@ -101,10 +103,14 @@ $pedidoErro = ($_GET['resultado'] ?? '') === 'erro';
       <img src="../img/logotipoBranco.svg" alt="Logotipo S.O.P.A." class="logotipo">
     </a>
     <nav class="main-nav" id="main-nav">
-      <a href="index.php">Painel</a>
-      <a href="gerenciar-delivery.php">Configurar delivery</a>
-      <a href="../auth/logout.php">Sair</a>
-    </nav>
+      <a href="index.php">Início</a>
+      <a href="../CRUD-Cardapio/criar-cardapio/criar-cardapio.php">Criar Cardápio</a>
+      <a href="../CRUD-Cardapio/ver-cardapio/ver-cardapio.php">Ver Cardápio</a>
+      <a href="../comandas/comandas.php">Comandas</a>
+      <a href="gerenciar-delivery.php">Gerenciar Delivery</a>
+      <a href="pedidos-delivery.php">Pedidos Delivery</a>
+      <a href="../auth/logout.php" class="btn-sair">Sair</a>
+  </nav>
     <button
       class="nav-toggle"
       id="nav-toggle"

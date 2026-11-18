@@ -208,6 +208,25 @@
             margin-top: auto;
         }
 
+        .estado-vazio a{
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            border-radius: 10px;
+            text-decoration: none;
+            font-family: var(--font-display);
+            font-weight: 600;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            cursor: pointer;
+            color:var(--white);
+            background: var(--green-900);
+        }
+        .btn-pill:hover{
+            box-shadow: none;
+            transform:scale(1.1);
+        }
+
         .btn-mini {
             font-family: var(--font-body);
             font-size: 0.8rem;

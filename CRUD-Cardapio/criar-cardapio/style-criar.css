@@ -40,7 +40,6 @@
   min-height: 0;
   margin: 14px 0;
   padding: 14px 0 18px;
-  background: var(--white);
   text-align: left;
 }
 
@@ -48,8 +47,8 @@
     width: min(100% - 72px, 1024px);
     margin: 0 auto;
     margin-top:40px;
-    padding: 0;
-    background: transparent;
+    padding: 56px 40px;
+    background: linear-gradient(180deg, #f7f8f4 0%, #eef1ea 100%);
 }
 
 .btn-voltar {

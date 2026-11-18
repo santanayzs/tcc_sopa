@@ -81,7 +81,10 @@ $stmt->close();
             <a href="../../dashboard/index.php">Início</a>
             <a href="../criar-cardapio/criar-cardapio.php">Criar Cardápio</a>
             <a href="ver-cardapio.php">Ver Cardápio</a>
-            <a class="btn-sair" href="../../auth/logout.php">Sair</a>
+            <a href="../../comandas/comandas.php">Comandas</a>
+            <a href="../../dashboard/gerenciar-delivery.php">Gerenciar Delivery</a>
+            <a href="../../dashboard/pedidos-delivery.php">Pedidos Delivery</a>
+            <a href="../../auth/logout.php" class="btn-sair">Sair</a>
         </nav>
 
          <button

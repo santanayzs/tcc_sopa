@@ -63,6 +63,7 @@ $aviso = $mensagens[$avisoChave] ?? null;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gerenciar Comandas — S.O.P.A.</title>
+    <link href="../img/icon.svg" rel="icon" class="icon">
  
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -80,9 +81,13 @@ $aviso = $mensagens[$avisoChave] ?? null;
         </a>
  
         <nav class="main-nav" id="main-nav">
-            <a href="../index.html">Início</a>
-            <a href="../dashboard/index.php">Painel</a>
-            <a href="../auth/logout.php">Sair</a>
+            <a href="../dashboard/index.php">Início</a>
+            <a href="../CRUD-Cardapio/criar-cardapio/criar-cardapio.php">Criar Cardápio</a>
+            <a href="../CRUD-Cardapio/ver-cardapio/ver-cardapio.php">Ver Cardápio</a>
+            <a href="comandas.php">Comandas</a>
+            <a href="../dashboard/gerenciar-delivery.php">Gerenciar Delivery</a>
+            <a href="../dashboard/pedidos-delivery.php">Pedidos Delivery</a>
+            <a href="../auth/logout.php" class="btn-sair">Sair</a>
         </nav>
 
         <button

@@ -109,8 +109,9 @@
 .delivery-settings-page .dashboard-card {
   width: min(100% - 72px, 1024px);
   margin: 0 auto;
-  padding: 0;
-  background: transparent;
+  padding: 20px 30px;
+  background: linear-gradient(180deg, #f7f8f4 0%, #eef1ea 100%);
+  border-radius:20px;
 }
 
 .delivery-settings-page .dashboard-delivery {
@@ -420,6 +421,7 @@
 .delivery-settings-actions .btn-pill:hover,
 .delivery-settings-page .dashboard-actions .btn-pill:hover {
   background: var(--green-900);
+  box-shadow: none;
 }
 
 .delivery-settings-actions > span {
@@ -457,6 +459,35 @@
 .delivery-settings-page .site-footer .footer-fine {
   font-size: 0.78rem;
   opacity: 0.6;
+}
+
+.btn-sair {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    box-sizing: border-box;
+
+    margin-top: auto;
+    padding: 14px 16px;
+
+    background-color: #b83b3b;
+    color: #ffffff !important;
+
+    border: 1px solid #a52f2f;
+    border-radius: 10px;
+
+    text-align: center;
+    text-decoration: none;
+
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+}
+
+.btn-sair:hover {
+    background-color: #962d2d !important;
+    color: #ffffff !important;
 }
 
 @media (max-width: 780px) {

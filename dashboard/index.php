@@ -99,12 +99,15 @@ $statusPedidos = [
         </a>
 
         <nav class="main-nav" id="main-nav">
-            <a href="../dashboard/index.php">Início</a>
-            <a href="../CRUD-Cardapio/criar-cardapio/criar-cardapio.php">Criar Cardápio</a>
-            <a href="../CRUD-Cardapio/ver-cardapio/ver-cardapio.php">Ver Cardápio</a>
-            <a class="btn-sair" href="../../auth/logout.php">Sair</a>
-        </nav>
-
+          <a href="index.php">Início</a>
+          <a href="../CRUD-Cardapio/criar-cardapio/criar-cardapio.php">Criar Cardápio</a>
+          <a href="../CRUD-Cardapio/ver-cardapio/ver-cardapio.php">Ver Cardápio</a>
+          <a href="../comandas/comandas.php">Comandas</a>
+          <a href="gerenciar-delivery.php">Gerenciar Delivery</a>
+          <a href="pedidos-delivery.php">Pedidos Delivery</a>
+          <a href="../auth/logout.php" class="btn-sair">Sair</a>
+      </nav>
+      
          <button
         class="nav-toggle"
         id="nav-toggle"
