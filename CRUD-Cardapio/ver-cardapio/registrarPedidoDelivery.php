@@ -110,13 +110,14 @@ try {
     $categoria = $cardapio['categoria'] !== null ? (string) $cardapio['categoria'] : null;
     $clienteToken = $_SESSION['delivery_customer_token'] ??= bin2hex(random_bytes(32));
     $clienteTokenHash = hash('sha256', $clienteToken);
+    $clienteUsuarioId = ($_SESSION['tipo_usuario'] ?? '') === 'cliente' ? (int) ($_SESSION['id'] ?? 0) : null;
     $stmtPedido = $conexao->prepare(
         'INSERT INTO pedidos_delivery
-            (usuario_id, cardapio_id, nome_estabelecimento, categoria, nome_cliente, telefone_cliente, endereco_entrega, observacao, cliente_token_hash, total)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+            (usuario_id, cardapio_id, nome_estabelecimento, categoria, nome_cliente, telefone_cliente, endereco_entrega, observacao, cliente_token_hash, cliente_usuario_id, total)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
     );
     $stmtPedido->bind_param(
-        'iisssssssd',
+        'iisssssssid',
         $usuarioId,
         $cardapioId,
         $nomeEstabelecimento,
@@ -126,6 +127,7 @@ try {
         $enderecoEntrega,
         $observacao,
         $clienteTokenHash,
+        $clienteUsuarioId,
         $total
     );
     $stmtPedido->execute();

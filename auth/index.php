@@ -6,12 +6,17 @@
 
 declare(strict_types=1);
 
-session_start([
-    'cookie_httponly' => true,
-    'cookie_secure'   => true,
-    'cookie_samesite' => 'Strict',
-    'use_strict_mode' => true,
-]);
+require_once __DIR__ . '/../configs/session_helper.php';
+
+if (!empty($_SESSION['id'])) {
+  $destino = match ($_SESSION['tipo_usuario'] ?? '') {
+    'funcionario' => '../comandas/comandas.php',
+    'cliente' => '../Delivery/index.php',
+    default => '../dashboard/index.php',
+  };
+  header('Location: ' . $destino);
+  exit;
+}
 
 // Gera (ou reutiliza) o token CSRF da sessão
 if (empty($_SESSION['csrf_token'])) {
@@ -97,6 +102,34 @@ function csrfField(string $token): string {
       }
 
       .tabs { display: flex; gap: 10px; flex-wrap: wrap; }
+
+      .cadastro-tipo {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 6px;
+        margin: 0 0 16px;
+        padding: 5px;
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 10px;
+        background: rgba(0,0,0,0.12);
+      }
+      .cadastro-tipo label {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 38px;
+        margin: 0;
+        padding: 6px 4px;
+        border-radius: 7px;
+        text-align: center;
+        font-size: 0.78rem;
+        cursor: pointer;
+      }
+      .cadastro-tipo input { accent-color: #b6d2c2; }
+      .cadastro-tipo label:has(input:checked) { background: #fff; color: #344e49; }
+      .cadastro-vinculo { display: none; }
+      .cadastro-vinculo.ativo { display: block; }
+      .cadastro-ajuda { margin: 5px 0 0; color: rgba(255,255,255,0.65); font-size: 0.78rem; line-height: 1.4; }
 
       .tab {
         padding: 10px 16px;
@@ -350,6 +383,12 @@ function csrfField(string $token): string {
             <form action="cadastro.php" method="post" novalidate>
               <?= csrfField($csrfToken) ?>
 
+              <fieldset class="cadastro-tipo" aria-label="Tipo de cadastro">
+                <label><input type="radio" name="tipo_usuario" value="empresa" checked /> Estabelecimento</label>
+                <label><input type="radio" name="tipo_usuario" value="funcionario" /> Funcionário</label>
+                <label><input type="radio" name="tipo_usuario" value="cliente" /> Cliente</label>
+              </fieldset>
+
               <div>
                 <label for="nome">Nome Completo</label>
                 <input type="text" id="nome" name="nome"
@@ -369,10 +408,17 @@ function csrfField(string $token): string {
                        pattern="\d{10,11}" required />
               </div>
 
-              <div>
+              <div class="cadastro-vinculo" data-role="empresa">
                 <label for="estabelecimento">Nome do estabelecimento</label>
                 <input type="text" id="estabelecimento" name="estabelecimento"
                        minlength="2" maxlength="150" required />
+              </div>
+
+              <div class="cadastro-vinculo" data-role="funcionario">
+                <label for="emailEstabelecimento">E-mail do estabelecimento</label>
+                <input type="email" id="emailEstabelecimento" name="email_estabelecimento"
+                       autocomplete="organization" disabled />
+                <p class="cadastro-ajuda">Use o e-mail da conta que cadastrou o estabelecimento.</p>
               </div>
 
               <div>
@@ -464,6 +510,22 @@ function csrfField(string $token): string {
         limparMensagens();
       }
 
+      function selecionarTipoCadastro(tipo) {
+        document.querySelectorAll('[data-role]').forEach(campo => {
+          const ativo = campo.dataset.role === tipo;
+          campo.classList.toggle('ativo', ativo);
+          campo.querySelectorAll('input').forEach(input => {
+            input.disabled = !ativo;
+            input.required = ativo;
+          });
+        });
+      }
+
+      document.querySelectorAll('input[name="tipo_usuario"]').forEach(input => {
+        input.addEventListener('change', () => selecionarTipoCadastro(input.value));
+      });
+        selecionarTipoCadastro(document.querySelector('input[name="tipo_usuario"]:checked').value);
+
       document.querySelectorAll('[data-panel]').forEach(el => {
         el.addEventListener('click', () => ativarPainel(el.dataset.panel));
       });
@@ -492,6 +554,9 @@ function csrfField(string $token): string {
         campos:          'Preencha todos os campos corretamente.',
         csrf:            'Sessão expirada. Recarregue a página e tente novamente.',
         email_existente: 'Este e-mail já está cadastrado. Faça login ou recupere sua senha.',
+        estabelecimento_invalido: 'Informe um e-mail válido para o estabelecimento.',
+        estabelecimento_nao_encontrado: 'Não encontramos um estabelecimento cadastrado com esse e-mail.',
+        tipo_invalido: 'Selecione um tipo de cadastro válido.',
         senha_fraca:     'A senha precisa ter ao menos 8 caracteres, maiúscula, minúscula, número e símbolo.',
         senha_diverge:   'As senhas não coincidem.',
         token_invalido:  'O link de redefinição é inválido ou expirou. Solicite um novo.',
@@ -504,8 +569,20 @@ function csrfField(string $token): string {
       function processarUrl() {
         const params = new URLSearchParams(location.search);
 
+        const tipoCadastro = params.get('tipo');
+        if (['empresa', 'funcionario', 'cliente'].includes(tipoCadastro)) {
+          const opcao = document.querySelector(`input[name="tipo_usuario"][value="${tipoCadastro}"]`);
+          if (opcao) {
+            opcao.checked = true;
+            selecionarTipoCadastro(tipoCadastro);
+          }
+        }
+
         if (params.get('cadastro') === 'ok') {
-          mostrarMensagem('success', 'Cadastro realizado! Agora faça login.');
+          const mensagem = params.get('tipo') === 'funcionario'
+            ? 'Cadastro enviado. O responsável pelo estabelecimento precisa aprovar seu acesso.'
+            : 'Cadastro realizado! Agora faça login.';
+          mostrarMensagem('success', mensagem);
           ativarPainel('login');
         }
 
@@ -526,7 +603,7 @@ function csrfField(string $token): string {
 
           if (['token_invalido', 'codigo_invalido', 'sessao_expirada'].includes(erro)) {
             ativarPainel('recuperar');
-          } else if (['email_existente', 'senha_fraca', 'senha_diverge'].includes(erro)) {
+          } else if (['email_existente', 'senha_fraca', 'senha_diverge', 'estabelecimento_invalido', 'estabelecimento_nao_encontrado', 'tipo_invalido'].includes(erro)) {
             ativarPainel('cadastro');
           }
         }

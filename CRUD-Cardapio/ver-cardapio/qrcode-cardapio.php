@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 session_start();
+require_once __DIR__ . '/../../configs/perfis.php';
+exigirAcessoEstabelecimento();
 
 // ── Exige login ────────────────────────────────────────────────────────────
 if (!isset($_SESSION['id'])) {

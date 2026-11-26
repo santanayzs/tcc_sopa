@@ -2,7 +2,8 @@
  
 declare(strict_types=1);
  
-session_start();
+require_once __DIR__ . '/../configs/session_helper.php';
+require_once __DIR__ . '/../configs/perfis.php';
  
 // ── Exige login ────────────────────────────────────────────────────────────
 if (!isset($_SESSION['id'])) {
@@ -10,11 +11,12 @@ if (!isset($_SESSION['id'])) {
     exit;
 }
  
-include '../configs/conexao.php';
+include_once '../configs/conexao.php';
 garantirMesasCompartilhadas($conn);
  
-$usuarioId   = (int) $_SESSION['id'];
+$usuarioId   = usuarioDonoId($conn);
 $nomeUsuario = $_SESSION['nome'] ?? 'Usuário';
+$ehFuncionario = ($_SESSION['tipo_usuario'] ?? '') === 'funcionario';
  
 // ── Cardápios disponíveis para selecionar em cada nova comanda ────────────
 $stmtCardapios = $conn->prepare(
@@ -76,17 +78,21 @@ $aviso = $mensagens[$avisoChave] ?? null;
 </head>
 <body class="dashboard-page">
     <header class="site-header">
-        <a href="../dashboard/index.php" class="logo" aria-label="S.O.P.A. — voltar ao Painel">
+        <a href="<?php echo $ehFuncionario ? 'comandas.php' : '../dashboard/index.php'; ?>" class="logo" aria-label="S.O.P.A. — voltar ao Painel">
             <img src="../img/logotipoBranco.svg" alt="Logotipo S.O.P.A." class="logotipo">
         </a>
  
         <nav class="main-nav" id="main-nav">
+            <?php if (!$ehFuncionario): ?>
             <a href="../dashboard/index.php">Início</a>
             <a href="../CRUD-Cardapio/criar-cardapio/criar-cardapio.php">Criar Cardápio</a>
             <a href="../CRUD-Cardapio/ver-cardapio/ver-cardapio.php">Ver Cardápio</a>
+            <?php endif; ?>
             <a href="comandas.php">Comandas</a>
+            <?php if (!$ehFuncionario): ?>
             <a href="../dashboard/gerenciar-delivery.php">Gerenciar Delivery</a>
             <a href="../dashboard/pedidos-delivery.php">Pedidos Delivery</a>
+            <?php endif; ?>
             <a href="../auth/logout.php" class="btn-sair">Sair</a>
         </nav>
 
@@ -116,8 +122,10 @@ $aviso = $mensagens[$avisoChave] ?? null;
  
             <?php if (empty($cardapios)): ?>
                 <div class="estado-vazio">
-                    <p>Você poderá selecionar o cardápio dentro da comanda. Cadastre um cardápio para lançar itens.</p>
+                    <p><?php echo $ehFuncionario ? 'O estabelecimento ainda não possui cardápios para lançar itens.' : 'Você poderá selecionar o cardápio dentro da comanda. Cadastre um cardápio para lançar itens.'; ?></p>
+                    <?php if (!$ehFuncionario): ?>
                     <a class="btn-pill" href="../CRUD-Cardapio/criar-cardapio/criar-cardapio.php">Criar cardápio</a>
+                    <?php endif; ?>
                 </div>
             <?php endif; ?>
 
@@ -172,7 +180,7 @@ $aviso = $mensagens[$avisoChave] ?? null;
  
             <div class="dashboard-actions">
                 <a class="btn-pill" href="historico/historico-comandas.php">Histórico de comandas</a>
-                <a class="btn-pill" href="../dashboard/index.php">Voltar ao painel</a>
+                <a class="btn-pill" href="<?php echo $ehFuncionario ? 'comandas.php' : '../dashboard/index.php'; ?>"><?php echo $ehFuncionario ? 'Voltar às comandas' : 'Voltar ao painel'; ?></a>
             </div>
         </div>
     </main>

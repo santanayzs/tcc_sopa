@@ -1,5 +1,7 @@
 <?php
 session_start();
+require_once __DIR__ . '/../../configs/perfis.php';
+exigirAcessoEstabelecimento();
 
 if (!isset($_SESSION['id'])) {
     header('Location: ../../auth/index.php');

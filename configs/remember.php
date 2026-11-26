@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+require_once __DIR__ . '/perfis.php';
+
 // Helpers para funcionalidade "Lembrar-me" (remember me)
 // Usa uma tabela simples `remember_tokens` (será criada se inexistente).
 
@@ -100,6 +102,8 @@ function try_remember_login(mysqli $conn): bool
 {
     if (!isset($_COOKIE['remember'])) return false;
 
+    garantirSchemaPerfis($conn);
+
     $parts = explode(':', $_COOKIE['remember']);
     if (count($parts) !== 2) return false;
     [$selector, $validator] = $parts;
@@ -131,7 +135,7 @@ function try_remember_login(mysqli $conn): bool
 
     // Token válido: cria sessão para o usuário
     $userId = (int) $row['user_id'];
-    $uStmt = $conn->prepare('SELECT id, nome, email, ativo FROM usuarios WHERE id = ? LIMIT 1');
+    $uStmt = $conn->prepare('SELECT id, nome, email, telefone, ativo, tipo_usuario, usuario_estabelecimento_id FROM usuarios WHERE id = ? LIMIT 1');
     $uStmt->bind_param('i', $userId);
     $uStmt->execute();
     $usuario = $uStmt->get_result()->fetch_assoc();
@@ -143,12 +147,7 @@ function try_remember_login(mysqli $conn): bool
 
     // Inicia sessão segura
     session_regenerate_id(true);
-    $_SESSION['id'] = $usuario['id'];
-    $_SESSION['nome'] = $usuario['nome'];
-    $_SESSION['email'] = $usuario['email'];
-    $_SESSION['criado_em'] = time();
-    $_SESSION['ip'] = $_SERVER['REMOTE_ADDR'] ?? '';
-    $_SESSION['user_agent'] = $_SERVER['HTTP_USER_AGENT'] ?? '';
+    iniciarSessaoUsuario($usuario);
 
     // Rotaciona validator: gera novo validator e atualiza db + cookie
     $newValidator = generate_validator(16);
