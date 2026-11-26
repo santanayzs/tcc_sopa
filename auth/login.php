@@ -7,12 +7,14 @@ declare(strict_types=1);
 
 session_start([
     'cookie_httponly' => true,
-    'cookie_secure'   => true,        // Apenas HTTPS
+    'cookie_secure'   => isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on',
     'cookie_samesite' => 'Strict',
     'use_strict_mode' => true,
 ]);
 
 include('../configs/conexao.php');
+require_once __DIR__ . '/../configs/perfis.php';
+garantirSchemaPerfis($conn);
 include('../configs/remember.php');
 
 // ── Constantes de segurança ───────────────────────────────────────────────────
@@ -74,12 +76,7 @@ function iniciarSessaoSegura(array $usuario): void
 {
     session_regenerate_id(true);
 
-    $_SESSION['id']          = $usuario['id'];
-    $_SESSION['nome']        = $usuario['nome'];
-    $_SESSION['email']       = $usuario['email'];
-    $_SESSION['criado_em']   = time();
-    $_SESSION['ip']          = $_SERVER['REMOTE_ADDR'] ?? '';
-    $_SESSION['user_agent']  = $_SERVER['HTTP_USER_AGENT'] ?? '';
+    iniciarSessaoUsuario($usuario);
 }
 
 // ── Validação de método ───────────────────────────────────────────────────────
@@ -114,7 +111,7 @@ if (estaBloqueado($conn, $ip, $email)) {
 
 // ── Consulta ao banco ─────────────────────────────────────────────────────────
 $stmt = $conn->prepare(
-    'SELECT id, nome, email, senha, ativo
+    'SELECT id, nome, email, telefone, senha, ativo, tipo_usuario, usuario_estabelecimento_id
      FROM usuarios
      WHERE email = ?
      LIMIT 1'
@@ -154,5 +151,10 @@ if (!empty($_POST['remember'])) {
     set_remember_cookie($payload, 30);
 }
 
-header('Location: ../dashboard/index.php');
+$destino = match ($usuario['tipo_usuario']) {
+    'funcionario' => '../comandas/comandas.php',
+    'cliente' => '../Delivery/index.php',
+    default => '../dashboard/index.php',
+};
+header('Location: ' . $destino);
 exit;

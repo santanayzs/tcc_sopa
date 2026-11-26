@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../configs/session_helper.php';
+require_once __DIR__ . '/../configs/perfis.php';
+exigirAcessoEstabelecimento();
 
 if (!isset($_SESSION['id'])) {
     header('Location: ../auth/index.php');

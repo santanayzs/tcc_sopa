@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 session_start();
+require_once __DIR__ . '/../../configs/perfis.php';
 
 if (!isset($_SESSION['id'])) {
     header('Location: ../../auth/index.php');
@@ -11,7 +12,7 @@ if (!isset($_SESSION['id'])) {
 
 include '../../configs/conexao.php';
 
-$usuarioId = (int) ($_SESSION['id'] ?? 0);
+$usuarioId = usuarioDonoId($conn);
 
 $stmtCardapios = $conn->prepare(
     'SELECT id, nome_restaurante, categoria FROM cardapios WHERE usuario_id = ? ORDER BY nome_restaurante'
@@ -118,12 +119,10 @@ if ($aviso === 'historico_limpo') {
 </head>
 <body class="dashboard-page">
     <header class="site-header">
-        <a href="../../dashboard/index.php" class="logo" aria-label="S.O.P.A. — voltar ao Painel">
+        <a href="../comandas.php" class="logo" aria-label="S.O.P.A. — voltar às comandas">
             <img src="../../img/logotipoBranco.svg" alt="Logotipo S.O.P.A." class="logotipo">
         </a>
         <nav class="main-nav" id="main-nav">
-            <a href="../../index.html">Início</a>
-            <a href="../../dashboard/index.php">Painel</a>
             <a href="../comandas.php">Gerenciar comandas</a>
             <a href="../../auth/logout.php">Sair</a>
         </nav>

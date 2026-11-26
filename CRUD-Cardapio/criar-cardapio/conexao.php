@@ -84,6 +84,7 @@ function garantirTabelasPedidosDelivery(mysqli $conexao): void
             endereco_entrega VARCHAR(500) NOT NULL,
             observacao TEXT NULL,
             cliente_token_hash CHAR(64) NULL,
+            cliente_usuario_id INT NULL,
             status ENUM("RECEBIDO", "CONFIRMADO", "EM_PREPARO", "SAIU_PARA_ENTREGA", "ENTREGUE", "CANCELADO") NOT NULL DEFAULT "RECEBIDO",
             total DECIMAL(10,2) NOT NULL DEFAULT 0.00,
             criado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -91,8 +92,10 @@ function garantirTabelasPedidosDelivery(mysqli $conexao): void
             PRIMARY KEY (id),
             KEY idx_pedidos_delivery_usuario_status (usuario_id, status, criado_em),
             KEY idx_pedidos_delivery_cliente_token (cliente_token_hash),
+            KEY idx_pedidos_delivery_cliente_usuario (cliente_usuario_id),
             KEY idx_pedidos_delivery_cardapio (cardapio_id),
-            CONSTRAINT fk_pedidos_delivery_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios (id) ON DELETE CASCADE
+            CONSTRAINT fk_pedidos_delivery_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios (id) ON DELETE CASCADE,
+            CONSTRAINT fk_pedidos_delivery_cliente FOREIGN KEY (cliente_usuario_id) REFERENCES usuarios (id) ON DELETE SET NULL
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci'
     );
 
@@ -104,6 +107,16 @@ function garantirTabelasPedidosDelivery(mysqli $conexao): void
         'ALTER TABLE pedidos_delivery ADD COLUMN cliente_token_hash CHAR(64) NULL AFTER observacao'
     )) {
         throw new RuntimeException('Não foi possível preparar o acompanhamento dos pedidos existentes.');
+    }
+
+    $colunaUsuarioCliente = $conexao->query("SHOW COLUMNS FROM pedidos_delivery LIKE 'cliente_usuario_id'");
+    if (!$colunaUsuarioCliente) {
+        throw new RuntimeException('Não foi possível verificar o vínculo dos pedidos com clientes.');
+    }
+    if ($colunaUsuarioCliente->num_rows === 0 && !$conexao->query(
+        'ALTER TABLE pedidos_delivery ADD COLUMN cliente_usuario_id INT NULL AFTER cliente_token_hash, ADD INDEX idx_pedidos_delivery_cliente_usuario (cliente_usuario_id), ADD CONSTRAINT fk_pedidos_delivery_cliente FOREIGN KEY (cliente_usuario_id) REFERENCES usuarios (id) ON DELETE SET NULL'
+    )) {
+        throw new RuntimeException('Não foi possível preparar o vínculo dos pedidos com clientes.');
     }
 
     $indiceTokenCliente = $conexao->query("SHOW INDEX FROM pedidos_delivery WHERE Key_name = 'idx_pedidos_delivery_cliente_token'");

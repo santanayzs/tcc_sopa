@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-session_start();
+require_once __DIR__ . '/../configs/session_helper.php';
 include __DIR__ . '/../CRUD-Cardapio/criar-cardapio/conexao.php';
 garantirTabelasPedidosDelivery($conexao);
 
@@ -23,18 +23,30 @@ $etapas = [
 ];
 $pedidos = [];
 $clienteToken = $_SESSION['delivery_customer_token'] ?? '';
+$clienteUsuarioId = ($_SESSION['tipo_usuario'] ?? '') === 'cliente' ? (int) ($_SESSION['id'] ?? 0) : 0;
+$filtroPedidos = null;
 
-if (is_string($clienteToken) && $clienteToken !== '') {
-    $clienteTokenHash = hash('sha256', $clienteToken);
+if ($clienteUsuarioId > 0) {
+  $filtroPedidos = 'p.cliente_usuario_id = ?';
+} elseif (is_string($clienteToken) && $clienteToken !== '') {
+  $filtroPedidos = 'p.cliente_token_hash = ?';
+  $clienteTokenHash = hash('sha256', $clienteToken);
+}
+
+if ($filtroPedidos !== null) {
     $stmtPedidos = $conexao->prepare(
         'SELECT p.id, p.nome_estabelecimento, p.categoria, p.status, p.total, p.criado_em,
                 i.nome_item, i.quantidade, i.preco_unitario
          FROM pedidos_delivery p
          LEFT JOIN itens_pedido_delivery i ON i.pedido_id = p.id
-         WHERE p.cliente_token_hash = ?
-         ORDER BY p.criado_em DESC, p.id DESC, i.id'
+     WHERE ' . $filtroPedidos . '
+     ORDER BY p.criado_em DESC, p.id DESC, i.id'
     );
+  if ($clienteUsuarioId > 0) {
+    $stmtPedidos->bind_param('i', $clienteUsuarioId);
+  } else {
     $stmtPedidos->bind_param('s', $clienteTokenHash);
+  }
     $stmtPedidos->execute();
     $linhasPedidos = $stmtPedidos->get_result()->fetch_all(MYSQLI_ASSOC);
     $stmtPedidos->close();

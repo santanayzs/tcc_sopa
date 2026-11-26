@@ -6,6 +6,9 @@ session_start();
 include __DIR__ . '/../criar-cardapio/conexao.php';
 
 $modoDelivery = defined('SOPA_CARDAPIO_DELIVERY') && SOPA_CARDAPIO_DELIVERY;
+$clienteLogado = ($_SESSION['tipo_usuario'] ?? '') === 'cliente';
+$nomeCliente = $clienteLogado ? (string) ($_SESSION['nome'] ?? '') : '';
+$telefoneCliente = $clienteLogado ? (string) ($_SESSION['telefone'] ?? '') : '';
 $idCardapio = (int) ($_GET['id'] ?? 0);
 $pedidoCsrf = $modoDelivery ? ($_SESSION['pedido_delivery_csrf'] ??= bin2hex(random_bytes(32))) : '';
 $pedidoResultado = $modoDelivery ? ($_GET['pedido'] ?? '') : '';
@@ -148,10 +151,10 @@ if ($cardapio) {
                         </div>
                         <div class="pedido-checkout-fields">
                             <label>Seu nome
-                                <input name="nome_cliente" type="text" maxlength="150" autocomplete="name" required>
+                                <input name="nome_cliente" type="text" maxlength="150" autocomplete="name" value="<?= htmlspecialchars($nomeCliente, ENT_QUOTES, 'UTF-8') ?>" required>
                             </label>
                             <label>Telefone
-                                <input name="telefone_cliente" type="tel" maxlength="30" autocomplete="tel" required>
+                                <input name="telefone_cliente" type="tel" maxlength="30" autocomplete="tel" value="<?= htmlspecialchars($telefoneCliente, ENT_QUOTES, 'UTF-8') ?>" required>
                             </label>
                             <label class="pedido-endereco">Endereço de entrega
                                 <textarea name="endereco_entrega" rows="3" maxlength="500" autocomplete="street-address" required></textarea>
