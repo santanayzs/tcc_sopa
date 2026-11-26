@@ -42,14 +42,16 @@ $urlPublica = $scheme . '://' . $host . $pasta . '/cardapio-publico.php?id=' . $
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>QR Code do Cardápio — S.O.P.A.</title>
+    <link href="../../img/icon.svg" rel="icon" class="icon">
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&family=Cormorant+Garamond:wght@500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&family=Cormorant+Garamond:wght@500;600;700&display=swap"
         rel="stylesheet" />
 
     <link rel="stylesheet" href="../../CSS/style.css" />
+    <link rel="stylesheet" href="../../dashboard/dashboard.css" />
     <link rel="stylesheet" href="style-qrcode.css" />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -58,62 +60,76 @@ $urlPublica = $scheme . '://' . $host . $pasta . '/cardapio-publico.php?id=' . $
 
 <body class="dashboard-page">
     <header class="site-header">
-        <a href="../../index.html" class="logo">
-            <span class="logo-badge">S</span>
-            <span class="logo-word">S.O.P.A.</span>
+        <a href="../../dashboard/index.php" class="logo" aria-label="S.O.P.A. — voltar ao Painel">
+            <img src="../../img/logotipoBranco.svg" alt="S.O.P.A." class="logotipo">
         </a>
 
-        <nav class="main-nav">
-            <a href="../../index.html">Início</a>
-            <a href="../../dashboard/index.php">Painel</a>
+        <nav class="main-nav" id="main-nav">
+            <a href="../../dashboard/index.php">Início</a>
+            <a href="../criar-cardapio/criar-cardapio.php">Criar Cardápio</a>
             <a href="ver-cardapio.php">Ver Cardápio</a>
-            <a href="../../auth/logout.php">Sair</a>
+            <a class="btn-sair" href="../../auth/logout.php">Sair</a>
         </nav>
+
+        <button
+            class="nav-toggle"
+            id="nav-toggle"
+            aria-label="Abrir menu"
+            aria-expanded="false"
+            aria-controls="main-nav">
+            <span></span><span></span><span></span>
+        </button>
     </header>
 
     <main class="dashboard-shell">
         <div class="dashboard-card qr-shell">
-            <p class="dashboard-eyebrow">QR Code</p>
+            <a class="qr-back btn-pill" href="ver-cardapio.php">Voltar</a>
             <h1><?php echo htmlspecialchars($cardapio['nome_restaurante'], ENT_QUOTES, 'UTF-8'); ?></h1>
             <p class="dashboard-text">
-                Escaneie para abrir o cardápio no celular, ou imprima este código pra colocar nas mesas.
+                Escaneie para abrir o cardápio no celular, ou imprima este código
             </p>
 
-            <div id="qrcode"></div>
+            <div class="qr-code-panel">
+                <div id="qrcode" aria-label="QR Code do cardápio"></div>
+            </div>
 
             <div class="qr-link-box">
                 <input type="text" id="linkPublico" value="<?php echo htmlspecialchars($urlPublica, ENT_QUOTES, 'UTF-8'); ?>" readonly>
-                <button type="button" class="btn-pill" onclick="copiarLink()">Copiar link</button>
+                <button type="button" class="btn-pill" onclick="copiarLink()">Copiar</button>
             </div>
             <p class="qr-copiado" id="avisoCopiado"></p>
 
             <div class="dashboard-actions">
-                <button type="button" class="btn-pill" onclick="baixarQrCode()">Baixar QR Code (PNG)</button>
+                <button type="button" class="btn-pill" onclick="baixarQrCode()">
+                    <svg class="download-icon" viewBox="0 0 32 32" aria-hidden="true">
+                        <path d="M16 3v18m-8-8 8 8 8-8M4 23v5h24v-5" />
+                    </svg>
+                    Baixar QR Code
+                </button>
                 <a class="btn-pill" href="<?php echo htmlspecialchars($urlPublica, ENT_QUOTES, 'UTF-8'); ?>" target="_blank">
                     Ver cardápio público
                 </a>
-                <a class="btn-pill" href="ver-cardapio.php">Voltar</a>
             </div>
         </div>
     </main>
 
     <footer class="site-footer">
-        <div class="logo">
-            <span class="logo-badge">S</span>
-            <span class="logo-word">S.O.P.A.</span>
-        </div>
+        <img src="../../img/logotipoBranco.svg" alt="S.O.P.A." class="logotipoFooter">
         <p>Sistema Online de Pedidos e Atendimentos</p>
+        <p class="footer-fine">
+        &copy; 2026 S.O.P.A. — Projeto de TCC, ETEC João Gomes de Araújo.
+      </p>
     </footer>
-
+    
     <script>
         const urlPublica = <?php echo json_encode($urlPublica, JSON_UNESCAPED_SLASHES); ?>;
         const nomeArquivo = <?php echo json_encode('qrcode-' . preg_replace('/[^a-z0-9]+/i', '-', strtolower($cardapio['nome_restaurante']))); ?>;
 
         new QRCode(document.getElementById("qrcode"), {
             text: urlPublica,
-            width: 240,
-            height: 240,
-            colorDark: "#000000",
+            width: 170,
+            height: 170,
+            colorDark: "#344e49",
             colorLight: "#ffffff",
             correctLevel: QRCode.CorrectLevel.H
         });
@@ -141,6 +157,9 @@ $urlPublica = $scheme . '://' . $host . $pasta . '/cardapio-publico.php?id=' . $
             link.click();
         }
     </script>
+    
+    <script src="../../JS/main-nav.js"></script>
+
 </body>
 
 </html>

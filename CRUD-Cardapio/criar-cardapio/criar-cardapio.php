@@ -22,7 +22,7 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Criar Cardápio — S.O.P.A.</title>
-    <link href="../img/icon.svg" rel="icon" class="icon">
+    <link href="../../img/icon.svg" rel="icon" class="icon">
     
     <!-- FONTES -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -33,7 +33,7 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
 
     <!-- CSS -->
     <link rel="stylesheet" href="../../CSS/style.css" />
-    <!--<link rel="stylesheet" href="../dashboard/dashboard.css" />  nao sei se vou usar o dashboard css ou esse de baixo, mas depois eu vejo-->
+    <link rel="stylesheet" href="../../dashboard/dashboard.css" />
     <link rel="stylesheet" href="style-criar.css" />
 
     <style>
@@ -45,13 +45,17 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
     <!-- HEADER -->
     <header class="site-header">
         <a href="../../dashboard/index.php" class="logo" aria-label="S.O.P.A. — voltar ao Painel">
-            <img src="../img/logotipoBranco.svg" alt="logotipo" class="logotipo" >    
+            <img src="../../img/logotipoBranco.svg" alt="S.O.P.A." class="logotipo">
         </a>
 
         <nav class="main-nav" id="main-nav">
             <a href="../../dashboard/index.php">Início</a>
-            <a href="../../ver-cardapio/ver-cardapio.php">Ver Cardápio</a>
-            <a href="../../auth/logout.php">Sair</a>
+            <a href="criar-cardapio.php">Criar Cardápio</a>
+            <a href="../ver-cardapio/ver-cardapio.php">Ver Cardápio</a>
+            <a href="../../comandas/comandas.php">Comandas</a>
+            <a href="../../dashboard/gerenciar-delivery.php">Gerenciar Delivery</a>
+            <a href="../../dashboard/pedidos-delivery.php">Pedidos Delivery</a>
+            <a href="../../auth/logout.php" class="btn-sair">Sair</a>
         </nav>
 
          <button
@@ -68,13 +72,12 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
     <!-- CONTEÚDO -->
     <main class="dashboard-shell">
         <div class="dashboard-card">
-            <p class="dashboard-eyebrow">Área do Restaurante</p>
-            <h1>Criar novo cardápio</h1>
+            <a class="btn-voltar" href="../../dashboard/index.php">Voltar</a>
 
-            <p class="dashboard-text">
-                Preencha as informações abaixo para montar o seu cardápio digital.
-                Você poderá adicionar itens, preços, e uma foto para cada prato.
-            </p>
+            <div class="menu-page-heading">
+                <h1>Criar novo cardápio</h1>
+                <p>Preencha as informações abaixo para montar o seu cardápio digital</p>
+            </div>
 
             <?php if ($erro): ?>
                 <p style="background:#f8e5e5;color:#9b1c1c;padding:10px 14px;border-radius:10px;font-weight:600;">
@@ -84,53 +87,50 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
 
             <!-- FORMULÁRIO -->
             <form class="cardapio-form" action="salvarCardapio.php" method="POST" enctype="multipart/form-data" onsubmit="return prepararEnvio()">
-                <!-- Nome do restaurante -->
-                <div class="form-group">
-                    <label>Nome do Restaurante</label>
-                    <input type="text" name="nome_restaurante" placeholder="Ex: Restaurante do João" required>
-                </div>
-
-                <!-- Categoria -->
-                <div class="form-group">
-                    <label>Categoria</label>
-                    <input type="text" name="categoria" placeholder="Ex: Lanches, Bebidas...">
-                </div>
-
-                <div class="itens-box">
-
-                    <!-- Itens -->
-                    <h3>Adicionar Item</h3>
-
-                    <div class="item-inputs">
-                        <input type="text" id="nomeItem" placeholder="Nome do item">
-
-                        <input type="number" id="precoItem" placeholder="Preço" step="0.01">
-
-                        <input type="file" id="imagemItem" accept="image/png, image/jpeg, image/webp" title="Foto do item (opcional)">
-
-                        <button type="button" class="btn-add" onclick="adicionarItem()">
-                            Adicionar
-                        </button>
+                <section class="form-group-area" aria-labelledby="informacoes-cardapio">
+                    <h2 id="informacoes-cardapio">Informações do cardápio</h2>
+                    <div class="form-group">
+                        <label for="nomeRestaurante">Nome do Restaurante</label>
+                        <input id="nomeRestaurante" type="text" name="nome_restaurante" placeholder="Nome do Restaurante" required>
                     </div>
 
-                    <p style="font-size:0.78rem; color:var(--cream-2); margin: 4px 0 14px;">
-                        A foto é opcional, até 2MB (JPG, PNG ou WEBP).
+                    <div class="form-group">
+                        <label for="categoria">Categoria</label>
+                        <input id="categoria" type="text" name="categoria" placeholder="Categoria">
+                    </div>
+                </section>
+
+                <div class="itens-box">
+                    <h2>Adicionar item</h2>
+
+                    <div class="item-inputs">
+                        <input type="text" id="nomeItem" placeholder="Nome do item" aria-label="Nome do item">
+                        <input type="number" id="precoItem" placeholder="Preço" step="0.01" aria-label="Preço">
+                        <input class="file-input-hidden" type="file" id="imagemItem" accept="image/png, image/jpeg, image/webp" title="Foto do item (opcional)">
+                        <label class="btn-upload" for="imagemItem">Anexar imagem</label>
+
+                        <button type="button" class="btn-add" onclick="adicionarItem()">
+                            Adicionar item
+                        </button>
+                        <button type="submit" class="btn-save">Salvar Cardápio</button>
+                    </div>
+
+                    <p class="upload-help">
+                        Foto opcional, até 2MB (JPG, PNG ou WEBP).
                     </p>
-
-                    <div id="listaItens"></div>
-
                 </div>
 
-                <button type="submit">
-                    Salvar Cardápio
-                </button>
+                <section class="lista-itens-box" aria-labelledby="titulo-lista-itens">
+                    <h2 id="titulo-lista-itens">Itens</h2>
+                    <div id="listaItens"></div>
+                </section>
             </form>
         </div>
     </main>
 
     <!-- FOOTER -->
     <footer class="site-footer">
-        <img src="../../img/logotipoBranco.svg" alt="logotipoFooter" class="logotipoFooter" >
+        <img src="../../img/logotipoBranco.svg" alt="S.O.P.A." class="logotipoFooter">
         <p>Sistema Online de Pedidos e Atendimentos</p>
         <p class="footer-fine">
         &copy; 2026 S.O.P.A. — Projeto de TCC, ETEC João Gomes de Araújo.
@@ -207,6 +207,7 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
                 // Move o próprio input (com o arquivo já selecionado) pra dentro da linha do item
                 imagemInput.name = `itens[${idx}][imagem]`;
                 imagemInput.style.display = 'none';
+                imagemInput.removeAttribute('id');
                 linha.appendChild(imagemInput);
 
                 // Cria um novo input de arquivo "limpo" no lugar, pro próximo item
@@ -214,9 +215,10 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
                 const novoInput = document.createElement('input');
                 novoInput.type = 'file';
                 novoInput.id = 'imagemItem';
+                novoInput.className = 'file-input-hidden';
                 novoInput.accept = 'image/png, image/jpeg, image/webp';
                 novoInput.title = 'Foto do item (opcional)';
-                container.insertBefore(novoInput, container.querySelector('.btn-add'));
+                container.insertBefore(novoInput, container.querySelector('.btn-upload'));
             }
 
             document.getElementById('listaItens').appendChild(linha);

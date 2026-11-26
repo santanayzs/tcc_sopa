@@ -88,24 +88,37 @@ $pedidoErro = ($_GET['resultado'] ?? '') === 'erro';
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pedidos de Delivery — S.O.P.A.</title>
+  <link href="../img/icon.svg" rel="icon" class="icon">
+  
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../CSS/style.css" />
   <link rel="stylesheet" href="delivery.css" />
   <link rel="stylesheet" href="pedidos-delivery.css" />
 </head>
-<body class="dashboard-page">
+<body class="dashboard-page delivery-settings-page">
   <header class="site-header">
-    <a href="../index.html" class="logo" aria-label="S.O.P.A. — voltar ao início">
-      <span class="logo-badge">S</span>
-      <span class="logo-word">S.O.P.A.</span>
+    <a href="index.php" class="logo" aria-label="S.O.P.A. — voltar ao Painel">
+      <img src="../img/logotipoBranco.svg" alt="Logotipo S.O.P.A." class="logotipo">
     </a>
-    <nav class="main-nav">
-      <a href="index.php">Painel</a>
-      <a href="gerenciar-delivery.php">Configurar delivery</a>
-      <a href="../auth/logout.php">Sair</a>
-    </nav>
+    <nav class="main-nav" id="main-nav">
+      <a href="index.php">Início</a>
+      <a href="../CRUD-Cardapio/criar-cardapio/criar-cardapio.php">Criar Cardápio</a>
+      <a href="../CRUD-Cardapio/ver-cardapio/ver-cardapio.php">Ver Cardápio</a>
+      <a href="../comandas/comandas.php">Comandas</a>
+      <a href="gerenciar-delivery.php">Gerenciar Delivery</a>
+      <a href="pedidos-delivery.php">Pedidos Delivery</a>
+      <a href="../auth/logout.php" class="btn-sair">Sair</a>
+  </nav>
+    <button
+      class="nav-toggle"
+      id="nav-toggle"
+      aria-label="Abrir menu"
+      aria-expanded="false"
+      aria-controls="main-nav">
+      <span></span><span></span><span></span>
+    </button>
   </header>
 
   <main class="dashboard-shell">
@@ -116,7 +129,6 @@ $pedidoErro = ($_GET['resultado'] ?? '') === 'erro';
           <h1 id="pedidos-title">Pedidos de delivery</h1>
           <p class="dashboard-text">Acompanhe os pedidos enviados pelos clientes e atualize cada etapa.</p>
         </div>
-        <a class="btn-mini" href="gerenciar-delivery.php">Configurações do delivery</a>
       </div>
 
       <?php if ($pedidoAtualizado): ?>
@@ -163,9 +175,9 @@ $pedidoErro = ($_GET['resultado'] ?? '') === 'erro';
               <div class="pedido-admin-content">
                 <section>
                   <h3>Cliente</h3>
-                  <p><strong><?php echo htmlspecialchars($pedido['nome_cliente'], ENT_QUOTES, 'UTF-8'); ?></strong></p>
-                  <p><a href="tel:<?php echo htmlspecialchars(preg_replace('/[^0-9+]/', '', $pedido['telefone_cliente']), ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars($pedido['telefone_cliente'], ENT_QUOTES, 'UTF-8'); ?></a></p>
-                  <p><?php echo nl2br(htmlspecialchars($pedido['endereco_entrega'], ENT_QUOTES, 'UTF-8')); ?></p>
+                  <p><strong>Nome:</strong> <?php echo htmlspecialchars($pedido['nome_cliente'], ENT_QUOTES, 'UTF-8'); ?></p>
+                  <p><strong>Tel:</strong> <a href="tel:<?php echo htmlspecialchars(preg_replace('/[^0-9+]/', '', $pedido['telefone_cliente']), ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars($pedido['telefone_cliente'], ENT_QUOTES, 'UTF-8'); ?></a></p>
+                  <p><strong>Endereço:</strong> <?php echo nl2br(htmlspecialchars($pedido['endereco_entrega'], ENT_QUOTES, 'UTF-8')); ?></p>
                   <?php if (!empty($pedido['observacao'])): ?>
                     <p class="pedido-observacao-admin"><strong>Observação:</strong> <?php echo nl2br(htmlspecialchars($pedido['observacao'], ENT_QUOTES, 'UTF-8')); ?></p>
                   <?php endif; ?>
@@ -206,8 +218,12 @@ $pedidoErro = ($_GET['resultado'] ?? '') === 'erro';
   </main>
 
   <footer class="site-footer">
-    <div class="logo"><span class="logo-badge">S</span><span class="logo-word">S.O.P.A.</span></div>
+    <img src="../img/logotipoBranco.svg" alt="Logotipo S.O.P.A." class="logotipoFooter">
     <p>Sistema Online de Pedidos e Atendimentos</p>
+    <p class="footer-fine">
+      &copy; 2026 S.O.P.A. — Projeto de TCC, ETEC João Gomes de Araújo.
+    </p>
   </footer>
+  <script src="../JS/main-nav.js"></script>
 </body>
 </html>

@@ -57,7 +57,7 @@ $stmt->close();
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Meus Cardápios — S.O.P.A.</title>
-    <link href="../img/icon.svg" rel="icon" class="icon">
+    <link href="../../img/icon.svg" rel="icon" class="icon">
     
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -66,21 +66,25 @@ $stmt->close();
         rel="stylesheet" />
 
     <link rel="stylesheet" href="../../CSS/style.css" />
-    <!-- <link rel="stylesheet" href="../dashboard/dashboard.css" /> mesma coisa -->
+    <link rel="stylesheet" href="../../dashboard/dashboard.css" />
     <link rel="stylesheet" href="style-ver-cardapio.css" />
 
 </head>
 
 <body class="dashboard-page">
     <header class="site-header">
-        <a href="../dashboard/index.php" class="logo" aria-label="S.O.P.A. — voltar ao Painel">
-            <img src="../img/logotipoBranco.svg" alt="logotipo" class="logotipo" >    
+        <a href="../../dashboard/index.php" class="logo" aria-label="S.O.P.A. — voltar ao Painel">
+            <img src="../../img/logotipoBranco.svg" alt="logotipo" class="logotipo" >    
         </a>
 
         <nav class="main-nav" id="main-nav">
             <a href="../../dashboard/index.php">Início</a>
-            <a href="../../criar-cardapio/criar-cardapio.php">Criar Cardápio</a>
-            <a href="../../auth/logout.php">Sair</a>
+            <a href="../criar-cardapio/criar-cardapio.php">Criar Cardápio</a>
+            <a href="ver-cardapio.php">Ver Cardápio</a>
+            <a href="../../comandas/comandas.php">Comandas</a>
+            <a href="../../dashboard/gerenciar-delivery.php">Gerenciar Delivery</a>
+            <a href="../../dashboard/pedidos-delivery.php">Pedidos Delivery</a>
+            <a href="../../auth/logout.php" class="btn-sair">Sair</a>
         </nav>
 
          <button
@@ -92,14 +96,12 @@ $stmt->close();
       >
         <span></span><span></span><span></span>
       </button>
+    </header>
 
     <main class="dashboard-shell">
         <div class="dashboard-card">
             <p class="dashboard-eyebrow">Área do Restaurante</p>
             <h1>Meus cardápios</h1>
-            <p class="dashboard-text">
-                Aqui estão os cardápios cadastrados por <?php echo htmlspecialchars($nomeUsuario, ENT_QUOTES, 'UTF-8'); ?>.
-            </p>
 
             <?php if ($mostrarAviso): ?>
                 <p class="aviso-sucesso">Cardápio salvo com sucesso!</p>
@@ -220,22 +222,18 @@ $stmt->close();
                 </div>
             <?php endif; ?>
 
-            <div class="dashboard-actions">
-                <a class="btn-pill" href="../criar-cardapio/criar-cardapio.php">+ Novo cardápio</a>
-                <a class="btn-pill" href="../../dashboard/index.php">Voltar ao painel</a>
-            </div>
         </div>
     </main>
 
     <footer class="site-footer">
-            <img src="../img/logotipoBranco.svg" alt="logotipoFooter" class="logotipoFooter" >
+            <img src="../../img/logotipoBranco.svg" alt="logotipoFooter" class="logotipoFooter" >
         <p>Sistema Online de Pedidos e Atendimentos</p>
         <p class="footer-fine">
         &copy; 2026 S.O.P.A. — Projeto de TCC, ETEC João Gomes de Araújo.
       </p>
     </footer>
 
-    <script src="../JS/main-nav.js"></script>
+    <script src="../../JS/main-nav.js"></script>
 
 </body>
 

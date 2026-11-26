@@ -746,12 +746,39 @@ a {
   transform: translateY(-2px);
   background: var(--green-900);
   color: #ffffff;
-
-  /* borda somente no hover */
   outline: 3px solid var(--white);
-
   box-shadow: 0 18px 36px -10px rgba(0, 0, 0, 0.6);
 }
+
+.btn-sair {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    box-sizing: border-box;
+
+    margin-top: auto;
+    padding: 14px 16px;
+
+    background-color: #b83b3b;
+    color: #ffffff !important;
+
+    border: 1px solid #a52f2f;
+    border-radius: 10px;
+
+    text-align: center;
+    text-decoration: none;
+
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+}
+
+.btn-sair:hover {
+    background-color: #962d2d !important;
+    color: #ffffff !important;
+}
+
 /* ============================================================
    Footer
    ============================================================ */

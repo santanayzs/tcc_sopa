@@ -46,6 +46,8 @@ $stmtDelivery->close();
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gerenciar Delivery — S.O.P.A.</title>
+  <link href="../img/icon.svg" rel="icon" class="icon">
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -55,18 +57,28 @@ $stmtDelivery->close();
   <link rel="stylesheet" href="../CSS/style.css" />
   <link rel="stylesheet" href="delivery.css" />
 </head>
-<body class="dashboard-page">
+<body class="dashboard-page delivery-settings-page">
   <header class="site-header">
-    <a href="../index.html" class="logo" aria-label="S.O.P.A. — voltar ao início">
-      <span class="logo-badge">S</span>
-      <span class="logo-word">S.O.P.A.</span>
+    <a href="index.php" class="logo" aria-label="S.O.P.A. — voltar ao Painel">
+      <img src="../img/logotipoBranco.svg" alt="Logotipo S.O.P.A." class="logotipo">
     </a>
-    <nav class="main-nav">
-      <a href="index.php">Painel</a>
-      <a href="pedidos-delivery.php">Pedidos delivery</a>
-      <a href="../Delivery/index.php">Ver delivery</a>
-      <a href="../auth/logout.php">Sair</a>
-    </nav>
+    <nav class="main-nav" id="main-nav">
+      <a href="index.php">Início</a>
+      <a href="../CRUD-Cardapio/criar-cardapio/criar-cardapio.php">Criar Cardápio</a>
+      <a href="../CRUD-Cardapio/ver-cardapio/ver-cardapio.php">Ver Cardápio</a>
+      <a href="../comandas/comandas.php">Comandas</a>
+      <a href="gerenciar-delivery.php">Gerenciar Delivery</a>
+      <a href="pedidos-delivery.php">Pedidos Delivery</a>
+      <a href="../auth/logout.php" class="btn-sair">Sair</a>
+  </nav>
+    <button
+      class="nav-toggle"
+      id="nav-toggle"
+      aria-label="Abrir menu"
+      aria-expanded="false"
+      aria-controls="main-nav">
+      <span></span><span></span><span></span>
+    </button>
   </header>
 
   <main class="dashboard-shell">
@@ -190,12 +202,13 @@ $stmtDelivery->close();
   </main>
 
   <footer class="site-footer">
-    <div class="logo">
-      <span class="logo-badge">S</span>
-      <span class="logo-word">S.O.P.A.</span>
-    </div>
+    <img src="../img/logotipoBranco.svg" alt="Logotipo S.O.P.A." class="logotipoFooter">
     <p>Sistema Online de Pedidos e Atendimentos</p>
+    <p class="footer-fine">
+      &copy; 2026 S.O.P.A. — Projeto de TCC, ETEC João Gomes de Araújo.
+    </p>
   </footer>
   <script src="delivery-location.js"></script>
+  <script src="../JS/main-nav.js"></script>
 </body>
 </html>
