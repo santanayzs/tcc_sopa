@@ -305,11 +305,23 @@
 }
 
 .item-linha-info {
+  display: flex;
+  flex: 1;
+  min-width: 0;
   align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 
-.item-linha-nome,
+.item-linha-nome {
+  min-width: 0;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
 .item-linha-preco {
+  flex-shrink: 0;
+  white-space: nowrap;
   font-weight: 600;
 }
 
