@@ -1,5 +1,7 @@
 <?php
 require_once __DIR__ . '/../configs/session_helper.php';
+require_once __DIR__ . '/../configs/perfis.php';
+exigirAcessoEstabelecimento();
 
 if (empty($_SESSION['id']) || $_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: gerenciar-delivery.php');

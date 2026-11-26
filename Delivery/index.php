@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once __DIR__ . '/../configs/session_helper.php';
 include __DIR__ . '/../CRUD-Cardapio/criar-cardapio/conexao.php';
 
 $deliveryCsrf = $_SESSION['delivery_location_csrf'] ??= bin2hex(random_bytes(32));

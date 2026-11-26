@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 session_start();
+require_once __DIR__ . '/../../configs/perfis.php';
 
 if (!isset($_SESSION['id'])) {
     header('Location: ../../auth/index.php');
@@ -11,7 +12,7 @@ if (!isset($_SESSION['id'])) {
 
 include '../../configs/conexao.php';
 
-$usuarioId = (int) ($_SESSION['id'] ?? 0);
+$usuarioId = usuarioDonoId($conn);
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: historico-comandas.php');

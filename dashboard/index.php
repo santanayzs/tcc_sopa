@@ -1,5 +1,7 @@
 <?php
 require_once __DIR__ . '/../configs/session_helper.php';
+require_once __DIR__ . '/../configs/perfis.php';
+exigirAcessoEstabelecimento();
 
 if (!isset($_SESSION['id'])) {
   header('Location: ../auth/index.php');
@@ -7,9 +9,23 @@ if (!isset($_SESSION['id'])) {
 }
 
 include '../CRUD-Cardapio/criar-cardapio/conexao.php';
+garantirSchemaPerfis($conn);
 
 $nomeUsuario = isset($_SESSION['nome']) ? $_SESSION['nome'] : 'Usuário';
 $usuarioId = (int) $_SESSION['id'];
+
+$stmtFuncionarios = $conn->prepare(
+  "SELECT COUNT(*) AS total,
+      COALESCE(SUM(ativo = 1), 0) AS ativos
+   FROM usuarios
+   WHERE usuario_estabelecimento_id = ? AND tipo_usuario = 'funcionario'"
+);
+$stmtFuncionarios->bind_param('i', $usuarioId);
+$stmtFuncionarios->execute();
+$resumoFuncionarios = $stmtFuncionarios->get_result()->fetch_assoc();
+$funcionariosAtivos = (int) ($resumoFuncionarios['ativos'] ?? 0);
+$funcionariosPendentes = (int) ($resumoFuncionarios['total'] ?? 0) - $funcionariosAtivos;
+$stmtFuncionarios->close();
 
 $recentCardapios = [];
 
@@ -103,6 +119,7 @@ $statusPedidos = [
           <a href="../CRUD-Cardapio/criar-cardapio/criar-cardapio.php">Criar Cardápio</a>
           <a href="../CRUD-Cardapio/ver-cardapio/ver-cardapio.php">Ver Cardápio</a>
           <a href="../comandas/comandas.php">Comandas</a>
+          <a href="funcionarios.php">Funcionários</a>
           <a href="gerenciar-delivery.php">Gerenciar Delivery</a>
           <a href="pedidos-delivery.php">Pedidos Delivery</a>
           <a href="../auth/logout.php" class="btn-sair">Sair</a>
@@ -229,6 +246,29 @@ $statusPedidos = [
             <?php endif; ?>
           </div>
         </div>
+
+        <section class="dashboard-modulo" aria-labelledby="funcionarios-title">
+          <div class="dashboard-layout">
+            <a class="feature-card" href="funcionarios.php" aria-label="Gerenciar funcionários">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="9" cy="8" r="3"></circle>
+                <path d="M3 20v-1a6 6 0 0 1 12 0v1"></path>
+                <path d="M16 5.5a3 3 0 0 1 0 5.8M18 14a5 5 0 0 1 3 4.6V20"></path>
+              </svg>
+              <h3>Funcionários</h3>
+            </a>
+
+            <div class="dashboard-area-cardapios dashboard-resumo">
+              <div class="dashboard-cardapios-topo">
+                <h2 id="funcionarios-title">Acessos da equipe</h2>
+                <a class="link-ver-cardapio" href="funcionarios.php">Gerenciar funcionários</a>
+              </div>
+              <p class="dashboard-resumo-vazio">
+                <?php echo $funcionariosAtivos; ?> ativos · <?php echo $funcionariosPendentes; ?> aguardando aprovação.
+              </p>
+            </div>
+          </div>
+        </section>
 
         <section class="dashboard-modulo" aria-labelledby="garcom-title">
           <div class="dashboard-layout">

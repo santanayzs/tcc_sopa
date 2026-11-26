@@ -165,6 +165,7 @@ CREATE TABLE `pedidos_delivery` (
   `endereco_entrega` varchar(500) COLLATE utf8mb4_general_ci NOT NULL,
   `observacao` text COLLATE utf8mb4_general_ci,
   `cliente_token_hash` char(64) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `cliente_usuario_id` int(11) DEFAULT NULL,
   `status` enum('RECEBIDO','CONFIRMADO','EM_PREPARO','SAIU_PARA_ENTREGA','ENTREGUE','CANCELADO') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'RECEBIDO',
   `total` decimal(10,2) NOT NULL DEFAULT '0.00',
   `criado_em` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -172,8 +173,10 @@ CREATE TABLE `pedidos_delivery` (
   PRIMARY KEY (`id`),
   KEY `idx_pedidos_delivery_usuario_status` (`usuario_id`,`status`,`criado_em`),
   KEY `idx_pedidos_delivery_cliente_token` (`cliente_token_hash`),
+  KEY `idx_pedidos_delivery_cliente_usuario` (`cliente_usuario_id`),
   KEY `idx_pedidos_delivery_cardapio` (`cardapio_id`),
-  CONSTRAINT `fk_pedidos_delivery_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE
+  CONSTRAINT `fk_pedidos_delivery_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_pedidos_delivery_cliente` FOREIGN KEY (`cliente_usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `itens_pedido_delivery` (
@@ -370,7 +373,8 @@ CREATE TABLE `usuarios` (
     `email` VARCHAR(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
     `telefone` VARCHAR(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
     `senha` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-    `tipo_usuario` ENUM('admin','empresa') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+    `tipo_usuario` ENUM('admin','empresa','funcionario','cliente') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'empresa',
+    `usuario_estabelecimento_id` INT(11) DEFAULT NULL,
     `status` TINYINT(1) NOT NULL DEFAULT 1,
     `ativo` TINYINT(1) NOT NULL DEFAULT 1,
     `ultimo_login` DATETIME DEFAULT NULL,
@@ -378,7 +382,9 @@ CREATE TABLE `usuarios` (
     `atualizado_em` DATETIME DEFAULT NULL,
 
     PRIMARY KEY (`id`),
-    UNIQUE KEY `uq_email` (`email`)
+    UNIQUE KEY `uq_email` (`email`),
+    KEY `idx_usuarios_estabelecimento` (`usuario_estabelecimento_id`),
+    CONSTRAINT `fk_usuario_estabelecimento` FOREIGN KEY (`usuario_estabelecimento_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE
 
 ) ENGINE=InnoDB
   AUTO_INCREMENT=5
