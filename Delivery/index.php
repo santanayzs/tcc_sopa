@@ -145,8 +145,7 @@ if ($locationConfirmed) {
   <body>
     <header class="site-header">
       <a class="brand" href="../index.html" aria-label="S.O.P.A., início">
-        <span class="brand-mark">S</span>
-        <span>S.O.P.A.</span>
+        <img src="../img/logotipo.svg" alt="S.O.P.A." class="logotipo" />
       </a>
       <nav class="main-nav" aria-label="Navegação principal">
         <a href="#estabelecimentos">Cardápios</a>
@@ -294,11 +293,11 @@ if ($locationConfirmed) {
     </main>
 
     <footer class="site-footer">
-      <a class="brand" href="../index.html">
-        <span class="brand-mark">S</span>
-        <span>S.O.P.A.</span>
+      <a class="brand" href="../index.html" aria-label="S.O.P.A., início">
+        <img src="../img/logotipo.svg" alt="S.O.P.A." class="logotipo" />
       </a>
-      <p>Comida que aproxima.</p>
+      <p>Sistema Online de Pedidos e Atendimentos</p>
+      <p class="footer-fine">&copy; 2026 S.O.P.A. — Projeto de TCC, ETEC João Gomes de Araújo.</p>
     </footer>
     <script src="location.js"></script>
   </body>

@@ -116,8 +116,7 @@ if ($cardapioIdSelecionado > 0) {
         </a>
 
         <nav class="main-nav" id="main-nav">
-            <a href="../../index.html">Início</a>
-            <a href="../../dashboard/index.php">Painel</a>
+            <a href="../../dashboard/index.php">Início</a>
             <a href="../comandas.php">Voltar</a>
             <a href="../../auth/logout.php">Sair</a>
         </nav>

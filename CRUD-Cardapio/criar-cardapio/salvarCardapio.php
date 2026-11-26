@@ -30,6 +30,14 @@ if ($nomeRestaurante === '' || !is_array($itens) || count($itens) === 0) {
     exit;
 }
 
+foreach ($itens as $item) {
+    $preco = is_array($item) ? ($item['preco'] ?? null) : null;
+    if (!is_numeric($preco) || (float) $preco < 0) {
+        header('Location: criar-cardapio.php?erro=preco');
+        exit;
+    }
+}
+
 $pastaItens    = __DIR__ . '/../../uploads/itens';
 $imagensSalvas = []; // rastreia arquivos físicos criados, pra limpar se algo der errado
 
@@ -55,7 +63,7 @@ try {
         $nomeItem  = trim((string) ($item['nome'] ?? ''));
         $precoItem = (float) ($item['preco'] ?? 0);
 
-        if ($nomeItem === '' || $precoItem < 0) {
+        if ($nomeItem === '') {
             continue; // ignora itens inválidos em vez de derrubar o cardápio inteiro
         }
 

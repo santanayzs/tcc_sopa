@@ -10,7 +10,7 @@
   --ink: #1b2925;
   --muted: #68756f;
   --line: #dce3dc;
-  --content-width: 1120px;
+  --content-width: 100%;
 }
 
 * {
@@ -22,7 +22,10 @@ html {
 }
 
 body {
+  min-height: 100vh;
   margin: 0;
+  display: flex;
+  flex-direction: column;
   color: var(--ink);
   background: var(--paper);
   font-family: "Inter", sans-serif;
@@ -51,7 +54,11 @@ input {
 }
 
 .site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
   min-height: 76px;
+  max-height: 80px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -71,14 +78,15 @@ input {
   font-weight: 700;
 }
 
-.brand-mark {
-  width: 32px;
-  aspect-ratio: 1;
-  display: grid;
-  place-items: center;
-  border: 2px solid currentColor;
-  border-radius: 50%;
-  font-size: 0.82rem;
+.brand .logotipo {
+  width: 200px;
+  height: auto;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .main-nav {
@@ -114,6 +122,7 @@ input {
 
 .delivery-intro {
   position: relative;
+  flex: 1;
   overflow: hidden;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(300px, 0.72fr);
@@ -515,21 +524,43 @@ h3 {
 
 .site-footer {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  padding: 22px max(24px, calc((100vw - var(--content-width)) / 2));
+  justify-content: center;
+  gap: 0;
+  padding: 16px 24px 8px;
   color: var(--white);
-  background: var(--green-950);
+  background: var(--green-800);
+  text-align: center;
+}
+
+.site-footer .brand {
+  justify-content: center;
+  margin-bottom: 5px;
+}
+
+.site-footer .logotipo {
+  width: 160px;
+  height: auto;
+  margin: 0 auto 2px;
 }
 
 .site-footer p {
-  margin: 0;
+  margin: 2px 0;
   color: #c4d0c8;
   font-size: 0.85rem;
 }
 
+.site-footer .footer-fine {
+  font-size: 0.78rem;
+  opacity: 0.6;
+}
+
 @media (max-width: 760px) {
+  .brand .logotipo {
+    width: 160px;
+  }
+
   .site-header {
     min-height: 68px;
     gap: 14px;
@@ -580,7 +611,12 @@ h3 {
 }
 
 @media (max-width: 520px) {
+  .brand .logotipo {
+    width: 140px;
+  }
+
   .site-header {
+    max-height: none;
     flex-wrap: wrap;
     justify-content: space-between;
     row-gap: 12px;

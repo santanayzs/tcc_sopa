@@ -1,6 +1,6 @@
 .orders-shell {
+  flex: 1;
   width: min(var(--content-width), calc(100% - 48px));
-  min-height: calc(100vh - 190px);
   margin: 0 auto;
   padding: 54px 0 72px;
 }
@@ -258,6 +258,14 @@
   padding: 46px 24px;
   color: var(--muted);
   text-align: center;
+}
+
+.orders-empty-icon {
+  display: block;
+  width: 42px;
+  height: 42px;
+  margin: 0 auto 15px;
+  object-fit: contain;
 }
 
 .orders-empty h2 {

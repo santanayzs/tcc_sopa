@@ -10,6 +10,7 @@ $nomeUsuario = $_SESSION['nome'] ?? 'Usuário';
 
 $mensagensErro = [
     'campos'   => 'Preencha o nome do restaurante e adicione pelo menos um item.',
+    'preco'    => 'Os preços dos itens não podem ser negativos. Revise o cardápio e tente novamente.',
     'formato'  => 'Uma das imagens enviadas não é válida (use JPG, PNG ou WEBP, até 2MB).',
     'servidor' => 'Erro ao salvar o cardápio. Tente novamente em instantes.',
 ];
@@ -105,7 +106,7 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
 
                     <div class="item-inputs">
                         <input type="text" id="nomeItem" placeholder="Nome do item" aria-label="Nome do item">
-                        <input type="number" id="precoItem" placeholder="Preço" step="0.01" aria-label="Preço">
+                        <input type="number" id="precoItem" placeholder="Preço" step="0.01" min="0" aria-label="Preço">
                         <input class="file-input-hidden" type="file" id="imagemItem" accept="image/png, image/jpeg, image/webp" title="Foto do item (opcional)">
                         <label class="btn-upload" for="imagemItem">Anexar imagem</label>
 
@@ -191,7 +192,13 @@ $erro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
             const preco = document.getElementById("precoItem");
             const imagemInput = document.getElementById("imagemItem");
 
-            if (!nome.value || !preco.value) return;
+            if (!nome.value.trim() || !preco.value) return;
+
+            if (!Number.isFinite(Number(preco.value)) || Number(preco.value) < 0) {
+                alert("O preço não pode ser negativo.");
+                preco.focus();
+                return;
+            }
 
             const idx = contadorItem++;
             const { linha, thumb } = montarLinhaBase(idx, nome.value, preco.value);

@@ -122,8 +122,7 @@ if ($aviso === 'historico_limpo') {
             <img src="../../img/logotipoBranco.svg" alt="Logotipo S.O.P.A." class="logotipo">
         </a>
         <nav class="main-nav" id="main-nav">
-            <a href="../../index.html">Início</a>
-            <a href="../../dashboard/index.php">Painel</a>
+            <a href="../../dashboard/index.php">Início</a>
             <a href="../comandas.php">Gerenciar comandas</a>
             <a href="../../auth/logout.php">Sair</a>
         </nav>

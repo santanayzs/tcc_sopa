@@ -80,8 +80,7 @@ if (is_string($clienteToken) && $clienteToken !== '') {
 <body>
   <header class="site-header">
     <a class="brand" href="../index.html" aria-label="S.O.P.A., início">
-      <span class="brand-mark">S</span>
-      <span>S.O.P.A.</span>
+      <img src="../img/logotipo.svg" alt="S.O.P.A." class="logotipo" />
     </a>
     <nav class="main-nav" aria-label="Navegação principal">
       <a href="index.php#estabelecimentos">Cardápios</a>
@@ -101,7 +100,7 @@ if (is_string($clienteToken) && $clienteToken !== '') {
 
     <?php if (empty($pedidos)): ?>
       <section class="orders-empty">
-        <span class="empty-mark" aria-hidden="true">S</span>
+        <img class="orders-empty-icon" src="../img/icon.svg" alt="" aria-hidden="true" />
         <h2>Você ainda não tem pedidos para acompanhar</h2>
         <p>Quando fizer um pedido neste navegador, ele aparecerá aqui com as atualizações do estabelecimento.</p>
         <a class="orders-button" href="index.php#estabelecimentos">Explorar cardápios</a>
@@ -171,11 +170,11 @@ if (is_string($clienteToken) && $clienteToken !== '') {
   <div class="order-alerts" id="order-alerts" role="log" aria-live="polite" aria-relevant="additions"></div>
 
   <footer class="site-footer">
-    <a class="brand" href="../index.html">
-      <span class="brand-mark">S</span>
-      <span>S.O.P.A.</span>
+    <a class="brand" href="../index.html" aria-label="S.O.P.A., início">
+      <img src="../img/logotipo.svg" alt="S.O.P.A." class="logotipo" />
     </a>
-    <p>Comida que aproxima.</p>
+    <p>Sistema Online de Pedidos e Atendimentos</p>
+    <p class="footer-fine">&copy; 2026 S.O.P.A. — Projeto de TCC, ETEC João Gomes de Araújo.</p>
   </footer>
   <script src="meus-pedidos.js" defer></script>
 </body>
